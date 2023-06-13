@@ -8,9 +8,10 @@ RUN apt-get update \
     && apt-get install -y \
         libgl1-mesa-dev xorg-dev
 
-ENV PATH $PATH:/workspaces/cppGame/External/SDL/include/SDL \
-    :/workspaces/cppGame/External/SOIL/include/SOIL \
-    :/workspaces/cppGame/External/GLEW/include/GL \
-    :/workspaces/cppGame/External/rapidjson/include/rapidjson
+ENV CPLUS_INCLUDE_PATH /workspaces/cppGame/External/SDL/include/SDL\
+    :/workspaces/cppGame/External/SOIL/include/SOIL\
+    :/workspaces/cppGame/External/GLEW/include/GL\
+    :/workspaces/cppGame/External/rapidjson/include/rapidjson\
+    :/workspaces/cppGame/inc
 
 ENV DISPLAY host.docker.internal:0.0
