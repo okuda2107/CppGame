@@ -15,7 +15,8 @@
 				"ms-vscode.makefile-tools"
 			]
 		}
-	}
+	},
+	"runArgs": ["--privileged"]
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},

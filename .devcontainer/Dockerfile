@@ -1,17 +1,23 @@
 FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-20.04
 
 RUN apt-get update \
-    && apt-get install -y \
-        build-essential
+    && apt-get install -y build-essential
 
 RUN apt-get update \
-    && apt-get install -y \
-        libgl1-mesa-dev xorg-dev
+    && apt-get install -y libgl1-mesa-dev xorg-dev
 
-ENV CPLUS_INCLUDE_PATH /workspaces/cppGame/External/SDL/include/SDL\
-    :/workspaces/cppGame/External/SOIL/include/SOIL\
-    :/workspaces/cppGame/External/GLEW/include/GL\
-    :/workspaces/cppGame/External/rapidjson/include/rapidjson\
-    :/workspaces/cppGame/inc
+RUN apt-get update \
+    && apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libsdl2-ttf-dev
+
+RUN apt-get update \
+    && apt-get install -y libsoil-dev
+
+RUN apt-get update \
+    && apt-get install -y libglew-dev
+
+RUN apt-get update \
+    && apt-get install -y rapidjson-dev
+
+ENV CPLUS_INCLUDE_PATH /usr/include/SDL2:/usr/include/GL:/usr/include/rapidjson:/workspaces/cppGame/inc
 
 ENV DISPLAY host.docker.internal:0.0

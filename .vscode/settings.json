@@ -1,0 +1,6 @@
+{
+    "files.exclude": {
+        "*.dll": true,
+        "obj/": true
+    }
+}
