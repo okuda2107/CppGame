@@ -3,7 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
+                "${workspaceFolder}/inc/**",
                 "/workspaces/cppGame/External/SDL/include/SDL",
                 "/workspaces/cppGame/External/SOIL/include/SOIL",
                 "/workspaces/cppGame/External/GLEW/include/GL",
