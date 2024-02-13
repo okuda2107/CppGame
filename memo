@@ -1,0 +1,8 @@
+include pathがCppGame/ or cppGame/のファイル名で環境依存になる
+環境変数をenvファイルで括りだしたい
+makefile 実行ファイルの名前を決めれるようにしたい
+include fileを外にマウントしておこう
+
+windowは出た．
+画面は映らない．dllの問題か？
+崩して再度動かしながら確認していく

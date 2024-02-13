@@ -4,13 +4,13 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/inc/**",
-                "/workspaces/cppGame/External/SDL/include/SDL",
-                "/workspaces/cppGame/External/SOIL/include/SOIL",
-                "/workspaces/cppGame/External/GLEW/include/GL",
-                "/workspaces/cppGame/External/rapidjson/include/rapidjson"
+                "/usr/include/SDL2",
+                "/usr/include/SOIL",
+                "/usr/include/GL",
+                "/usr/include/rapidjson"
             ],
             "defines": [],
-            "compilerPath": "/usr/bin/gcc",
+            "compilerPath": "/usr/bin/g++",
             "cStandard": "c17",
             "cppStandard": "gnu++14",
             "intelliSenseMode": "linux-gcc-x64"

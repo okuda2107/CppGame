@@ -94,9 +94,9 @@ void Game::Shutdown() {
 	if (mRenderer) {
 		mRenderer->Shutdown();
 	}
-	if (mAudioSystem) {
-		mAudioSystem->Shutdown();
-	}
+	// if (mAudioSystem) {
+	// 	mAudioSystem->Shutdown();
+	// }
 
 	SDL_Quit();
 }

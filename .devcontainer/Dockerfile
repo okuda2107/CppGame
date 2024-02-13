@@ -18,6 +18,6 @@ RUN apt-get update \
 RUN apt-get update \
     && apt-get install -y rapidjson-dev
 
-ENV CPLUS_INCLUDE_PATH /usr/include/SDL2:/usr/include/GL:/usr/include/rapidjson:/workspaces/cppGame/inc
+ENV CPLUS_INCLUDE_PATH /usr/include/SDL2:/usr/include/SOIL:/usr/include/GL:/usr/include/rapidjson:/workspaces/CppGame/inc
 
 ENV DISPLAY host.docker.internal:0.0

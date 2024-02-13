@@ -11,7 +11,7 @@ class Actor {
         EActive,
 		EPaused,
 		EDead
-    }
+    };
 
     Actor(class Game* game);
 	~Actor();
@@ -34,7 +34,7 @@ class Actor {
 	void SetState(State state) { mState = state; mRecomputeWorldTransform = true; }
 	void SetScale(float scale) { mScale = scale; mRecomputeWorldTransform = true; }
 	void SetPosition(Vector3 pos) { mPosition = pos; mRecomputeWorldTransform = true; }
-	void SetRotation(const Quaternion& rot { mRotation = rot; mRecomputeWorldTransform = true; }
+	void SetRotation(const Quaternion& rot) { mRotation = rot; mRecomputeWorldTransform = true; }
 
 	void ComputeWorldTransform();
 	Matrix4& GetWorldTransform() { return mWorldTransform; }
@@ -42,4 +42,23 @@ class Actor {
 	Component* GetComponentOfType(Component::TypeID type);
 
 	virtual void LoadProperties(const rapidjson::Value& inObj);
-}
+
+	template <typename T> static Actor* Create(class Game* game, const rapidjson::Value& inObj)
+	{
+		T* t = new T(game);
+		t->LoadProperties(inObj);
+		return t;
+	}
+
+	private:
+	Game* mGame;
+	Vector3 mPosition;
+	float mScale;
+	Quaternion mRotation;
+	State mState;
+
+	Matrix4 mWorldTransform;
+	bool mRecomputeWorldTransform;
+
+	std::vector<class Component*> mComponents;
+};
