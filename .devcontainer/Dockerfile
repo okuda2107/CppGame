@@ -1,10 +1,25 @@
-FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-20.04
+FROM ubuntu:22.04
+
+# create user
+ARG USER=vscode
+ARG GID=1000
+ARG UID=1000
+RUN apt-get update \
+    && apt-get install -y sudo \
+    && echo "$USER ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/ALL \
+    && groupadd \
+        --gid $GID \
+        $USER \
+    && useradd \
+        --uid $UID \
+        --gid $GID \
+        --home-dir /home/$USER \
+        --create-home \
+        --shell /bin/bash \
+        $USER
 
 RUN apt-get update \
-    && apt-get install -y build-essential
-
-RUN apt-get update \
-    && apt-get install -y libgl1-mesa-dev xorg-dev
+    && apt-get install -y g++ make
 
 RUN apt-get update \
     && apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libsdl2-ttf-dev
@@ -18,6 +33,6 @@ RUN apt-get update \
 RUN apt-get update \
     && apt-get install -y rapidjson-dev
 
-ENV CPLUS_INCLUDE_PATH /usr/include/SDL2:/usr/include/SOIL:/usr/include/GL:/usr/include/rapidjson:/workspaces/CppGame/inc
+ENV CPLUS_INCLUDE_PATH /usr/include/SDL2:/usr/include/SOIL:/usr/include/GL:/usr/include/rapidjson:/workspace/inc
 
-ENV DISPLAY host.docker.internal:0.0
+USER $USER
