@@ -1,5 +1,6 @@
 makefile 実行ファイルの名前を決めれるようにしたい
 include fileを外にマウントしておこう
+ubuntuではwindowが立ち上がらない
 
 windowは出た．
 画面は映らない．dllの問題か？
