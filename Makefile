@@ -7,9 +7,9 @@ LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
 LIBS = -lSDL2 -lSDL2_image -lSOIL -lGL -lGLEW
 
 ./obj/%.obj: ./src/%.cpp
-	$(CC) -o $@ -c $< -I $(INCLUDE_PATH) 
+	$(CC) -o $@ -c $< -I$(INCLUDE_PATH) 
 $(TARGET): $(OBJS)
-	$(CC) -o $@ $^ $(LIBS) -L $(LIBRARY_PATH)
+	$(CC) -o $@ $^ $(LIBS) -L$(LIBRARY_PATH)
 
 clean:
-	rm obj/*
+	rm -f obj/*
