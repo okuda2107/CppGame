@@ -37,7 +37,8 @@ ENV CPLUS_INCLUDE_PATH /usr/include/SDL2:/usr/include/SOIL:/usr/include/GL:/usr/
 
 USER $USER
 
-RUN sudo apt update && sudo apt install -y \
-    x11-apps \
-  && sudo apt clean \
+RUN sudo apt-get update && sudo apt-get install -y \
+    libgl1-mesa-dev \
+    xorg-dev \
+  && sudo apt-get clean \
   && sudo rm -rf /var/lib/apt/lists/*
