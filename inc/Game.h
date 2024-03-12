@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <string>
 
+#include <iostream>
+
 class Game {
     public:
     Game();
