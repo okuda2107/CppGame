@@ -5,3 +5,7 @@ ubuntuではwindowが立ち上がらない
 windowは出た．
 画面は映らない．dllの問題か？
 崩して再度動かしながら確認していく
+
+makefile: include pathを複数追加する方法がわからん
+
+nvidia-なんちゃらを入れやなあかんかもしれん
