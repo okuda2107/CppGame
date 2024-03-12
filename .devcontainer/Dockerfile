@@ -36,3 +36,8 @@ RUN apt-get update \
 ENV CPLUS_INCLUDE_PATH /usr/include/SDL2:/usr/include/SOIL:/usr/include/GL:/usr/include/rapidjson:/workspace/inc
 
 USER $USER
+
+RUN sudo apt update && sudo apt install -y \
+    x11-apps \
+  && sudo apt clean \
+  && sudo rm -rf /var/lib/apt/lists/*

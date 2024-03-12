@@ -11,6 +11,10 @@ services:
               source: ..
               target: /workspace
               consistency: cached
+            # ubuntuのみ設定
+            - type: bind
+              source: /tmp/.X11-unix/X0
+              target: /tmp/.X11-unix/X0
         environment:
             - DISPLAY=$CONTAINER_DISPLAY
         command: /bin/sh -c "while sleep 1000; do :; done" # devcontainerで起動させるために必要
