@@ -11,7 +11,7 @@ services:
               source: ..
               target: /workspace
               consistency: cached
-            # ubuntuのみ設定
+            # windowを出すためのソケットファイルマウント
             - type: bind
               source: /tmp/.X11-unix/X0
               target: /tmp/.X11-unix/X0
@@ -19,8 +19,6 @@ services:
             - type: bind
               source: /dev/dri/card0
               target: /dev/dri/card0
-        environment:
-            - DISPLAY=$CONTAINER_DISPLAY
         command: /bin/sh -c "while sleep 1000; do :; done" # devcontainerで起動させるために必要
         # deploy:
         #     resources:
