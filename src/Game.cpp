@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "Actor.h"
 #include "Renderer.h"
-// #include "AudioSystem.h"
+#include "AudioSystem.h"
 #include "SpriteComponent.h"
 #include "MeshComponent.h"
 #include "InputComponent.h"
@@ -29,13 +29,13 @@ bool Game::Initialize() {
 		return false;
 	}
 
-	// mAudioSystem = new AudioSystem(this);
-	// if (!mAudioSystem->Initialize()) {
-	// 	SDL_Log("Failed to initialize audio system");
-	// 	delete mAudioSystem;
-	// 	mAudioSystem = nullptr;
-	// 	return false;
-	// }
+	 mAudioSystem = new AudioSystem(this);
+	 if (!mAudioSystem->Initialize()) {
+	 	SDL_Log("Failed to initialize audio system");
+	 	delete mAudioSystem;
+	 	mAudioSystem = nullptr;
+	 	return false;
+	 }
 
 	LoadData();
 

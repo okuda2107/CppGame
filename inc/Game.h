@@ -18,7 +18,7 @@ class Game {
     void RemoveActor(class Actor* actor);
 
 	class Renderer* GetRenderer() { return mRenderer; }
-	// class AudioSystem* GetAudioSystem() { return mAudioSystem; }
+	class AudioSystem* GetAudioSystem() { return mAudioSystem; }
 
     private:
     void ProcessInput();
@@ -31,7 +31,7 @@ class Game {
 	void UnloadData();
 
 	class Renderer* mRenderer;
-	// class AudioSystem* mAudioSystem;
+	class AudioSystem* mAudioSystem;
 
 	bool mIsRunning;
 	Uint32 mTicksCount;
