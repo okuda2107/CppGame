@@ -24,4 +24,9 @@ makefileにて，"make win"を叩くと，mingwを用いたコンパイルが始
 >>>>>>> closs-compile
 =======
 audioを流したい．pulseaudioでコンテナ外へ音声を送る？
+<<<<<<< HEAD
 >>>>>>> c703086 (audio途中)
+=======
+
+クロスコンパイルを実現したい．そんなことできるんかな？
+>>>>>>> 506aac3 (memo追記)
