@@ -2,14 +2,14 @@ CC = g++
 SRCS = $(wildcard ./src/*.cpp)
 OBJS = $(patsubst ./src/%.cpp, ./obj/%.obj, $(SRCS))
 TARGET = game
-INCLUDE_PATH=/usr/include/SOIL:/usr/include/GL:/usr/include/rapidjson:/workspace/inc
-LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
+INCLUDE_PATH=-I/usr/include/SDL2 -I/usr/include/SOIL -I/usr/include/GL -I/usr/include/AL -I/usr/include/rapidjson -I/workspace/inc
+LIBRARY_PATH=-L/usr/lib/x86_64-linux-gnu
 LIBS = -lSDL2 -lSDL2_image -lSOIL -lGL -lGLEW
 
 ./obj/%.obj: ./src/%.cpp
-	$(CC) -o $@ -c $< -I$(INCLUDE_PATH) 
+	$(CC) -o $@ -c $< $(INCLUDE_PATH) 
 $(TARGET): $(OBJS)
-	$(CC) -o $@ $^ $(LIBS) -L$(LIBRARY_PATH)
+	$(CC) -o $@ $^ $(LIBS) $(LIBRARY_PATH)
 
 clean:
 	rm -f obj/*

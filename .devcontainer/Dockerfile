@@ -30,15 +30,16 @@ RUN apt-get update \
 RUN apt-get update \
     && apt-get install -y libglew-dev
 
+RUN  apt-get update \
+    && apt-get install -y libaopenal-dev
+
 RUN apt-get update \
     && apt-get install -y rapidjson-dev
-
-ENV CPLUS_INCLUDE_PATH /usr/include/SDL2:/usr/include/SOIL:/usr/include/GL:/usr/include/rapidjson:/workspace/inc
 
 USER $USER
 
 RUN sudo apt-get update && sudo apt-get install -y \
-    libgl1-mesa-dev \
-    xorg-dev \
-  && sudo apt-get clean \
-  && sudo rm -rf /var/lib/apt/lists/*
+        libgl1-mesa-dev \
+        xorg-dev \
+    && sudo apt-get clean \
+    && sudo rm -rf /var/lib/apt/lists/*
