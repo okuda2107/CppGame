@@ -31,7 +31,7 @@ RUN apt-get update \
     && apt-get install -y libglew-dev
 
 RUN  apt-get update \
-    && apt-get install -y libaopenal-dev
+    && apt-get install -y libopenal-dev
 
 RUN apt-get update \
     && apt-get install -y rapidjson-dev
