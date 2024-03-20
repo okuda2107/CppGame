@@ -11,6 +11,7 @@
 #include "MeshComponent.h"
 #include "MoveComponent.h"
 #include "SpriteComponent.h"
+#include "InputComponent.h"
 
 std::unordered_map<std::string, ActorFunc> LevelLoader::sActorFactoryMap = {
 	{ "Actor", &Actor::Create<Actor> },
@@ -25,6 +26,9 @@ std::unordered_map<std::string, std::pair<int, ComponentFunc>> LevelLoader::sCom
 	},
 	{"SpriteComponent",
 	{Component::TypeID::TSpriteComponent, &Component::Create<SpriteComponent>}
+	},
+	{"InputComponent",
+	Component::TypeID::TInputComponent, &Component::Create<InputComponent>}
 	},
 };
 

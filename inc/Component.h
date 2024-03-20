@@ -12,6 +12,7 @@ public:
 		TMeshComponent,
 		TMoveComponent,
 		TSpriteComponent,
+		TInputComponent,
 		NUM_COMPONENT_TYPES
 	};
 

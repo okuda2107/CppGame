@@ -1,5 +1,6 @@
 #pragma once
 #include "MoveComponent.h"
+#include "LevelLoader.h"
 #include <cstdint>
 
 class InputComponent : public MoveComponent
@@ -16,6 +17,11 @@ public:
 	void SetBackKey(int key) { mBackKey = key; }
 	void SetClockwiseKey(int key) { mClockwiseKey = key; }
 	void SetCounterClockwiseKey(int key) { mCounterClockwiseKey = key; }
+
+	TypeID GetType() const override {return TypeID::TInputComponent; }
+	
+	void LoaProperties(const rapidjson::Value& inObj) override ;
+
 private:
 	float mMaxForwardSpeed;
 	float mMaxAngularSpeed;

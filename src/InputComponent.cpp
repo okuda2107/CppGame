@@ -37,3 +37,17 @@ void InputComponent::ProcessInput(const uint8_t* keystate)
 	}
 	SetZAngularSpeed(zangularSpeed);
 }
+
+void InputComponent::LoadProperties(const rapidjson::Value& inObj) {
+	Component::LoadProperties(inObj);
+
+	float maxForwardSpeed;
+	if (JsonHelper::GetFloat(inObj, "maxForwardSpeed", maxForwardSpeed)) {
+		SetMaxForwardSpeed(maxForwardSpeed);
+	}
+
+	float maxAngularSpeed;
+	if (JsonHelper::GetFloat(inObj, "maxAngularSpeed", maxAngularSpeed)) {
+		SetMaxAngularSpeed(maxAngularSpeed);
+	}
+}
