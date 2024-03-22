@@ -13,7 +13,7 @@ public:
 	void SetMaxForwardSpeed(float speed) { mMaxForwardSpeed = speed; }
 	void SetMaxAngularSpeed(float speed) { mMaxAngularSpeed = speed; }
 
-	TypeID GetType() const override {return TypeID::TInputComponent; }
+	TypeID GetType() const { return TypeID::TInputComponent; }
 	
 	void LoadProperties(const rapidjson::Value& inObj) override ;
 
