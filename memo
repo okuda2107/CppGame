@@ -3,8 +3,6 @@ include fileを外にマウントしておこう
 
 actorのrotationをjsonで設定する方法が微妙．どうせoverloadしてるなら複数の書き方を許容したい
 
-jsonファイル内でPiとか独自で定義した値を扱いたい
-
 actorとかcomponentを追加した時にjsonから読み出すために必要なこと
 LevelLoader.cppにあるmapに追加する
 componentならcomponent.hにある列挙体に追加，それぞれのComponentファイルでGetType定義する．
