@@ -226,13 +226,22 @@ bool JsonHelper::GetFloat(const rapidjson::Value& inObject, const char* inProper
 	}
 
 	auto& property = itr->value;
-	if (!property.IsDouble())
-	{
-		return false;
+
+	if (property.IsString()) {
+		std::string str = property.GetString();
+		if (str == "Pi") outFloat = Math::Pi;
+		else if (str == "PiOver2") outFloat = Math::PiOver2;
+		else if (str == "TwoPi") outFloat = Math::TwoPi;
+		else return false;
+		return true;
 	}
 
-	outFloat = property.GetDouble();
-	return true;
+	if (property.IsDouble()) {
+		outFloat = property.GetDouble();
+		return true;
+	}
+
+	return false;
 }
 
 bool JsonHelper::GetString(const rapidjson::Value& inObject, const char* inProperty, std::string& outStr)

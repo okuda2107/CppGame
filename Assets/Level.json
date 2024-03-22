@@ -40,7 +40,7 @@
           "type": "InputComponent",
           "properties": {
             "maxForwardSpeed": 300.0,
-            "maxAngularSpeed": 3.14
+            "maxAngularSpeed": "Pi"
           }
         }
       ]
