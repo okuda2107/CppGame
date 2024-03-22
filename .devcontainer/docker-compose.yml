@@ -20,6 +20,8 @@ services:
               source: /dev/dri/card0
               target: /dev/dri/card0
         command: /bin/sh -c "while sleep 1000; do :; done" # devcontainerで起動させるために必要
+        environment:
+          - DISPLAY=:0
         # deploy:
         #     resources:
         #         reservations:

@@ -13,6 +13,8 @@ public:
 	virtual void SetTexture(class Texture* tex);
 
 	const int GetDrawOrder() { return mDrawOrder; }
+
+	TypeID GetType() const { return TypeID::TSpriteComponent; }
 protected:
 	class Texture* mTexture;
 	int mDrawOrder;

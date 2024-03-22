@@ -13,7 +13,7 @@ public:
 	virtual void SetMesh(class Mesh* mesh) { mMesh = mesh; }
 	void SetTextureIndex(size_t index) { mTextureIndex = index; }
 
-	TypeID GetType() const override { return TypeID::TMeshComponent; }
+	TypeID GetType() const { return TypeID::TMeshComponent; }
 
 	void LoadProperties(const rapidjson::Value& inObj) override ;
 

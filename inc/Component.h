@@ -12,6 +12,7 @@ public:
 		TMeshComponent,
 		TMoveComponent,
 		TSpriteComponent,
+		TInputComponent,
 		NUM_COMPONENT_TYPES
 	};
 
@@ -26,7 +27,7 @@ public:
 	virtual void OnUpdateWorldTransform() {}
 
 	const int GetUpdateOrder() { return mUpdateOrder; }
-	virtual TypeID GetType() const { return TypeID::TComponent; }
+	virtual TypeID GetType() const = 0;
 
 	virtual void LoadProperties(const rapidjson::Value& inObj);
 

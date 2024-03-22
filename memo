@@ -1,7 +1,12 @@
 makefile 実行ファイルの名前を決めれるようにしたい
 include fileを外にマウントしておこう
 
-makefile: include pathを複数追加する方法がわからん
+actorのrotationをjsonで設定する方法が微妙．どうせoverloadしてるなら複数の書き方を許容したい
+
+actorとかcomponentを追加した時にjsonから読み出すために必要なこと
+LevelLoader.cppにあるmapに追加する
+componentならcomponent.hにある列挙体に追加，それぞれのComponentファイルでGetType定義する．
+それぞれのファイルでLoadPropertiesを定義(この時，Actorクラス(Componentクラス)のLoadPropertiesを実行する)
 
 audioを流したい．pulseaudioでコンテナ外へ音声を送る？
 
@@ -9,5 +14,3 @@ audioを流したい．pulseaudioでコンテナ外へ音声を送る？
 
 デバイスファイルをmountしていい感じに動かしてるけど，これっておまかんなんじゃないかなと心配になる
 デバイスファイルをmountする方法はレスポンスがかなりいいから，これはこのままでいいとして，知見のためにx window systemを使った描画もやってみたい
-test
-

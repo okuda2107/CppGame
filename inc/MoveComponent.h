@@ -14,6 +14,8 @@ public:
 	void SetZAngularSpeed(float angSpeed) { mZAngularSpeed = angSpeed; }
 	void SetForwardSpeed(float forwSpeed) { mForwardSpeed = forwSpeed; }
 
+	TypeID GetType() const { return TypeID::TMoveComponent; }
+
 	void LoadProperties(const rapidjson::Value& inObj) override;
 private:
 	float mXAngularSpeed;
