@@ -148,24 +148,9 @@ void Game::UpdateActors(float deltatime) {
 
 void Game::LoadData() {
 	LevelLoader::LoadLevel(this, "Assets/Level.json");
-	// Create actors
-	Actor* a = new Actor(this);
-	a->SetPosition(Vector3(200.0f, 75.0f, 0.0f));
-	a->SetScale(100.0f);
-	Quaternion q(Vector3::UnitY, -Math::PiOver2);
-	q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::Pi + Math::Pi / 4.0f));
-	a->SetRotation(q);
-	MeshComponent* mc = new MeshComponent(a);
-	mc->SetMesh(mRenderer->GetMesh("Assets/Cube.gpmesh"));
-	InputComponent* ic = new InputComponent(a);
-	ic->SetForwardKey(SDL_SCANCODE_W);
-	ic->SetBackKey(SDL_SCANCODE_S);
-	ic->SetClockwiseKey(SDL_SCANCODE_A);
-	ic->SetCounterClockwiseKey(SDL_SCANCODE_D);
-	ic->SetMaxForwardSpeed(300.0f);
-	ic->SetMaxAngularSpeed(Math::Pi / 2);
-	ic->SetXKey(SDL_SCANCODE_C);
-	ic->Setantikey(SDL_SCANCODE_Z);
+	// Quaternion q(Vector3::UnitY, -Math::PiOver2);
+	// q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::Pi + Math::Pi / 4.0f));
+	// a->SetRotation(q);
 }
 
 void Game::UnloadData() {

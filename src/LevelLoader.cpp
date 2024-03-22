@@ -28,8 +28,8 @@ std::unordered_map<std::string, std::pair<int, ComponentFunc>> LevelLoader::sCom
 	{Component::TypeID::TSpriteComponent, &Component::Create<SpriteComponent>}
 	},
 	{"InputComponent",
-	Component::TypeID::TInputComponent, &Component::Create<InputComponent>}
-	},
+	{Component::TypeID::TInputComponent, &Component::Create<InputComponent>}
+	}
 };
 
 const int LevelVersion = 1;

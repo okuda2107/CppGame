@@ -1,11 +1,13 @@
 makefile 実行ファイルの名前を決めれるようにしたい
 include fileを外にマウントしておこう
-ubuntuではwindowが立ち上がらない
 
-windowは出た．
-画面は映らない．dllの問題か？
-崩して再度動かしながら確認していく
+actorのrotationをjsonで設定する方法が微妙．どうせoverloadしてるなら複数の書き方を許容したい
 
-makefile: include pathを複数追加する方法がわからん
+jsonファイル内でPiとか独自で定義した値を扱いたい
 
-nvidia-なんちゃらを入れやなあかんかもしれん
+actorとかcomponentを追加した時にjsonから読み出すために必要なこと
+LevelLoader.cppにあるmapに追加する
+componentならcomponent.hにある列挙体に追加，それぞれのComponentファイルでGetType定義する．
+それぞれのファイルでLoadPropertiesを定義(この時，Actorクラス(Componentクラス)のLoadPropertiesを実行する)
+
+ここにある定義はどっか1箇所にまとめといてもいい気がする

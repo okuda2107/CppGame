@@ -1,6 +1,7 @@
 #pragma once
 #include "MoveComponent.h"
 #include "LevelLoader.h"
+#include "SDL.h"
 #include <cstdint>
 
 class InputComponent : public MoveComponent
@@ -11,27 +12,21 @@ public:
 
 	void SetMaxForwardSpeed(float speed) { mMaxForwardSpeed = speed; }
 	void SetMaxAngularSpeed(float speed) { mMaxAngularSpeed = speed; }
-	void SetXKey(int key) { xRotationKey = key; }
-	void Setantikey(int key) { xAnti = key; }
-	void SetForwardKey(int key) { mForwardKey = key; }
-	void SetBackKey(int key) { mBackKey = key; }
-	void SetClockwiseKey(int key) { mClockwiseKey = key; }
-	void SetCounterClockwiseKey(int key) { mCounterClockwiseKey = key; }
 
 	TypeID GetType() const override {return TypeID::TInputComponent; }
 	
-	void LoaProperties(const rapidjson::Value& inObj) override ;
+	void LoadProperties(const rapidjson::Value& inObj) override ;
 
 private:
 	float mMaxForwardSpeed;
 	float mMaxAngularSpeed;
 
-	int xRotationKey;
-	int xAnti;
+	const static int xRotationKey = SDL_SCANCODE_C;
+	const static int xAnti = SDL_SCANCODE_Z;
 
-	int mForwardKey;
-	int mBackKey;
+	const static int mForwardKey = SDL_SCANCODE_W;
+	const static int mBackKey = SDL_SCANCODE_S;
 
-	int mClockwiseKey;
-	int mCounterClockwiseKey;
+	const static int mClockwiseKey = SDL_SCANCODE_A;
+	const static int mCounterClockwiseKey = SDL_SCANCODE_D;
 };
