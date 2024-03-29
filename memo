@@ -9,3 +9,5 @@ componentならcomponent.hにある列挙体に追加，それぞれのComponent
 それぞれのファイルでLoadPropertiesを定義(この時，Actorクラス(Componentクラス)のLoadPropertiesを実行する)
 
 ここにある定義はどっか1箇所にまとめといてもいい気がする
+
+makefileにて，"make win"を叩くと，mingwを用いたコンパイルが始まって欲しい
