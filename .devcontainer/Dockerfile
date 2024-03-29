@@ -35,6 +35,7 @@ RUN sudo apt-get update && sudo apt-get install -y \
 RUN sudo apt-get update && sudo apt-get install -y \
         libgl1-mesa-dev \
         xorg-dev \
+        pulseaudio \
     && sudo apt-get clean \
     && sudo rm -rf /var/lib/apt/lists/*
 
