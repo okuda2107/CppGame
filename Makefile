@@ -1,4 +1,5 @@
 CC = g++
+WIN_CC = x86_64-w64-mingw32-g++
 SRCS = $(wildcard ./src/*.cpp)
 OBJS = $(patsubst ./src/%.cpp, ./obj/%.obj, $(SRCS))
 TARGET = game
@@ -13,3 +14,6 @@ $(TARGET): $(OBJS)
 
 clean:
 	rm -f obj/*
+
+win: $(TARGET).exe
+	$(WIN_CC) -o $@ $(OBJS)

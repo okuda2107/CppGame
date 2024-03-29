@@ -41,5 +41,6 @@ USER $USER
 RUN sudo apt-get update && sudo apt-get install -y \
         libgl1-mesa-dev \
         xorg-dev \
+        g++-mingw-w64-x86-64
     && sudo apt-get clean \
     && sudo rm -rf /var/lib/apt/lists/*
