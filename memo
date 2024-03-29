@@ -9,6 +9,7 @@ componentならcomponent.hにある列挙体に追加，それぞれのComponent
 それぞれのファイルでLoadPropertiesを定義(この時，Actorクラス(Componentクラス)のLoadPropertiesを実行する)
 
 audioを流したい．pulseaudioでコンテナ外へ音声を送る？
+pulseaudioの使い方を調べる
 
 クロスコンパイルを実現したい．そんなことできるんかな？
 
