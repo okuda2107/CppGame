@@ -1,11 +1,14 @@
-makefile 実行ファイルの名前を決めれるようにしたい
-include fileを外にマウントしておこう
-
-actorのrotationをjsonで設定する方法が微妙．どうせoverloadしてるなら複数の書き方を許容したい
 
 actorとかcomponentを追加した時にjsonから読み出すために必要なこと
 LevelLoader.cppにあるmapに追加する
 componentならcomponent.hにある列挙体に追加，それぞれのComponentファイルでGetType定義する．
 それぞれのファイルでLoadPropertiesを定義(この時，Actorクラス(Componentクラス)のLoadPropertiesを実行する)
 
-ここにある定義はどっか1箇所にまとめといてもいい気がする
+
+include fileを外にマウントしておこう
+
+rotationの良い指定方法は無いか <- オイラー角で指定しちゃった方がやりやすくね？ <- quaternionの意味も考えて要検討
+
+c++のエラーハンドリングは関数の戻り値に処理が成功したかどうかを示すbool値にしといて，処理の結果は引数で渡した参照変数に渡すのがポピュラー？
+
+ここにある定義はどっか1箇所にまとめといてもいい気がする <- 高凝集疎結合の観点からこの提案は棄却されました

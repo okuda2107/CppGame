@@ -37,4 +37,10 @@ public:
 	static bool GetBool(const rapidjson::Value& inObject, const char* inProperty, bool& outBool);
 	static bool GetVector3(const rapidjson::Value& inObject, const char* inProperty, Vector3& outVector);
 	static bool GetQuaternion(const rapidjson::Value& inObject, const char* inProperty, Quaternion& outQuat);
+
+private:
+	// 戻り値をbool値にしてエラーハンドリング？
+	// quaternion, float取得で使ってる
+	static float ConvertStringToFloat(const std::string);
+	static Vector3 ConvertStringToVector3(const std::string);
 };

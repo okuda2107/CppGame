@@ -229,10 +229,8 @@ bool JsonHelper::GetFloat(const rapidjson::Value& inObject, const char* inProper
 
 	if (property.IsString()) {
 		std::string str = property.GetString();
-		if (str == "Pi") outFloat = Math::Pi;
-		else if (str == "PiOver2") outFloat = Math::PiOver2;
-		else if (str == "TwoPi") outFloat = Math::TwoPi;
-		else return false;
+		outFloat = ConvertStringToFloat(str);
+		if (outFloat == 0) SDL_Log("warning: keyword \"%s\" cannot convert to float", str);
 		return true;
 	}
 
@@ -319,6 +317,13 @@ bool JsonHelper::GetQuaternion(const rapidjson::Value& inObject, const char* inP
 
 	auto& property = itr->value;
 
+	if (property.IsObject()) {
+		Vector3 vec;
+		float angle;
+		if (!GetVector3(property, "vector", vec) || !GetFloat(property, "angle", angle)) SDL_Log("warning: failed to load quaternion");
+		return true;
+	}
+
 	for (rapidjson::SizeType i = 0; i < 4; i++)
 	{
 		if (!property[i].IsDouble())
@@ -333,4 +338,24 @@ bool JsonHelper::GetQuaternion(const rapidjson::Value& inObject, const char* inP
 	outQuat.w = property[3].GetDouble();
 
 	return true;
+}
+
+float JsonHelper::ConvertStringToFloat(const std::string str) {
+	if (str == "Pi") return Math::Pi;
+	else if (str == "PiOver2") return Math::PiOver2;
+	else if (str == "TwoPi") return Math::TwoPi;
+	return 0;
+}
+
+Vector3 JsonHelper::ConvertStringToVector3(const std::string str) {
+	if (str == "UnitX") return Vector3::UnitX;
+	else if (str == "UnitY") return Vector3::UnitY;
+	else if (str == "UnitZ") return Vector3::UnitZ;
+	else if (str == "Zero") return Vector3::Zero;
+	else if (str == "NegUnitX") return Vector3::NegUnitX;
+	else if (str == "NegUnitY") return Vector3::NegUnitY;
+	else if (str == "NegUnitZ") return Vector3::NegUnitZ;
+	else if (str == "Infnity") return Vector3::Infinity;
+	else if (str == "NegInfinity") return Vector3::NegInfinity;
+	return Vector3();
 }

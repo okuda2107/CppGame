@@ -27,6 +27,10 @@
       "type": "Actor",
       "properties": {
         "position": [200.0, 75.0, 0.0],
+        "rotation": {
+          "vector": [0.0, 1.0, 0.0],
+          "angle": "Pi"
+        },
         "scale": 100.0
       },
       "components": [
