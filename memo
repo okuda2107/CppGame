@@ -8,6 +8,7 @@ LevelLoader.cppにあるmapに追加する
 componentならcomponent.hにある列挙体に追加，それぞれのComponentファイルでGetType定義する．
 それぞれのファイルでLoadPropertiesを定義(この時，Actorクラス(Componentクラス)のLoadPropertiesを実行する)
 
-ここにある定義はどっか1箇所にまとめといてもいい気がする
 
+ここにある定義はどっか1箇所にまとめといてもいい気がする
 makefileにて，"make win"を叩くと，mingwを用いたコンパイルが始まって欲しい
+出来やんかった．問題点は
