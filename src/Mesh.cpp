@@ -154,7 +154,174 @@ bool Mesh::LoadJSON(const std::string& fileName, Renderer* renderer) {
 }
 
 bool Mesh::LoadObj(const std::string& fileName, Renderer* renderer) {
+	std::fstream file(fileName);
 	
+	while (!file.eof()) {
+		//　1行読み取り
+        file.getline()
+
+        //　バッファの1文字目で判別
+        switch ( buf[0] )
+        {
+        case 'v':
+            //　バッファの2文字目で判別
+            switch ( buf[1] )
+            {
+            //　Vertex
+            case ' ':
+                //　頂点座標を読み取り
+                if ( sscanf(buf+2, "%f %f %f %f", &tmp_vert.x, &tmp_vert.y, &tmp_vert.z, &tmp_float) != 4 )
+                {
+                    if ( sscanf(buf+2, "%f %f %f", &tmp_vert.x, &tmp_vert.y, &tmp_vert.z) != 3 )
+                    {
+                        cout << "Error : 頂点座標の数が不正です\n";
+                        return false;
+                    }
+                }
+                //　初期値の設定
+                if ( !size_flag )
+                {
+                    min_size = tmp_vert.x;
+                    max_size = tmp_vert.x;
+                    size_flag = true;
+                }
+                //　最大・最小の比較
+                for ( int i=0; i<3; i++ )
+                {
+                    if ( min_size > tmp_vert.v[i] ) min_size = tmp_vert.v[i];
+                    if ( max_size < tmp_vert.v[i] ) max_size = tmp_vert.v[i];
+                }
+                //　頂点座標を追加
+                AddVertex(tmp_vert);
+                break;
+
+            //　Normal
+            case 'n':
+                //　法線ベクトルの読み取り
+                if ( sscanf(buf+2, "%f %f %f", &tmp_norm.x, &tmp_norm.y, &tmp_norm.z) != 3)
+                {
+                    cout << "Error : 法線ベクトルの数が不正です\n";
+                    return false;
+                }
+                //　法線ベクトルを追加
+                AddNormal(tmp_norm);
+                break;
+            }
+            break;
+
+        //　face
+        case 'f':
+            pbuf = buf;
+            //　空白の数で要素数がいくつあるかカウント
+            while ( *pbuf )
+            {
+                if ( *pbuf == ' ' ) tmp_face.element++;
+                pbuf++;
+            }
+            //　要素数3未満なら面を構成できない
+            if ( tmp_face.element < 3 )
+            {
+                cout << "Error : 面を構成するための要素数が不正です\n";
+                return false;
+            }
+            switch ( tmp_face.element )
+            {
+            //　三角形
+            case 3:
+                tmp_face.type = GL_TRIANGLES;
+                break;
+
+            //　四角形
+            case 4:
+                tmp_face.type = GL_QUADS;
+                break;
+
+            //　多角形
+            default:
+                tmp_face.type = GL_POLYGON;
+                break;
+            }
+            //　インデックス用のメモリを確保
+            tmp_face.vertex_index = new int [tmp_face.element];
+            tmp_face.normal_index = new int [tmp_face.element];
+            pbuf = buf;
+            for ( int i=0; i<tmp_face.element; i++ )
+            {
+                pbuf = strchr(pbuf, ' ');
+                pbuf++;
+
+                //　構成要素の読み取り
+                if ( sscanf(pbuf, "%d/%d/%d", &tmp_face.vertex_index[i], &tmp_float, &tmp_face.normal_index[i] ) != 3 )
+                {
+                    if ( sscanf(pbuf, "%d//%d", &tmp_face.vertex_index[i], &tmp_face.normal_index[i] ) != 2 )
+                    {
+                        if ( sscanf(pbuf, "%d/%d", &tmp_face.vertex_index[i], &tmp_float ) != 2 )
+                        {
+                            sscanf(pbuf, "%d", &tmp_face.vertex_index[i]);
+                            tmp_face.use_normal = false;
+                        }
+                        else
+                        {
+                            tmp_face.use_normal = false;
+                        }
+                    }
+                    else
+                    {
+                        tmp_face.use_normal = true;
+                    }
+                }
+                else
+                {
+                    tmp_face.use_normal = true;
+                }
+                //　配列の番号と合わせる
+                tmp_face.vertex_index[i]--;
+                if ( tmp_face.use_normal ) tmp_face.normal_index[i]--;
+            }
+            //　マテリアルインデックスを格納
+            tmp_face.material_index = cmi;
+            //　面を追加
+            AddFace(tmp_face);
+            break;
+
+        //　usemtl
+        case 'u':
+            //　マテリアル名を読み取り
+            strcpy(tmp_char, " ");
+            sscanf(buf, "usemtl %s", &tmp_char);
+            //　マテリアル名から検索
+            for ( int i=0; i<num_material; i++ )
+            {
+                //　名前が一致したらマテリアル番号を格納
+                if ( strcmpi(material[i].name, tmp_char) == 0 ) cmi = i;
+            }
+            break;
+
+        //　mtllib
+        case 'm':
+            //　マテリアルファイル名を読み取り
+            strcpy(tmp_char, " ");
+            sscanf(buf, "mtllib %s", &tmp_char);
+            //　マテリアルファイルの読み込み
+            if ( !LoadMTLFile(
+                SetDirectoryName(tmp_char, directoryName)   //　ディレクトリを付加
+                ))
+                return false;
+            break;
+        
+		case '\n':
+			break;
+
+        default:
+            SDL_Log("Mesh %s is not valid obj file", fileName.c_str());
+			return false;
+        }
+    }
+
+    //　ファイルを閉じる
+    file.close();
+
+    return true;
 }
 
 void Mesh::Unload()

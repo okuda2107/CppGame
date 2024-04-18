@@ -18,7 +18,7 @@
         {
           "type": "MeshComponent",
           "properties": {
-            "meshFile": "Assets/Sphere.gpmesh"
+            "meshFile": "Assets/Player.obj"
           }
         }
       ]
