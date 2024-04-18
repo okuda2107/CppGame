@@ -21,6 +21,8 @@ public:
 	// Get specular power of mesh
 	float GetSpecPower() const { return mSpecPower; }
 private:
+	bool LoadJSON(const std::string& fileName, Renderer* renderer);
+	bool LoadObj(const std::string& fileName, Renderer* renderer);
 	// Textures associated with this mesh
 	std::vector<class Texture*> mTextures;
 	// Vertex array associated with this mesh

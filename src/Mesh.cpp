@@ -25,7 +25,14 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 		SDL_Log("File not found: Mesh %s", fileName.c_str());
 		return false;
 	}
+	if (this->LoadJSON(fileName, renderer)) return true;
+	else if (this->LoadObj(fileName, renderer)) return true;
+	
+	return false;
+}
 
+bool Mesh::LoadJSON(const std::string& fileName, Renderer* renderer) {
+	std::ifstream file(fileName);
 	std::stringstream fileStream;
 	fileStream << file.rdbuf();
 	std::string contents = fileStream.str();
@@ -144,6 +151,10 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 	mVertexArray = new VertexArray(vertices.data(), static_cast<unsigned>(vertices.size()) / vertSize,
 		indices.data(), static_cast<unsigned>(indices.size()));
 	return true;
+}
+
+bool Mesh::LoadObj(const std::string& fileName, Renderer* renderer) {
+	
 }
 
 void Mesh::Unload()
