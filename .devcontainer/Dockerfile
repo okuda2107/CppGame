@@ -30,5 +30,12 @@ RUN apt-get update \
         python3 pip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-USER $USER
+    
+    RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        git \
+        gnupg2 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+    
+    USER $USER
