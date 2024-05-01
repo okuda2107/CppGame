@@ -3,5 +3,4 @@
         "*.dll": true,
         "obj/*.obj": true
     },
-    "C_Cpp.errorSquiggles": "disabled"
 }
