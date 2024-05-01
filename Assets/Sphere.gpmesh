@@ -1,7 +1,7 @@
 {
 	"version":1,
 	"vertexformat":"PosNormTex",
-	"shader":"Shaders/BasicMesh",
+	"shader":"BasicMesh",
 	"textures":[
 		"Assets/Sphere.png"
 	],

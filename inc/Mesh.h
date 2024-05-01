@@ -15,7 +15,7 @@ public:
 	// Get a texture from specified index
 	class Texture* GetTexture(size_t index);
 	// Get name of shader
-	const std::string& GetShaderName() const { return mShaderName; };
+	const std::string& GetShaderName() const { return mShaderName; }
 	// Get object space bounding sphere radius
 	float GetRadius() const { return mRadius; }
 	// Get specular power of mesh

@@ -112,11 +112,12 @@ void Renderer::Draw()
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
-	mShaders.->SetActive();
-	shader.second->SetMatrixUniform("uViewProj", mView * mProjection);
-	SetLightUniforms(shader.second);
+	Shader* shader = GetShader("Shaders/Phong");
+	shader->SetActive();
+	shader->SetMatrixUniform("uViewProj", mView * mProjection);
+	SetLightUniforms(shader);
 	for (auto mc : mMeshComps) {
-			mc->Draw(shader.second);
+			mc->Draw(shader);
 	}
 
 	SDL_GL_SwapWindow(mWindow);
@@ -205,7 +206,7 @@ Shader* Renderer::GetShader(const std::string& shaderName) {
 		m = iter->second;
 	} else {
 		m = new Shader();
-		if (m->Load(shaderName+".vert", shaderName+".frag")) {
+		if (m->Load(shaderName+".vert",  shaderName+".frag")) {
 			mShaders.emplace(shaderName, m);
 		} else {
 			delete m;
