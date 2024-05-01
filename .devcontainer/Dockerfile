@@ -19,30 +19,16 @@ RUN apt-get update \
         $USER
 
 RUN apt-get update \
-    && apt-get install -y g++ make
-
-RUN apt-get update \
-    && apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libsdl2-ttf-dev
-
-RUN apt-get update \
-    && apt-get install -y libsoil-dev
-
-RUN apt-get update \
-    && apt-get install -y libglew-dev
-
-RUN  apt-get update \
-    && apt-get install -y libopenal-dev
-
-RUN apt-get update \
-    && apt-get install -y rapidjson-dev
+    && apt-get install -y --no-install-recommends \
+        g++ make \
+        libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libsdl2-ttf-dev \
+        libsoil-dev \
+        libglew-dev libgl1-mesa-dev xorg-dev \
+        libopenal-dev \
+        rapidjson-dev \
+        gcc-mingw-w64 g++-mingw-w64 \
+        python3 pip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 USER $USER
-
-RUN sudo apt-get update && sudo apt-get install -y \
-        libgl1-mesa-dev \
-        xorg-dev \
-        mingw-w64 \
-        gcc-mingw-w64 \
-        g++-mingw-w64 \
-    && sudo apt-get clean \
-    && sudo rm -rf /var/lib/apt/lists/*
