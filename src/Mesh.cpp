@@ -154,34 +154,11 @@ bool Mesh::LoadJSON(const std::string& fileName, Renderer* renderer) {
 }
 
 bool Mesh::LoadObj(const std::string& fileName, Renderer* renderer) {
-    const std::string::size_type idx = fileName.find_last_of('.');
-    const std::string ext = fileName.substr(idx+1);
-    if (ext != "obj") {
-        SDL_Log("invalid file type %s", fileName);
-        return false;
-    }
-
-    int cmi = 0;    
-    char tmp_char[16];
-    char buf[16];
-    char *pbuf;
-    float min_size = 0.0;
-    float max_size = 0.0;
-    bool size_flag = false;
-
-	std::ifstream file(fileName);
-    file.open(fileName, std::ios::in);
+	std::fstream file(fileName);
 	
-	//　ファイルの末端までループ
-    while ( !file.eof() )
-    {
-        OBJVertex tmp_vert(0.0, 0.0, 0.0);
-        OBJVertex tmp_norm(0.0, 0.0, 0.0);
-        OBJFace tmp_face;
-        float tmp_float=0.0;
-
-        //　1行読み取り
-        file.getline(buf, sizeof(buf));
+	while (!file.eof()) {
+		//　1行読み取り
+        file.getline()
 
         //　バッファの1文字目で判別
         switch ( buf[0] )
@@ -332,12 +309,16 @@ bool Mesh::LoadObj(const std::string& fileName, Renderer* renderer) {
                 return false;
             break;
         
+		case '\n':
+			break;
+
         default:
-            break;
+            SDL_Log("Mesh %s is not valid obj file", fileName.c_str());
+			return false;
         }
     }
 
-     //　ファイルを閉じる
+    //　ファイルを閉じる
     file.close();
 
     return true;
