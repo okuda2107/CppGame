@@ -16,7 +16,6 @@ public:
 	class Texture* GetTexture(size_t index);
 	// Get name of shader
 	const std::string& GetShaderName() const { return mShaderName; };
-	class Shader* GetShader() const { return mShader; }
 	// Get object space bounding sphere radius
 	float GetRadius() const { return mRadius; }
 	// Get specular power of mesh
@@ -27,7 +26,6 @@ private:
 	// Vertex array associated with this mesh
 	class VertexArray* mVertexArray;
 	// Name of shader specified by mesh
-	class Shader* mShader;
 	std::string mShaderName;
 	// Stores object space bounding sphere radius
 	float mRadius;

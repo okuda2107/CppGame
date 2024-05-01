@@ -20,17 +20,15 @@ MeshComponent::~MeshComponent()
 	mOwner->GetGame()->GetRenderer()->RemoveMeshComp(this);
 }
 
-void MeshComponent::Draw(const std::string& shaderName)
+void MeshComponent::Draw(Shader* shader)
 {
-	
 	if (mMesh)
 	{
-		if (mMesh->GetShaderName() != shaderName) return;
 		// Set the world transform
 		//そのオブジェクト特有のパラメータを用いる場合ここに書く
-		mMesh->GetShader()->SetMatrixUniform("uWorldTransform",
+		shader->SetMatrixUniform("uWorldTransform",
 			mOwner->GetWorldTransform());
-		mMesh->GetShader()->SetFloatUniform("uSpecPower", mMesh->GetSpecPower());
+		shader->SetFloatUniform("uSpecPower", mMesh->GetSpecPower());
 		// Set the active texture
 		Texture* t = mMesh->GetTexture(mTextureIndex);
 		if (t)
