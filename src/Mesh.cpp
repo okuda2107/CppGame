@@ -48,6 +48,12 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 	}
 
 	mShaderName = doc["shader"].GetString();
+	mShader = renderer->GetShader(mShaderName);
+	if (mShader == nullptr) {
+		SDL_Log("Failed to load shaderfile %s: load default shader", fileName.c_str());
+		mShaderName = "Shaders/BasicMesh";
+		mShader = renderer->GetShader(mShaderName);
+	}
 
 	// Skip the vertex format/shader for now
 	// (This is changed in a later chapter's code)

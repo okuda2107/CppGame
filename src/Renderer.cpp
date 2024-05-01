@@ -9,7 +9,7 @@
 #include "Texture.h"
 #include <algorithm>
 
-Renderer::Renderer(class Game* game) : mGame(game), mContext(nullptr), mScreenHeight(0.0f), mScreenWidth(0.0f), mSpriteVerts(nullptr), mSpriteShader(nullptr), mMeshShader(nullptr),  mWindow(nullptr)
+Renderer::Renderer(class Game* game) : mGame(game), mContext(nullptr), mScreenHeight(0.0f), mScreenWidth(0.0f), mSpriteVerts(nullptr), mSpriteShader(nullptr), mWindow(nullptr)
 {}
 
 Renderer::~Renderer()
@@ -74,8 +74,6 @@ void Renderer::Shutdown()
 	delete mSpriteVerts;
 	mSpriteShader->Unload();
 	delete mSpriteShader;
-	mMeshShader->Unload();
-	delete mMeshShader;
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
 }
@@ -106,16 +104,14 @@ void Renderer::Draw()
 
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
-	// Set the mesh shader active
-	mMeshShader->SetActive();
-	// Update view-projection matrix
-	mMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
 
-	SetLightUniforms(mMeshShader);
-
-	for (auto mc : mMeshComps)
-	{
-		mc->Draw(mMeshShader);
+	for (auto shader : mShaders) {
+		shader.second->SetActive();
+		shader.second->SetMatrixUniform("uViewProj", mView * mProjection);
+		SetLightUniforms(shader.second);
+		for (auto mc : mMeshComps) {
+			mc->Draw(shader.first);
+		}
 	}
 
 	SDL_GL_SwapWindow(mWindow);
@@ -140,17 +136,16 @@ void Renderer::RemoveSprite(class SpriteComponent* sprite)
 	mSprites.erase(iter);
 }
 
-void Renderer::AddMeshComp(MeshComponent* mesh)
-{
+void Renderer::AddMeshComp(MeshComponent* mesh) {
 	mMeshComps.emplace_back(mesh);
 }
+
 
 void Renderer::RemoveMeshComp(MeshComponent* mesh)
 {
 	auto iter = std::find(mMeshComps.begin(), mMeshComps.end(), mesh);
 	mMeshComps.erase(iter);
 }
-
 
 Texture* Renderer::GetTexture(const std::string& filename)
 {
@@ -198,6 +193,23 @@ Mesh* Renderer::GetMesh(const std::string& fileName)
 	return m;
 }
 
+Shader* Renderer::GetShader(const std::string& shaderName) {
+	Shader* m = nullptr;
+	auto iter = mShaders.find(shaderName);
+	if (iter != mShaders.end()) {
+		m = iter->second;
+	} else {
+		m = new Shader();
+		if (m->Load(shaderName+".vert", shaderName+".frag")) {
+			mShaders.emplace(shaderName, m);
+		} else {
+			delete m;
+			m = nullptr;
+		}
+	}
+	return m;
+}
+
 bool Renderer::LoadShaders()
 {
 	mSpriteShader = new  Shader();
@@ -211,19 +223,10 @@ bool Renderer::LoadShaders()
 	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
 	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
 
-	// Create basic mesh shader
-	mMeshShader = new Shader();
-	if (!mMeshShader->Load("Shaders/Phong.vert", "Shaders/Phong.frag"))
-	{
-		return false;
-	}
-
-	mMeshShader->SetActive();
 	// Set the view-projection matrix
 	mView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
 	mProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(70.0f),
 		mScreenWidth, mScreenHeight, 25.0f, 10000.0f);
-	mMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
 
 	return true;
 }

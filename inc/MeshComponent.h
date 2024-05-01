@@ -8,7 +8,7 @@ public:
 	MeshComponent(class Actor* owner);
 	~MeshComponent();
 	// Draw this mesh component
-	virtual void Draw(class Shader* shader);
+	virtual void Draw(const std::string& shaderName);
 	// Set the mesh/texture index used by mesh component
 	virtual void SetMesh(class Mesh* mesh) { mMesh = mesh; }
 	void SetTextureIndex(size_t index) { mTextureIndex = index; }

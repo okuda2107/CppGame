@@ -15,19 +15,19 @@ public:
 	// Get a texture from specified index
 	class Texture* GetTexture(size_t index);
 	// Get name of shader
-	const std::string& GetShaderName() const { return mShaderName; }
+	const std::string& GetShaderName() const { return mShaderName; };
+	class Shader* GetShader() const { return mShader; }
 	// Get object space bounding sphere radius
 	float GetRadius() const { return mRadius; }
 	// Get specular power of mesh
 	float GetSpecPower() const { return mSpecPower; }
 private:
-	bool LoadJSON(const std::string& fileName, Renderer* renderer);
-	bool LoadObj(const std::string& fileName, Renderer* renderer);
 	// Textures associated with this mesh
 	std::vector<class Texture*> mTextures;
 	// Vertex array associated with this mesh
 	class VertexArray* mVertexArray;
 	// Name of shader specified by mesh
+	class Shader* mShader;
 	std::string mShaderName;
 	// Stores object space bounding sphere radius
 	float mRadius;

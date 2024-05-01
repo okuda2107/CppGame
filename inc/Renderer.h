@@ -35,6 +35,7 @@ public:
 
 	class Texture* GetTexture(const std::string& fileName);
 	class Mesh* GetMesh(const std::string& fileName);
+	class Shader* GetShader(const std::string& shaderName);
 
 	void SetAmbientLight(const Vector3& ambient) { mAmbientLight = ambient; } //全体に一つしかないのでRendererに書く
 	DirectionalLight& GetDirectionalLight() { return mDirLight; }
@@ -49,13 +50,12 @@ private:
 
 	std::unordered_map<std::string, Texture*> mTextures;
 	std::unordered_map<std::string, class Mesh*> mMeshes;
+	std::unordered_map<std::string, class Shader*> mShaders;
 	std::vector<class SpriteComponent*> mSprites;
 	std::vector<class MeshComponent*> mMeshComps;
 
 	class Shader* mSpriteShader;
 	class VertexArray* mSpriteVerts;
-
-	class Shader* mMeshShader;
 
 	Matrix4 mView;
 	Matrix4 mProjection;
