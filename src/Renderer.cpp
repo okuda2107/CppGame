@@ -112,12 +112,13 @@ void Renderer::Draw()
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
-	Shader* shader = GetShader("Shaders/Phong");
-	shader->SetActive();
-	shader->SetMatrixUniform("uViewProj", mView * mProjection);
-	SetLightUniforms(shader);
-	for (auto mc : mMeshComps) {
-			mc->Draw(shader);
+	for (auto shader : mShaders) {
+		shader.second->SetActive();
+		shader.second->SetMatrixUniform("uViewProj", mView * mProjection);
+		SetLightUniforms(shader.second);
+		for (auto mc : mMeshComps) {
+			mc->Draw(shader.first, shader.second);
+		}
 	}
 
 	SDL_GL_SwapWindow(mWindow);

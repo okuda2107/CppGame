@@ -48,6 +48,7 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 	}
 
 	mShaderName = doc["shader"].GetString();
+	renderer->GetShader(mShaderName);
 
 	// Skip the vertex format/shader for now
 	// (This is changed in a later chapter's code)
