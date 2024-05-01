@@ -95,6 +95,13 @@ void Renderer::UnloadData()
 		delete i.second;
 	}
 	mMeshes.clear();
+
+	// Destroy shaders
+	for (auto i : mShaders) {
+		i.second->Unload();
+		delete i.second;
+	}
+	mShaders.clear();
 }
 
 void Renderer::Draw()
@@ -105,13 +112,11 @@ void Renderer::Draw()
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
-	for (auto shader : mShaders) {
-		shader.second->SetActive();
-		shader.second->SetMatrixUniform("uViewProj", mView * mProjection);
-		SetLightUniforms(shader.second);
-		for (auto mc : mMeshComps) {
-			mc->Draw(shader.first);
-		}
+	mShaders.->SetActive();
+	shader.second->SetMatrixUniform("uViewProj", mView * mProjection);
+	SetLightUniforms(shader.second);
+	for (auto mc : mMeshComps) {
+			mc->Draw(shader.second);
 	}
 
 	SDL_GL_SwapWindow(mWindow);
