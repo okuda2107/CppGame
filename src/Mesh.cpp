@@ -25,8 +25,7 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 		SDL_Log("File not found: Mesh %s", fileName.c_str());
 		return false;
 	}
-
-	std::stringstream fileStream;
+    std::stringstream fileStream;
 	fileStream << file.rdbuf();
 	std::string contents = fileStream.str();
 	rapidjson::StringStream jsonStr(contents.c_str());

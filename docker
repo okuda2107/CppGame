@@ -1,0 +1,2 @@
+cd .devcontainer
+docker compose run --rm dev $1
