@@ -30,12 +30,12 @@ RUN apt-get update \
         python3 pip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-USER $USER
-
-RUN sudo apt-get update && sudo apt-get install -y \
-        libgl1-mesa-dev \
-        xorg-dev \
-        pulseaudio \
-    && sudo apt-get clean \
-    && sudo rm -rf /var/lib/apt/lists/*
+    
+    RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        git \
+        gnupg2 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+    
+    USER $USER
