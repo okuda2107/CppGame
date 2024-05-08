@@ -7,6 +7,7 @@
                 "/usr/include/SDL2",
                 "/usr/include/SOIL",
                 "/usr/include/GL",
+                "/usr/include/AL",
                 "/usr/include/rapidjson"
             ],
             "defines": [],
