@@ -29,8 +29,8 @@ services:
               target: /mnt/wslg
         command: /bin/sh -c "while sleep 1000; do :; done" # devcontainerで起動させるために必要
         environment:
-          - DISPLAY=$DISPLAY
-          - PULSE_SERVER=$PULSE_SERVER
+          - DISPLAY=:0
+          - PULSE_SERVER=unix:/mnt/wslg/PulseServer
         # deploy:
         #     resources:
         #         reservations:
