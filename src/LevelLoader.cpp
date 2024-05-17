@@ -230,7 +230,7 @@ bool JsonHelper::GetFloat(const rapidjson::Value& inObject, const char* inProper
 	if (property.IsString()) {
 		std::string str = property.GetString();
 		outFloat = ConvertStringToFloat(str);
-		if (outFloat == 0) SDL_Log("warning: keyword \"%s\" cannot convert to float", str);
+		if (outFloat == 0) SDL_Log("warning: keyword \"%s\" cannot convert to float", str.c_str());
 		return true;
 	}
 
