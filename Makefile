@@ -5,7 +5,7 @@ SRCS = $(wildcard ./src/*.cpp)
 OBJS = $(patsubst ./src/%.cpp, ./obj/%.obj, $(SRCS))
 INCLUDE_PATH=-I/usr/include/SDL2 -I/usr/include/SOIL -I/usr/include/GL -I/usr/include/AL -I/usr/include/rapidjson -I/workspace/inc
 LIBRARY_PATH=-L/usr/lib/x86_64-linux-gnu
-LIBS = -lSDL2 -lSDL2_image -lSOIL -lGL -lGLEW -lopenal -lalut
+LIBS = -lSDL2 -lSDL2_image -lSOIL -lGL -lGLEW -lopenal -lalut -lSDL2_mixer
 
 WIN_CC = i686-w64-mingw32-g++
 WIN_OBJS = $(patsubst ./src/%.cpp, ./obj/%.winobj, $(SRCS))
