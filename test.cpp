@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <alut.h>
 
-#pragma comment(lib, "OpenAL32.lib")
-#pragma comment(lib, "alut.lib")
 
 int main (int argc, char **argv)
 {
