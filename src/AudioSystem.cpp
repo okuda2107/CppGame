@@ -8,7 +8,7 @@ AudioSystem::~AudioSystem() {}
 
 bool AudioSystem::Initialize() {
     if (alutInit(NULL, NULL) != AL_TRUE) {
-        SDL_Log("Failed to Initialize ALUT");
+        SDL_Log("Failed to Initialize OpenAL");
         return false;
     }
     alutGetError();
@@ -16,6 +16,9 @@ bool AudioSystem::Initialize() {
     ALuint helloBuffer, helloSource;
     helloBuffer = alutCreateBufferHelloWorld();
     alGenSources(1, &helloSource);
+    //リスナー(自分)を空間座標に配置
+	ALfloat ListenerPos[] = { 5.0, 0.0, 0.0 };   
+	alSourcefv(helloSource, AL_POSITION, ListenerPos);
     alSourcei(helloSource, AL_BUFFER, helloBuffer);
     alSourcePlay(helloSource);
     alutSleep(1);
