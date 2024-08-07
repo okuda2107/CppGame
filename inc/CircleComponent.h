@@ -1,9 +1,9 @@
 #pragma once
 #include "Component.h"
-#include "Math.h"
 #include "Actor.h"
+#include "Collision.h"
 
-class CircleComponent : Component
+class CircleComponent : public Component
 {
 public:
 	CircleComponent(class Actor* owner);
