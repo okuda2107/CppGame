@@ -5,6 +5,10 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
+            args :
+              UID: 1000
+              GID: 1000
+              USER: vscode
         working_dir: /workspace
         volumes:
             - type: bind
@@ -22,6 +26,7 @@ services:
         command: /bin/sh -c "while sleep 1000; do :; done" # devcontainerで起動させるために必要
         environment:
           - DISPLAY=:0
+          - VCPKG_ROOT=/workspace/exlibs/vcpkg
         # deploy:
         #     resources:
         #         reservations:

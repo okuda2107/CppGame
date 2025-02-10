@@ -3,16 +3,12 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/inc/**",
-                "/usr/include/SDL2",
-                "/usr/include/SOIL",
-                "/usr/include/GL",
-                "/usr/include/rapidjson"
+                "${workspaceFolder}/inc/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",
             "cStandard": "c17",
-            "cppStandard": "gnu++14",
+            "cppStandard": "gnu++17",
             "intelliSenseMode": "linux-gcc-x64"
         }
     ],
