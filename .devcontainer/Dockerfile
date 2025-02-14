@@ -48,6 +48,11 @@ RUN sudo apt-get update && sudo apt-get install -y \
 
 RUN sudo apt-get update && sudo apt-get install -y \
         pulseaudio \
+        libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libsdl2-ttf-dev \
+        libsoil-dev \
+        libglew-dev libgl1-mesa-dev xorg-dev \
+        libopenal-dev libalut-dev pulseaudio \
+        rapidjson-dev \
         mingw-w64 gcc-mingw-w64 g++-mingw-w64 \
         python3 python3-jinja2 \
         autoconf libtool \

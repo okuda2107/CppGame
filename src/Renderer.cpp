@@ -226,7 +226,7 @@ bool Renderer::LoadShaders()
 		return false;
 	}
 	mSpriteShader->SetActive();
-	
+
 	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
 	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
 
