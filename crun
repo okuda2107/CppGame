@@ -1,1 +1,1 @@
-cmake -S . -B build && cmake --build build && ./build/app $*
+cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=./cmakes/x64-linux.cmake && cmake --build build && ./build/app $*
