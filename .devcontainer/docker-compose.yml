@@ -5,6 +5,10 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
+            args :
+              UID: 1000
+              GID: 1000
+              USER: vscode
         working_dir: /workspace
         volumes:
             - type: bind
@@ -27,6 +31,7 @@ services:
         environment:
           - DISPLAY=:0
           - PULSE_SERVER=unix:/mnt/wslg/PulseServer
+          - VCPKG_ROOT=/workspace/exlibs/vcpkg
         # deploy:
         #     resources:
         #         reservations:
