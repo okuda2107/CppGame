@@ -80,7 +80,7 @@ void Game::UpdateGame() {
 	}
 	mTicksCount = SDL_GetTicks();
 
-	// mAudioSystem->Update(deltatime);
+	mAudioSystem->Update(deltatime);
 
 	UpdateActors(deltatime);
 }

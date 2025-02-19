@@ -8,6 +8,8 @@ class AudioSystem {
     bool Initialize();
     void Shutdown();
     void Update(float deltaTime);
+    void test();
+
     private:
     class Game* mGame;
 };
