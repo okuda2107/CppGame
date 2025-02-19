@@ -12,18 +12,20 @@ bool AudioSystem::Initialize() {
         return false;
     }
     alutGetError();
+
+    return true;
+}
+
+void AudioSystem::test() {
     // test
     ALuint helloBuffer, helloSource;
-    helloBuffer = alutCreateBufferHelloWorld();
+    helloBuffer = alutCreateBufferHelloWorld(); // Bufferはsound data, Sourcesはどう鳴らすか
     alGenSources(1, &helloSource);
     //リスナー(自分)を空間座標に配置
-	ALfloat ListenerPos[] = { 5.0, 0.0, 0.0 };   
+	ALfloat ListenerPos[] = { 5.0, 0.0, 0.0 };
 	alSourcefv(helloSource, AL_POSITION, ListenerPos);
     alSourcei(helloSource, AL_BUFFER, helloBuffer);
     alSourcePlay(helloSource);
-    alutSleep(1);
-
-    return true;
 }
 
 void AudioSystem::Shutdown() {
@@ -31,5 +33,5 @@ void AudioSystem::Shutdown() {
 }
 
 void AudioSystem::Update(float deltaTime) {
-
+    test();
 }

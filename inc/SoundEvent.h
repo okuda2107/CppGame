@@ -1,5 +1,12 @@
-#pragma once
+// #pragma once
 
-class SoundEvent {
+// class SoundEvent {
+//     public:
+//     SoundEvent();
 
-};
+//     bool IsValid();
+
+//     private:
+//     class AudioSystem* mSystem;
+//     unsigned int mID;
+// };
