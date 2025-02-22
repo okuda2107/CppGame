@@ -1,0 +1,3 @@
+cmake -S . -B build/windows -DCMAKE_TOOLCHAIN_FILE=./cmakes/x64-windows.cmake && cmake --build build/windows
+cd build/windows
+make install

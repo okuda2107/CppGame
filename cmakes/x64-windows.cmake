@@ -15,7 +15,10 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
-include_directories("./exlibs/SDL2-2.32.0")
+set(SDL2_DIR "/workspace/exlibs/SDL2-2.32.0/cmake")
+
+find_package(SDL2 2.32 REQUIRED)
+
 include_directories("/usr/include/SOIL")
 include_directories("/usr/include/GL")
 include_directories("/usr/include/rapidjson")
