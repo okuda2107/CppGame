@@ -11,9 +11,10 @@
 * VcXsrv (X Window System)
 
 ## Usage
+それぞれのアーキテクチャに対応している`installscript/install`スクリプトを実行する
+
+### docker
 `.devcontainer/`ディレクトリ下で以下のコマンドを叩く
 ```
 $ docker-compose run --rm dev ./game
 ```
-
-## Description
