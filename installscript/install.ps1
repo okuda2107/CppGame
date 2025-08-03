@@ -1,38 +1,65 @@
-
 $RootDir = Split-Path $PSScriptRoot -Parent
+
+if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    Write-Error "winget is not installed. Please install 'App Installer' from Microsoft Store."
+    exit 1
+}
 
 $ExlibsDir = Join-Path $RootDir exlibs -Resolve
 
-function Download-Lib ($URI) {
-    $uri = New-Object System.Uri($URI)
-    $file = Split-Path $uri.AbsolutePath -Leaf
-    $WebClient.DownloadFile($uri, (Join-Path $ExlibsDir $file)) | Expand-Archive
+function Install-Command {
+    param(
+        [Parameter(Mandatory)]
+        [hashtable]$MapCommandsPackages,
+    )
+
+    foreach ($Command in $MapCommandsPackages.keys) {
+        if (-not (Get-Command $Command)) {
+            winget install --id $MapCommandsPackages[$Command] --exact --silent --accept-package-agreements --accept-source-agreements
+        }
+    }
+}
+
+function Download-Lib ($Uri, $OutputPath) {
+    $TmpZip = [System.IO.Path]::GetTempFileName()
+    Invoke-WebRequest -Uri $Uri -OutFile $TmpZip
+    Expand-Archive -Path $TmpZip -DestinationPath $OutputPath
+    Remove-Item $TmpZip
+}
+
+Install-Command -MapCommandsPackages @{
+    git = "Git.Git"
+    cmake = "cmake"
 }
 
 if((Test-Path $(Join-Path $ExlibsDir "SDL2-2.32.0")) -eq $false) {
-    Download-Lib "https://github.com/libsdl-org/SDL/releases/download/release-2.32.8/SDL2-devel-2.32.8-VC.zip"
-    Write-Host $pwd
+    Download-Lib "https://github.com/libsdl-org/SDL/releases/download/release-2.32.8/SDL2-devel-2.32.8-VC.zip" $ExlibsDir
 }
 
-# ダウンロードURLと出力先のディレクトリ
-$zipUrl = "https://example.com/archive.zip"
-$extractPath = "C:\Path\To\Extract"
-
-# 一時ディレクトリにZIPを保存
-$tmpZip = [System.IO.Path]::GetTempFileName()
-$tmpRealZip = "$tmpZip.zip"
-Rename-Item -Path $tmpZip -NewName $tmpRealZip
-
-# ダウンロード
-Invoke-WebRequest -Uri $zipUrl -OutFile $tmpRealZip
-
-# 展開先のディレクトリが存在しなければ作成
-if (-not (Test-Path $extractPath)) {
-    New-Item -ItemType Directory -Path $extractPath | Out-Null
+if((Test-Path $(Join-Path $ExlibsDir "SDL2_image-2.8.8")) -eq $false) {
+    Download-Lib "https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.8/SDL2_image-devel-2.8.8-VC.zip" $ExlibsDir
 }
 
-# ZIPを展開
-Expand-Archive -Path $tmpRealZip -DestinationPath $extractPath -Force
+if((Test-Path $(Join-Path $ExlibsDir "SDL2_mixer-2.8.1")) -eq $false) {
+    Download-Lib "https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.8.1/SDL2_mixer-devel-2.8.1-VC.zip" $ExlibsDir
+}
 
-# ZIPを削除
-Remove-Item -Path $tmpRealZip -Force
+if((Test-Path $(Join-Path $ExlibsDir "SDL2_net-2.2.0")) -eq $false) {
+    Download-Lib "https://github.com/libsdl-org/SDL_net/releases/download/release-2.2.0/SDL2_net-devel-2.2.0-VC.zip" $ExlibsDir
+}
+
+if((Test-Path $(Join-Path $ExlibsDir "SDL2_ttf-2.24.0")) -eq $false) {
+    Download-Lib "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.24.0/SDL2_ttf-devel-2.24.0-VC.zip" $ExlibsDir
+}
+
+if((Test-Path $(Join-Path $ExlibsDir "rapidjson-1.1.0")) -eq $false) {
+    Download-Lib "https://github.com/Tencent/rapidjson/archive/refs/tags/v1.1.0.zip" $ExlibsDir
+}
+
+if((Test-Path $(Join-Path $ExlibsDir "glew-2.2.0")) -eq $false) {
+    Download-Lib "https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.zip" $ExlibsDir
+}
+
+if((Test-Path $(Join-Path $ExlibsDir "Simple-OpenGL-Image-Library")) -eq $false) {
+    git clone https://github.com/kbranigan/Simple-OpenGL-Image-Library.git
+}
