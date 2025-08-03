@@ -30,6 +30,7 @@ function Download-Lib ($Uri, $OutputPath) {
 Install-Command -MapCommandsPackages @{
     git = "Git.Git"
     cmake = "cmake"
+    cl = "Microsoft.VisualStudio.2022.Community"
 }
 
 if((Test-Path $(Join-Path $ExlibsDir "SDL2-2.32.0")) -eq $false) {
@@ -58,8 +59,14 @@ if((Test-Path $(Join-Path $ExlibsDir "rapidjson-1.1.0")) -eq $false) {
 
 if((Test-Path $(Join-Path $ExlibsDir "glew-2.2.0")) -eq $false) {
     Download-Lib "https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.zip" $ExlibsDir
+    $TmpDir = $(Join-Path $ExlibsDir "glew-2.2.0")
+    cmake -S $(Join-Path $TmpDir "build/cmake")-B $(Join-Path $TmpDir "build")
+    cmake --build $(Join-Path $TmpDir "build")
 }
 
 if((Test-Path $(Join-Path $ExlibsDir "Simple-OpenGL-Image-Library")) -eq $false) {
     git clone https://github.com/kbranigan/Simple-OpenGL-Image-Library.git
+    $TmpDir = $(Join-Path $ExlibsDir "Simple-OpenGL-Image-Library")
+    cmake -S $TmpDir-B $(Join-Path $TmpDir "build")
+    cmake --build $(Join-Path $TmpDir "build")
 }
