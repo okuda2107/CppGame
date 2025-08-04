@@ -30,7 +30,6 @@ function Download-Lib ($Uri, $OutputPath) {
 Install-Command -MapCommandsPackages @{
     git = "Git.Git"
     cmake = "cmake"
-    cl = "Microsoft.VisualStudio.2022.Community"
 }
 
 if((Test-Path $(Join-Path $ExlibsDir "SDL2-2.32.0")) -eq $false) {
