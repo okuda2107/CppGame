@@ -1,24 +1,33 @@
-set(CMAKE_SYSTEM_NAME Windows)
-set(TOOLCHAIN_PREFIX x86_64-w64-mingw32)
-# cross compilers to use for C, C++ and Fortran
-set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}-gcc)
-set(CMAKE_CXX_COMPILER ${TOOLCHAIN_PREFIX}-g++)
-set(CMAKE_Fortran_COMPILER ${TOOLCHAIN_PREFIX}-gfortran)
-set(CMAKE_RC_COMPILER ${TOOLCHAIN_PREFIX}-windres)
-# target environment on the build host system
-set(CMAKE_FIND_ROOT_PATH /usr/${TOOLCHAIN_PREFIX})
-# adjust the default behaviour of the FIND_XXX() commands:
-# search headers and libraries in the target environment, search
-# programs in the host environment
-set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
-set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+set(CMAKE_C_COMPILER   "C:/msys64/mingw64/bin/gcc.exe")
+set(CMAKE_CXX_COMPILER "C:/msys64/mingw64/bin/g++.exe")
 
-set(SDL2_DIR "/workspace/exlibs/SDL2-2.32.0/cmake")
+set(CMAKE_INCLUDE_PATH
+    "${CMAKE_SOURCE_DIR}/exlibs/SDL2-2.32.8//x86_64-w64-mingw32/include/SDL2"
+    "${CMAKE_SOURCE_DIR}/exlibs/SDL2_image-2.8.8/x86_64-w64-mingw32/include/SDL2"
+    "${CMAKE_SOURCE_DIR}/exlibs/glew-2.2.0/include/GL"
+    "${CMAKE_SOURCE_DIR}/exlibs/rapidjson/include/rapidjson"
+    "${CMAKE_SOURCE_DIR}/exlibs/Simple-OpenGL-Image-Library/src"
+)
 
-find_package(SDL2 2.32 REQUIRED)
+set(CMAKE_LIBRARY_PATH
+    "${CMAKE_SOURCE_DIR}/exlibs/SDL2-2.32.8/x86_64-w64-mingw32/lib"
+    "${CMAKE_SOURCE_DIR}/exlibs/SDL2_image-2.8.8/x86_64-w64-mingw32/lib"
+    "${CMAKE_SOURCE_DIR}/exlibs/SDL2_mixer-2.8.1/x86_64-w64-mingw32/lib"
+    "${CMAKE_SOURCE_DIR}/exlibs/SDL2_net-2.2.0/x86_64-w64-mingw32/lib"
+    "${CMAKE_SOURCE_DIR}/exlibs/SDL2_ttf-2.24.0/x86_64-w64-mingw32/lib"
+    "${CMAKE_SOURCE_DIR}/exlibs/glew-2.2.0/build/lib"
+    "${CMAKE_SOURCE_DIR}/exlibs/Simple-OpenGL-Image-Library/build"
+)
 
-include_directories("/usr/include/SOIL")
-include_directories("/usr/include/GL")
-include_directories("/usr/include/rapidjson")
+set(CMAKE_EXECUTABLE_SUFFIX ".exe")
+
+set(SDL2_LIBRARY
+    mingw32
+    SDL2main
+    SDL2
+)
+
+set(OPENGL_LIBRARY
+    OPENGL32
+    GLEW32
+)

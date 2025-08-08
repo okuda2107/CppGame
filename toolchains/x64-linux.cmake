@@ -21,3 +21,12 @@ set(CMAKE_INCLUDE_PATH
     "/usr/include/GL"
     "/usr/include/rapidjson"
 )
+
+set(SDL2_LIBRARY
+    SDL2
+)
+
+set(OPENGL_LIBRARY
+    GL
+    GLEW
+)
