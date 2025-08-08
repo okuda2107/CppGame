@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <cstring>
 #include <limits>
 

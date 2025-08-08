@@ -7,12 +7,26 @@ project(prj CXX)
 add_executable(app ${file})
 
 target_include_directories(app PRIVATE "inc")
+target_include_directories(app PRIVATE ${CMAKE_INCLUDE_PATH})
 
-target_link_libraries(app PRIVATE SDL2)
+target_link_directories(app PRIVATE ${CMAKE_LIBRARY_PATH})
+
+target_link_libraries(app PRIVATE ${SDL2_LIBRARY})
 target_link_libraries(app PRIVATE SDL2_image)
 target_link_libraries(app PRIVATE SDL2_mixer)
 target_link_libraries(app PRIVATE SDL2_net)
 target_link_libraries(app PRIVATE SDL2_ttf)
 target_link_libraries(app PRIVATE SOIL)
-target_link_libraries(app PRIVATE GL GLEW)
-target_link_libraries(app PRIVATE openal alut)
+target_link_libraries(app PRIVATE ${OPENGL_LIBRARY})
+
+set(RELEASE_DIR "${CMAKE_SOURCE_DIR}/Release")
+add_custom_command(
+    TARGET app
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${RELEASE_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:app> ${RELEASE_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SDL2_DLL} ${RELEASE_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${GLEW_DLL} ${RELEASE_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/Assets" "${RELEASE_DIR}/Assets"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/Shaders" "${RELEASE_DIR}/Shaders"
+)
