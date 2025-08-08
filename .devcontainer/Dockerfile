@@ -35,7 +35,6 @@ RUN sudo apt-get update && sudo apt-get install -y \
 RUN sudo apt-get update && sudo apt-get install -y \
         libgl1-mesa-dev \
         xorg-dev \
-        pulseaudio \
     && sudo apt-get clean \
     && sudo rm -rf /var/lib/apt/lists/*
 
@@ -48,7 +47,6 @@ RUN sudo apt-get update && sudo apt-get install -y \
     && sudo rm -rf /var/lib/apt/lists/*
 
 RUN sudo apt-get update && sudo apt-get install -y \
-        pulseaudio \
         libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libsdl2-ttf-dev \
         libsoil-dev \
         libglew-dev libgl1-mesa-dev xorg-dev libglu1-mesa-dev \

@@ -26,13 +26,9 @@
 [Y] はい(Y)  [N] いいえ(N)  [S] 中断(S)  [?] ヘルプ (既定値は "Y"): y
 ```
 
-**補足**
+### ubuntu
+ubuntuではdockerを使うことを想定している
 
-windows環境ではC++コンパイラの自動インストールをサポートできていない．
-
-`installscript/install`を実行する前に，C++コンパイラのインストールと，`cmake`コマンドでビルドできる環境にしておく必要がある．
-
-### docker
 `.devcontainer/`ディレクトリ下で以下のコマンドを叩く
 ```
 $ docker-compose run --rm dev ./game

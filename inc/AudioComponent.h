@@ -1,10 +1,14 @@
 #pragma once
-#include "Component.h"
-#include "SoundEvent.h"
 #include <vector>
 
+#include "Component.h"
+#include "SoundEvent.h"
+
 class AudioComponent : public Component {
-    public:
+    std::vector<SoundEvent> mEvents2D;
+    std::vector<SoundEvent> mEvents3D;
+
+   public:
     AudioComponent(Actor* owner, int updateOrder = 200);
     ~AudioComponent();
 
@@ -13,9 +17,4 @@ class AudioComponent : public Component {
 
     SoundEvent PlayEvent(const std::string& name);
     void StopAllEvents();
-
-    private:
-    std::vector<SoundEvent> mEvents2D;
-    std::vector<SoundEvent> mEvents3D;
-
 };
