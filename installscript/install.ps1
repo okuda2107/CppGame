@@ -102,3 +102,14 @@ if( -not (Test-Path (Join-Path $ExlibsDir "Simple-OpenGL-Image-Library"))) {
     cmake -S $TmpDir -B $(Join-Path $TmpDir "build") -G "MinGW Makefiles"
     cmake --build $(Join-Path $TmpDir "build") --config Release
 }
+
+if( -not (Test-Path (Join-Path $ExlibsDir "openal-soft-1.24.3-bin"))) {
+    Download-Lib "https://github.com/kcat/openal-soft/releases/download/1.24.3/openal-soft-1.24.3-bin.zip" $ExlibsDir
+}
+
+if( -not (Test-Path (Join-Path $ExlibsDir "freealut"))) {
+    $TmpDir = $(Join-Path $ExlibsDir "freealut")
+    git clone https://github.com/vancegroup/freealut.git $TmpDir
+    cmake -S $TmpDir -B $(Join-Path $TmpDir "build") -G "MinGW Makefiles"
+    cmake --build $(Join-Path $TmpDir "build") --config Release
+}
