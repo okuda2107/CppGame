@@ -1,4 +1,6 @@
-file(GLOB file "src/*.cpp")
+file(GLOB file
+    "engine/*/*.cpp"
+)
 
 cmake_minimum_required(VERSION 3.21)
 
@@ -6,7 +8,9 @@ project(prj CXX)
 
 add_executable(app ${file})
 
-target_include_directories(app PRIVATE "inc")
+target_include_directories(app PRIVATE
+    "engine/*"
+)
 target_include_directories(app PRIVATE ${CMAKE_INCLUDE_PATH})
 
 target_link_directories(app PRIVATE ${CMAKE_LIBRARY_PATH})
