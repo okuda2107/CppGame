@@ -1,4 +1,4 @@
-file(GLOB file
+file(GLOB CXX_FILES
     "engine/*/*.cpp"
 )
 
@@ -6,11 +6,15 @@ cmake_minimum_required(VERSION 3.21)
 
 project(prj CXX)
 
-add_executable(app ${file})
+add_executable(app ${CXX_FILES})
 
-target_include_directories(app PRIVATE
-    "engine/*"
+# エンジンのヘッダファイルを読み込み
+# 再帰的にディレクトリのみを取得
+file(GLOB_RECURSE INCLUDE_DIR LIST_DIRECTORIES true
+    "${CMAKE_SOURCE_DIR}engine/*"
 )
+target_include_directories(app PRIVATE ${INCLUDE_DIR})
+
 target_include_directories(app PRIVATE ${CMAKE_INCLUDE_PATH})
 
 target_link_directories(app PRIVATE ${CMAKE_LIBRARY_PATH})
