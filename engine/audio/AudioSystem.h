@@ -1,25 +1,37 @@
 #pragma once
 #include <unordered_map>
 
+#include "Math.h"
+#include "SoundHandler.h"
+
 class AudioSystem {
-    public:
+   protected:
+    class Game* mGame;
+
+    // バンク: 複数のイベントを編集，ロード単位で管理
+    std::unordered_map<std::string, class SoundBank*> mBanks;
+    // イベント: ゲームから要請される単位で音声データとその再生情報を管理
+    std::unordered_map<std::string, class SoundEvent*> mEvents;
+    // ハンドラ: 再生中の音声を管理
+    // 再生が終了するタイミングは不明であり，アクセスがランダムであるのでunordered_map
+    std::unordered_map<unsigned int, class SoundHandler*> mHandlers;
+
+   public:
     AudioSystem(class Game* game);
     ~AudioSystem();
 
-    bool Initialize();
-    void Shutdown();
+    virtual bool Initialize() {};
+    virtual void Shutdown() {};
 
-    void UnloadData();
+    virtual void LoadBank(const std::string& name) {};
+    virtual void UnloadBank(const std::string& name) {};
+    virtual void UnloadAllBanks() {};
 
-    void Update(float deltaTime);
+    virtual void Update(float deltaTime) {};
 
-    void AddAudio(class AudioComponent* audio);
-    void RemoveAudio(class AudioComponent* audio);
+    virtual void SetListener(const Matrix4& viewMatrix) {};
+
+    virtual SoundHandler PlayEvent(const std::string& name) {};
 
     void test();
-
-    private:
-    class Game* mGame;
-
-    std::unordered_map<std::string, class Sound*> mSounds;
 };

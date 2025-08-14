@@ -1,2 +1,5 @@
-// #pragma once
-// #include ""
+class SoundBank {
+   public:
+    SoundBank();
+    ~SoundBank();
+};
