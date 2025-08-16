@@ -1,23 +1,19 @@
 #pragma once
 #include <string>
 
-#include "SoundEvent.h"
-
 namespace OpenAL {
-typedef std::string EventID;
-
-class Event : public SoundEvent {
-    EventID mID;
+class Event {
+   public:
+    std::string mSoundID;
     bool mIsStream;
     bool mIsLoop;
     float mVolume;
     float mPitch;
 
+    Event() {};
+    ~Event();
+
     // Helper function to check for OpenAL errors
     bool checkALError(const std::string& errorMessage) const;
-
-   public:
-    Event();
-    ~Event();
 };
 }  // namespace OpenAL

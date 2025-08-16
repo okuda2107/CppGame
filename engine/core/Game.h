@@ -1,14 +1,14 @@
 #pragma once
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "SDL.h"
 #include "SDL_image.h"
-#include <vector>
-#include <unordered_map>
-#include <string>
-
-#include <iostream>
 
 class Game {
-    public:
+   public:
     Game();
     bool Initialize();
     void RunLoop();
@@ -17,27 +17,27 @@ class Game {
     void AddActor(class Actor* actor);
     void RemoveActor(class Actor* actor);
 
-	class Renderer* GetRenderer() { return mRenderer; }
-	class AudioSystem* GetAudioSystem() { return mAudioSystem; }
+    class Renderer* GetRenderer() { return mRenderer; }
+    class AudioSystem* GetAudioSystem() { return mAudioSystem; }
 
-    private:
+   private:
     void ProcessInput();
-	void UpdateGame();
-	void GenerateOutput();
+    void UpdateGame();
+    void GenerateOutput();
 
-	void UpdateActors(float deltatime);
+    void UpdateActors(float deltatime);
 
-	void LoadData();
-	void UnloadData();
+    void LoadData();
+    void UnloadData();
 
-	class Renderer* mRenderer;
-	class AudioSystem* mAudioSystem;
+    class Renderer* mRenderer;
+    class AudioSystem<OpenAL::Event, OpenAL::Bank>* mAudioSystem;
 
-	bool mIsRunning;
-	Uint32 mTicksCount;
+    bool mIsRunning;
+    Uint32 mTicksCount;
 
-	std::vector<class Actor*> mActors;
-	std::vector<class Actor*> mPendingActors;
+    std::vector<class Actor*> mActors;
+    std::vector<class Actor*> mPendingActors;
 
-	bool mUpdatingActors;
+    bool mUpdatingActors;
 };

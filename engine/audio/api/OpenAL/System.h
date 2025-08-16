@@ -2,9 +2,11 @@
 #include <string>
 
 #include "AudioSystem.h"
+#include "OpenAL/Bank.h"
+#include "OpenAL/Event.h"
 
 namespace OpenAL {
-class System : public AudioSystem {
+class System : public AudioSystem<Bank, Event> {
    public:
     System(class Game* game);
     ~System();

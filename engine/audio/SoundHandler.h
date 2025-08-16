@@ -1,7 +1,7 @@
 class SoundHandler {
    public:
     SoundHandler();
-    ~SoundHandler();
+    virtual ~SoundHandler();
 
     bool IsValid();
     void Play();

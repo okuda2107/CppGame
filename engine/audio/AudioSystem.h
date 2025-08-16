@@ -4,21 +4,22 @@
 #include "Math.h"
 #include "SoundHandler.h"
 
+template <typename BankType, typename EventType>
 class AudioSystem {
    protected:
     class Game* mGame;
 
     // バンク: 複数のイベントを編集，ロード単位で管理
-    std::unordered_map<std::string, class SoundBank*> mBanks;
+    std::unordered_map<std::string, class BankType*> mBanks;
     // イベント: ゲームから要請される単位で音声データとその再生情報を管理
-    std::unordered_map<std::string, class SoundEvent*> mEvents;
+    std::unordered_map<std::string, class EventType*> mEvents;
     // ハンドラ: 再生中の音声を管理
     // 再生が終了するタイミングは不明であり，アクセスがランダムであるのでunordered_map
     std::unordered_map<unsigned int, class SoundHandler*> mHandlers;
 
    public:
     AudioSystem(class Game* game);
-    ~AudioSystem();
+    virtual ~AudioSystem();
 
     virtual bool Initialize() {};
     virtual void Shutdown() {};
