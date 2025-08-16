@@ -2,8 +2,8 @@
 #include <string>
 
 #include "AudioSystem.h"
-#include "OpenAL/Bank.h"
-#include "OpenAL/Event.h"
+#include "api/OpenAL/Bank.h"
+#include "api/OpenAL/Event.h"
 
 namespace OpenAL {
 class System : public AudioSystem<Bank, Event> {
@@ -21,5 +21,34 @@ class System : public AudioSystem<Bank, Event> {
     void Update(float deltaTIme) override;
 
     void SetListener(const Matrix4& viewMatrix) override;
+    SoundHandler* PlayEvent(const std::string& name) override;
+
+    void loadtest() {
+        using namespace std;
+        cout << "mBanksNum: " << mBanks.size() << endl;
+        cout << "mBanksContents:" << endl;
+        for (auto bank : mBanks)
+            cout << bank.first << ":" << bank.second << endl;
+        cout << endl;
+        cout << "mEventsNum:" << mEvents.size() << endl;
+        cout << "mEventsContents:" << endl;
+        for (auto event : mEvents)
+            cout << event.first << ":" << event.second << endl;
+        cout << endl;
+    };
+
+    void unloadtest() {
+        using namespace std;
+        cout << "mBanksNum: " << mBanks.size() << endl;
+        cout << "mBanksContents:" << endl;
+        for (auto bank : mBanks)
+            cout << bank.first << ":" << bank.second << endl;
+        cout << endl;
+        cout << "mEventsNum:" << mEvents.size() << endl;
+        cout << "mEventsContents:" << endl;
+        for (auto event : mEvents)
+            cout << event.first << ":" << event.second << endl;
+        cout << endl;
+    }
 };
 }  // namespace OpenAL

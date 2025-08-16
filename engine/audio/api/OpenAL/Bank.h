@@ -12,13 +12,13 @@ class Bank {
     std::unordered_map<std::string, class Event*> mEvents;
     std::unordered_map<std::string, ALuint> mSounds;
 
-    bool LoadVersion1(rapidjson::Document& outDoc);
+    bool LoadVersion1(rapidjson::Document& doc);
 
    public:
     Bank();
     ~Bank();
 
-    bool Load(const std::string& fileName, class OpenAL::System* system);
+    bool Load(const std::string& fileName, class System* system);
     bool Unload();
 
     std::unordered_map<std::string, class Event*>& GetEvents() {

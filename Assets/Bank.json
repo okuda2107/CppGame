@@ -1,0 +1,14 @@
+{
+    "bankName": "MainBank",
+    "version": 1,
+    "events": [
+        {
+            "id": "bgm_main",
+            "file": "Assets/mac.mp3",
+            "stream": false,
+            "loop": true,
+            "volume": 1.0,
+            "pitch": 1.0
+        }
+    ]
+}

@@ -44,6 +44,11 @@ bool Game::Initialize() {
         return false;
     }
 
+    mAudioSystem->LoadBank("./Assets/Bank.json");
+    mAudioSystem->test();
+    mAudioSystem->UnloadAllBanks();
+    mAudioSystem->unloadtest();
+
     LoadData();
 
     mTicksCount = SDL_GetTicks();

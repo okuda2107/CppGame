@@ -4,8 +4,13 @@
 #include <unordered_map>
 #include <vector>
 
+#include "AudioSystem.h"
 #include "SDL.h"
 #include "SDL_image.h"
+#include "api/OpenAL/Bank.h"
+#include "api/OpenAL/Event.h"
+
+typedef AudioSystem<OpenAL::Bank, OpenAL::Event> Audio;
 
 class Game {
    public:
@@ -18,7 +23,7 @@ class Game {
     void RemoveActor(class Actor* actor);
 
     class Renderer* GetRenderer() { return mRenderer; }
-    class AudioSystem* GetAudioSystem() { return mAudioSystem; }
+    Audio* GetAudioSystem() { return mAudioSystem; }
 
    private:
     void ProcessInput();
@@ -31,7 +36,7 @@ class Game {
     void UnloadData();
 
     class Renderer* mRenderer;
-    class AudioSystem<OpenAL::Event, OpenAL::Bank>* mAudioSystem;
+    Audio* mAudioSystem;
 
     bool mIsRunning;
     Uint32 mTicksCount;

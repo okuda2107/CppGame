@@ -3,9 +3,9 @@
 #include <fstream>
 #include <sstream>
 
-#include "OpenAL/Event.h"
-#include "OpenAL/System.h"
 #include "SDL_log.h"
+#include "api/OpenAL/Event.h"
+#include "api/OpenAL/System.h"
 #include "document.h"
 #include "rapidjson/istreamwrapper.h"
 #include "rapidjson/schema.h"
@@ -35,13 +35,16 @@ bool OpenAL::Bank::Load(const std::string& fileName,
         return false;
     }
 
-    if (!doc["bankName"].IsString()) {
+    if (!doc.HasMember("bankName") || !doc["bankName"].IsString()) {
         SDL_Log("Failed to get bank name: %s", fileName.c_str());
         return false;
     }
 
     // versionごとにフォーマットを分ける
-    int ver = doc["version"].GetInt();
+    int ver = -1;
+    if (doc.HasMember("version")) {
+        ver = doc["version"].GetInt();
+    }
     switch (ver) {
         case 1:
             return LoadVersion1(doc);
@@ -74,14 +77,31 @@ Notes: ver1のフォーマット
 */
 bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
     // スキーマ読み込み
-    std::ifstream schemaFile("./schema/ver1.json");
-    if (!schemaFile.is_open()) {
-        SDL_Log("Failed to open schema file: ./schema/ver1.json");
-        return false;
-    }
-    rapidjson::IStreamWrapper isw(schemaFile);
+    const char* schemaJson = R"({
+        "type": "object",
+        "required": ["bankName", "version", "events"],
+        "properties": {
+            "bankName": {"type": "string"},
+            "version": {"type": "integer"},
+            "events": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": ["id", "file"],
+                    "properties": {
+                        "id": {"type": "string"},
+                        "file": {"type": "string"},
+                        "stream": {"type": "boolean"},
+                        "loop": {"type": "boolean"},
+                        "volume": {"type": "number"},
+                        "pitch": {"type": "number"}
+                    }
+                }
+            }
+        }
+    })";
     rapidjson::Document schemaDoc;
-    schemaDoc.ParseStream(isw);
+    schemaDoc.Parse(schemaJson);
 
     // バリデーション
     rapidjson::SchemaDocument schema(schemaDoc);

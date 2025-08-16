@@ -6,6 +6,7 @@
 #include "alext.h"
 #include "alut.h"
 #include "api/OpenAL/Bank.h"
+#include "api/OpenAL/Handler.h"
 #include "efx-creative.h"
 #include "efx-presets.h"
 #include "efx.h"
@@ -36,7 +37,8 @@ void OpenAL::System::LoadBank(const std::string& name) {
     for (auto& event : bank->GetEvents()) {
         auto out = mEvents.emplace(event);
         if (out.second) {
-            SDL_Log("Waning: Event name is duplication: %s", out.first->first);
+            SDL_Log("Waning: Event name is duplication: %s",
+                    out.first->first.c_str());
         }
     }
 }
@@ -75,11 +77,17 @@ void OpenAL::System::UnloadAllBanks() {
 }
 
 void OpenAL::System::Update(float deltaTime) {
-    test();
+    ;
     ;
 }
 
 void OpenAL::System::SetListener(const Matrix4& viewMatrix) {
     ;
     ;
+}
+
+SoundHandler* OpenAL::System::PlayEvent(const std::string& name) {
+    ;
+    ;
+    return new OpenAL::Handler();
 }

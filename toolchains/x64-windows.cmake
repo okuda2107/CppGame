@@ -32,5 +32,7 @@ set(OPENGL_LIBRARY
     GLEW32
 )
 
-set(SDL2_DLL "${CMAKE_SOURCE_DIR}/exlibs/SDL2-2.32.8/x86_64-w64-mingw32/bin/SDL2.dll")
-set(GLEW_DLL "${CMAKE_SOURCE_DIR}/exlibs/glew-2.2.0/build/bin/glew32.dll")
+set(DLL_FILES
+    "${CMAKE_SOURCE_DIR}/exlibs/SDL2-2.32.8/x86_64-w64-mingw32/bin/SDL2.dll"
+    "${CMAKE_SOURCE_DIR}/exlibs/glew-2.2.0/build/bin/glew32.dll"
+)

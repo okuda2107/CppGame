@@ -2,7 +2,7 @@
 #include <unordered_map>
 
 #include "Math.h"
-#include "SoundHandler.h"
+#include "alut.h"
 
 template <typename BankType, typename EventType>
 class AudioSystem {
@@ -10,18 +10,18 @@ class AudioSystem {
     class Game* mGame;
 
     // バンク: 複数のイベントを編集，ロード単位で管理
-    std::unordered_map<std::string, class BankType*> mBanks;
+    std::unordered_map<std::string, BankType*> mBanks;
     // イベント: ゲームから要請される単位で音声データとその再生情報を管理
-    std::unordered_map<std::string, class EventType*> mEvents;
+    std::unordered_map<std::string, EventType*> mEvents;
     // ハンドラ: 再生中の音声を管理
     // 再生が終了するタイミングは不明であり，アクセスがランダムであるのでunordered_map
     std::unordered_map<unsigned int, class SoundHandler*> mHandlers;
 
    public:
-    AudioSystem(class Game* game);
-    virtual ~AudioSystem();
+    AudioSystem(class Game* game) {};
+    virtual ~AudioSystem() {};
 
-    virtual bool Initialize() {};
+    virtual bool Initialize() = 0;
     virtual void Shutdown() {};
 
     virtual void LoadBank(const std::string& name) {};
@@ -32,7 +32,20 @@ class AudioSystem {
 
     virtual void SetListener(const Matrix4& viewMatrix) {};
 
-    virtual SoundHandler PlayEvent(const std::string& name) {};
+    virtual class SoundHandler* PlayEvent(const std::string& name) = 0;
 
-    void test();
+    void test() {
+        // test
+        ALuint helloBuffer, helloSource;
+        helloBuffer = alutCreateBufferHelloWorld();  // Bufferはsound data,
+                                                     // Sourcesはどう鳴らすか
+        alGenSources(1, &helloSource);
+        // リスナー(自分)を空間座標に配置
+        ALfloat ListenerPos[] = {5.0, 0.0, 0.0};
+        alSourcefv(helloSource, AL_POSITION, ListenerPos);
+        alSourcei(helloSource, AL_BUFFER, helloBuffer);
+        alSourcePlay(helloSource);
+    };
+
+    void unloadtest() {};
 };

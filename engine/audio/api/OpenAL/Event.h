@@ -11,7 +11,7 @@ class Event {
     float mPitch;
 
     Event() {};
-    ~Event();
+    ~Event() {};
 
     // Helper function to check for OpenAL errors
     bool checkALError(const std::string& errorMessage) const;

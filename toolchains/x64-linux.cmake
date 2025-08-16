@@ -20,6 +20,7 @@ set(CMAKE_INCLUDE_PATH
     "/usr/include/SOIL"
     "/usr/include/GL"
     "/usr/include/rapidjson"
+    "/usr/include/AL"
 )
 
 set(SDL2_LIBRARY
@@ -31,5 +32,7 @@ set(OPENGL_LIBRARY
     GLEW
 )
 
-set(SDL2_DLL "/usr/lib/x86_64-linux-gnu/libSDL2.so")
-set(GLEW_DLL "")
+set(DLL_FILES
+    "/usr/lib/x86_64-linux-gnu/libSDL2.so"
+    "/usr/lib/x86_64-linux-gnu/libalut.so"
+)
