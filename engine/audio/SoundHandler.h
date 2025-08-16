@@ -1,3 +1,5 @@
+#pragma once
+
 class SoundHandler {
    public:
     SoundHandler() {};

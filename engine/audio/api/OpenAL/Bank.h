@@ -18,7 +18,7 @@ class Bank {
     Bank();
     ~Bank();
 
-    bool Load(const std::string& fileName, class System* system);
+    bool Load(const std::string& fileName);
     bool Unload();
 
     std::unordered_map<std::string, class Event*>& GetEvents() {

@@ -1,6 +1,7 @@
 #include "System.h"
 
 #include "Game.h"
+#include "SDL_mixer.h"
 #include "al.h"
 #include "alc.h"
 #include "alext.h"
@@ -15,6 +16,14 @@ OpenAL::System::System(class Game* game) : AudioSystem(game) {}
 OpenAL::System::~System() {}
 
 bool OpenAL::System::Initialize() {
+    if (!Mix_Init(MIX_INIT_MP3 || MIX_INIT_OGG)) {
+        SDL_Log("Failed to Initialize SDL_Mixer");
+        return false;
+    }
+    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048)) {
+        SDL_Log("Failed to open auido device");
+        return false;
+    }
     if (alutInit(NULL, NULL) != AL_TRUE) {
         SDL_Log("Failed to Initialize OpenAL");
         return false;
@@ -24,19 +33,27 @@ bool OpenAL::System::Initialize() {
     return true;
 }
 
-void OpenAL::System::Shutdown() { alutExit(); }
+void OpenAL::System::Shutdown() {
+    alutExit();
+    Mix_CloseAudio();
+    Mix_Quit();
+}
 
 void OpenAL::System::LoadBank(const std::string& name) {
     if (mBanks.find(name) != mBanks.end()) return;
 
     // バンクをロード
     OpenAL::Bank* bank = new OpenAL::Bank();
-    bank->Load(name, this);
+    if (!bank->Load(name)) {
+        SDL_Log("Failed to load bank data");
+        return;
+    }
+    mBanks.emplace(name, bank);
 
     // バンク内に定義されているイベントをコピー
     for (auto& event : bank->GetEvents()) {
         auto out = mEvents.emplace(event);
-        if (out.second) {
+        if (!out.second) {
             SDL_Log("Waning: Event name is duplication: %s",
                     out.first->first.c_str());
         }
@@ -48,12 +65,11 @@ void OpenAL::System::UnloadBank(const std::string& name) {
     if (iter == mBanks.end()) return;
 
     // イベントのコピーを開放
-    // イベントはバンクのエベントを参照しているはずなので，イベントの実体を開放する必要はない？
+    // イベントはバンクのイベントを参照しているはずなので，イベントの実体を開放する必要はない？
     auto events = iter->second->GetEvents();
     for (auto event : events) {
         auto iter = mEvents.find(event.first);
         if (iter != mEvents.end()) {
-            // delete iter->second;
             mEvents.erase(iter);
         }
     }
@@ -69,9 +85,7 @@ void OpenAL::System::UnloadAllBanks() {
         bank.second->Unload();
         delete bank.second;
     }
-    // for (auto event : mEvents) {
-    //     delete event.second;
-    // }
+
     mBanks.clear();
     mEvents.clear();
 }

@@ -45,7 +45,7 @@ bool Game::Initialize() {
     }
 
     mAudioSystem->LoadBank("./Assets/Bank.json");
-    mAudioSystem->test();
+    mAudioSystem->loadtest();
     mAudioSystem->UnloadAllBanks();
     mAudioSystem->unloadtest();
 

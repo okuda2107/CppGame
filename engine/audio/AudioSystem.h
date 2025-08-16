@@ -34,7 +34,7 @@ class AudioSystem {
 
     virtual class SoundHandler* PlayEvent(const std::string& name) = 0;
 
-    void test() {
+    virtual void loadtest() {
         // test
         ALuint helloBuffer, helloSource;
         helloBuffer = alutCreateBufferHelloWorld();  // Bufferはsound data,
@@ -47,5 +47,5 @@ class AudioSystem {
         alSourcePlay(helloSource);
     };
 
-    void unloadtest() {};
+    virtual void unloadtest() {};
 };

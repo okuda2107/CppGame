@@ -2,11 +2,13 @@
 #include <string>
 
 #include "AudioSystem.h"
+#include "SDL.h"
 #include "api/OpenAL/Bank.h"
 #include "api/OpenAL/Event.h"
 
 namespace OpenAL {
 class System : public AudioSystem<Bank, Event> {
+    // 継承されているmEventsに入ってるイベントの実体はBankの中にあるイベントの参照コピーであるから注意
    public:
     System(class Game* game);
     ~System();
@@ -30,11 +32,14 @@ class System : public AudioSystem<Bank, Event> {
         for (auto bank : mBanks)
             cout << bank.first << ":" << bank.second << endl;
         cout << endl;
+        auto bank = mBanks.at("./Assets/Bank.json");
+        cout << "eventNum in bank: " << bank->GetEvents().size() << endl;
         cout << "mEventsNum:" << mEvents.size() << endl;
         cout << "mEventsContents:" << endl;
         for (auto event : mEvents)
             cout << event.first << ":" << event.second << endl;
         cout << endl;
+        SDL_Delay(3000);
     };
 
     void unloadtest() {

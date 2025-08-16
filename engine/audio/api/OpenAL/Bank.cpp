@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "SDL_log.h"
+#include "SDL_mixer.h"
 #include "api/OpenAL/Event.h"
 #include "api/OpenAL/System.h"
 #include "document.h"
@@ -19,8 +20,7 @@ Bankデータをロードする
 ロードに成功したらtrue，失敗したらfalseを返す
 Bankデータはjson形式のファイルで記述する
 */
-bool OpenAL::Bank::Load(const std::string& fileName,
-                        class OpenAL::System* system) {
+bool OpenAL::Bank::Load(const std::string& fileName) {
     std::ifstream file(fileName);
     if (!file.is_open()) {
         SDL_Log("File not found: Bank %s", fileName.c_str());
@@ -32,11 +32,6 @@ bool OpenAL::Bank::Load(const std::string& fileName,
 
     if (!doc.IsObject()) {
         SDL_Log("Invalid bank data: %s", fileName.c_str());
-        return false;
-    }
-
-    if (!doc.HasMember("bankName") || !doc["bankName"].IsString()) {
-        SDL_Log("Failed to get bank name: %s", fileName.c_str());
         return false;
     }
 
@@ -115,20 +110,42 @@ bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
     // イベント情報のパース
     const rapidjson::Value& events = doc["events"];
 
+    // サウンドデータを保持するためのバッファ作成
+    std::vector<ALuint> buffers(events.Size());
+    alutGetError();
+    alGenBuffers(events.Size(), buffers.data());
+    ALenum error = alutGetError();
+    if (error != ALUT_ERROR_NO_ERROR) {
+        SDL_Log("Failed to create OpenAL buffer: %s",
+                alutGetErrorString(error));
+        return false;
+    }
+
     for (rapidjson::SizeType i = 0; i < events.Size(); i++) {
         // サウンドファイルのロード，格納
         std::string soundFileName = events[i]["file"].GetString();
         auto soundIter = mSounds.find(soundFileName);
         if (soundIter == mSounds.end()) {
-            alutGetError();
-            ALuint buffer = alutCreateBufferFromFile(soundFileName.c_str());
-            if (buffer == AL_NONE) {
-                ALenum error = alutGetError();
-                SDL_Log("Failed to load sound data: %s: %s",
-                        soundFileName.c_str(), alutGetErrorString(error));
+            // サウンドファイルのロード，PCMデータに変換
+            Mix_Chunk* chunk = Mix_LoadWAV(soundFileName.c_str());
+            if (!chunk) {
+                SDL_Log("Failed to load sound file: %s", Mix_GetError());
                 return false;
             }
-            mSounds.emplace(soundFileName, buffer);
+
+            // PCMデータをバッファに流し込む
+            alutGetError();
+            alBufferData(buffers[i], AL_FORMAT_STEREO16, chunk->abuf,
+                         static_cast<ALsizei>(chunk->alen),
+                         MIX_DEFAULT_FREQUENCY);
+            Mix_FreeChunk(chunk);
+            ALenum error = alutGetError();
+            if (error != ALUT_ERROR_NO_ERROR) {
+                SDL_Log("Failed to fill buffer audio data: %s",
+                        alutGetErrorString(error));
+                return false;
+            }
+            mSounds.emplace(soundFileName, buffers[i]);
         }
 
         // イベントデータの作成，格納
