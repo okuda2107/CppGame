@@ -32,6 +32,10 @@ class AudioSystem {
 
     virtual void SetListener(const Matrix4& viewMatrix) {};
 
+    std::unordered_map<unsigned int, class SoundHandler*>& GetHandlers() {
+        return mHandlers;
+    };
+
     virtual class SoundHandler* PlayEvent(const std::string& name) = 0;
 
     virtual void loadtest() {
@@ -40,3 +44,9 @@ class AudioSystem {
 
     virtual void unloadtest() {};
 };
+
+// 現在使っているサウンドエンジン
+#include "api/OpenAL/Bank.h"
+#include "api/OpenAL/Event.h"
+
+typedef AudioSystem<OpenAL::Bank, OpenAL::Event> Audio;

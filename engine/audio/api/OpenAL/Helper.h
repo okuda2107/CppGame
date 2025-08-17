@@ -3,7 +3,7 @@
 
 #include <string>
 
-const char* alGetErrorString(ALenum error) {
+inline const char* alGetErrorString(ALenum error) {
     switch (error) {
         case AL_NO_ERROR:
             return "AL_NO_ERROR: No error";

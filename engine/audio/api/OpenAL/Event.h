@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
 
+#include "Helper.h"
+#include "SDL.h"
+
 namespace OpenAL {
 class Event {
     class OpenAL::Bank* mBank;
@@ -16,5 +19,18 @@ class Event {
     ~Event() {};
 
     ALuint GetSound() { return mBank->GetSound(mSoundID); };
+
+    ALuint CreateSource() {
+        alGetError();
+        ALuint source;
+        alGenSources(1, &source);
+        alSourcei(source, AL_BUFFER, GetSound());
+        ALenum error = alGetError();
+        if (error != AL_NO_ERROR) {
+            SDL_Log("Failed to create source: %s", alGetErrorString(error));
+            return AL_NONE;
+        }
+        return source;
+    }
 };
 }  // namespace OpenAL

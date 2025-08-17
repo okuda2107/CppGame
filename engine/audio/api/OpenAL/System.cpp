@@ -100,8 +100,17 @@ void OpenAL::System::SetListener(const Matrix4& viewMatrix) {
     ;
 }
 
+// OpenALのSourceを作成．失敗するとnullptrを返す．
 SoundHandler* OpenAL::System::PlayEvent(const std::string& name) {
-    ;
-    ;
-    return new OpenAL::Handler();
+    auto iter = mEvents.find(name);
+    if (iter != mEvents.end()) {
+        // サウンドハンドラを作成
+        ALuint source;
+        source = iter->second->CreateSource();
+        // サウンドハンドラを登録
+        OpenAL::Handler* handler = new OpenAL::Handler(this, source);
+        mHandlers.emplace(source, handler);
+        return handler;
+    } else
+        return nullptr;
 }

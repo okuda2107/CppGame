@@ -7,10 +7,6 @@
 #include "AudioSystem.h"
 #include "SDL.h"
 #include "SDL_image.h"
-#include "api/OpenAL/Bank.h"
-#include "api/OpenAL/Event.h"
-
-typedef AudioSystem<OpenAL::Bank, OpenAL::Event> Audio;
 
 class Game {
    public:
