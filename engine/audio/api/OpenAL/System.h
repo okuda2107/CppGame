@@ -39,7 +39,20 @@ class System : public AudioSystem<Bank, Event> {
         for (auto event : mEvents)
             cout << event.first << ":" << event.second << endl;
         cout << endl;
+        alutGetError();
+
+        ALuint source;
+        alGenSources(1, &source);
+        ALfloat ListenerPos[] = {5.0, 0.0, 0.0};
+        alSourcefv(source, AL_POSITION, ListenerPos);
+        alSourcei(source, AL_BUFFER, mEvents.at("bgm_main")->GetSound());
+        alSourcePlay(source);
         SDL_Delay(3000);
+        alSourceStop(source);
+
+        ALenum error = alutGetError();
+        if (error != ALUT_ERROR_NO_ERROR)
+            SDL_Log("error: %s", alutGetErrorString(error));
     };
 
     void unloadtest() {

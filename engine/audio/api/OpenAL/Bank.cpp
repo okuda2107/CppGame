@@ -152,7 +152,7 @@ bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
         std::string id = events[i]["id"].GetString();
         auto eventIter = mEvents.find(id);
         if (eventIter == mEvents.end()) {
-            OpenAL::Event* e = new OpenAL::Event();
+            OpenAL::Event* e = new OpenAL::Event(this);
             e->mSoundID = soundFileName;
             e->mIsStream = events[i]["stream"].GetBool();
             e->mIsLoop = events[i]["loop"].GetBool();

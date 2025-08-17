@@ -3,6 +3,8 @@
 
 namespace OpenAL {
 class Event {
+    class OpenAL::Bank* mBank;
+
    public:
     std::string mSoundID;
     bool mIsStream;
@@ -10,10 +12,9 @@ class Event {
     float mVolume;
     float mPitch;
 
-    Event() {};
+    Event(class OpenAL::Bank* bank) : mBank(bank) {};
     ~Event() {};
 
-    // Helper function to check for OpenAL errors
-    bool checkALError(const std::string& errorMessage) const;
+    ALuint GetSound() { return mBank->GetSound(mSoundID); };
 };
 }  // namespace OpenAL

@@ -35,16 +35,7 @@ class AudioSystem {
     virtual class SoundHandler* PlayEvent(const std::string& name) = 0;
 
     virtual void loadtest() {
-        // test
-        ALuint helloBuffer, helloSource;
-        helloBuffer = alutCreateBufferHelloWorld();  // Bufferはsound data,
-                                                     // Sourcesはどう鳴らすか
-        alGenSources(1, &helloSource);
-        // リスナー(自分)を空間座標に配置
-        ALfloat ListenerPos[] = {5.0, 0.0, 0.0};
-        alSourcefv(helloSource, AL_POSITION, ListenerPos);
-        alSourcei(helloSource, AL_BUFFER, helloBuffer);
-        alSourcePlay(helloSource);
+
     };
 
     virtual void unloadtest() {};
