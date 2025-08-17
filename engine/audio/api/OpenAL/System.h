@@ -2,6 +2,7 @@
 #include <string>
 
 #include "AudioSystem.h"
+#include "Helper.h"
 #include "SDL.h"
 #include "api/OpenAL/Bank.h"
 #include "api/OpenAL/Event.h"
@@ -39,7 +40,7 @@ class System : public AudioSystem<Bank, Event> {
         for (auto event : mEvents)
             cout << event.first << ":" << event.second << endl;
         cout << endl;
-        alutGetError();
+        alGetError();
 
         ALuint source;
         alGenSources(1, &source);
@@ -50,9 +51,8 @@ class System : public AudioSystem<Bank, Event> {
         SDL_Delay(3000);
         alSourceStop(source);
 
-        ALenum error = alutGetError();
-        if (error != ALUT_ERROR_NO_ERROR)
-            SDL_Log("error: %s", alutGetErrorString(error));
+        ALenum error = alGetError();
+        if (error != AL_NO_ERROR) SDL_Log("error: %s", alGetErrorString(error));
     };
 
     void unloadtest() {

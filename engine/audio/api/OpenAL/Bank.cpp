@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 
+#include "Helper.h"
 #include "SDL_log.h"
 #include "SDL_mixer.h"
 #include "api/OpenAL/Event.h"
@@ -112,12 +113,11 @@ bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
 
     // サウンドデータを保持するためのバッファ作成
     std::vector<ALuint> buffers(events.Size());
-    alutGetError();
+    alGetError();
     alGenBuffers(events.Size(), buffers.data());
-    ALenum error = alutGetError();
-    if (error != ALUT_ERROR_NO_ERROR) {
-        SDL_Log("Failed to create OpenAL buffer: %s",
-                alutGetErrorString(error));
+    ALenum error = alGetError();
+    if (error != AL_NO_ERROR) {
+        SDL_Log("Failed to create OpenAL buffer: %s", alGetErrorString(error));
         return false;
     }
 
@@ -134,15 +134,15 @@ bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
             }
 
             // PCMデータをバッファに流し込む
-            alutGetError();
+            alGetError();
             alBufferData(buffers[i], AL_FORMAT_STEREO16, chunk->abuf,
                          static_cast<ALsizei>(chunk->alen),
                          MIX_DEFAULT_FREQUENCY);
             Mix_FreeChunk(chunk);
-            ALenum error = alutGetError();
-            if (error != ALUT_ERROR_NO_ERROR) {
+            ALenum error = alGetError();
+            if (error != AL_NO_ERROR) {
                 SDL_Log("Failed to fill buffer audio data: %s",
-                        alutGetErrorString(error));
+                        alGetErrorString(error));
                 return false;
             }
             mSounds.emplace(soundFileName, buffers[i]);
@@ -173,11 +173,11 @@ bool OpenAL::Bank::Unload() {
     for (auto& sound : mSounds) {
         buffers.push_back(sound.second);
     }
-    alutGetError();
+    alGetError();
     alDeleteBuffers(buffers.size(), buffers.data());
-    ALenum error = alutGetError();
-    if (error != ALUT_ERROR_NO_ERROR) {
-        SDL_Log("Failed to delete buffer: %s", alutGetErrorString(error));
+    ALenum error = alGetError();
+    if (error != AL_NO_ERROR) {
+        SDL_Log("Failed to delete buffer: %s", alGetErrorString(error));
         return false;
     }
 
