@@ -1,13 +1,15 @@
 #pragma once
 #include "AudioSystem.h"
 
+// サウンドイベントの実体
+// Actorに付与されて，再生，停止やポジショナルな情報などを伝達する役割
 class SoundHandler {
    protected:
     friend class AudioSystem;
     SoundHandler() {};
-    virtual ~SoundHandler() {};
 
    public:
+    virtual ~SoundHandler() {};
     virtual bool IsValid() { return false; };
     virtual void Restart() {};
     virtual void Stop(bool allowedFadeOut = true) {};

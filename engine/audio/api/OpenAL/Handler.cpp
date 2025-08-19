@@ -2,61 +2,73 @@
 
 #include "Math.h"
 #include "System.h"
+#include "api/OpenAL/EventInstance.h"
 
-OpenAL::Handler::Handler(OpenAL::System* system, ALuint source)
-    : mSystem(system), mSource(source) {}
+OpenAL::Handler::Handler(OpenAL::System* system, unsigned int id)
+    : mSystem(system), mID(id) {}
 OpenAL::Handler::~Handler() {}
 
+// イベントの実体とは外れて存在するapiのため，実体がまだあるかのチェック
 bool OpenAL::Handler::IsValid() {
-    auto iter = mSystem->mHandlers.find(mSource);
-    if (iter != mSystem->mHandlers.end()) {
+    auto iter = mSystem->mInstances.find(mID);
+    if (iter != mSystem->mInstances.end()) {
         return true;
     }
     return false;
 }
 
 void OpenAL::Handler::Restart() {
-    alSourceRewind(mSource);
-    alSourcePlay(mSource);
+    ALuint source = mSystem->mInstances.at(mID)->GetSource();
+    alSourceRewind(source);
+    alSourcePlay(source);
 }
 
 // todo: フェードアウトはサポートしない．時間があったらする．
-void OpenAL::Handler::Stop(bool allowedFadeOut) { alSourceStop(mSource); }
+void OpenAL::Handler::Stop(bool allowedFadeOut) {
+    ALuint source = mSystem->mInstances.at(mID)->GetSource();
+    alSourceStop(source);
+}
 
 void OpenAL::Handler::SetPaused(bool pause) {
+    ALuint source = mSystem->mInstances.at(mID)->GetSource();
     if (pause) {
-        alSourcePause(mSource);
+        alSourcePause(source);
     } else {
-        alSourcePlay(mSource);
+        alSourcePlay(source);
     }
 }
 
 void OpenAL::Handler::SetVolume(float volume) {
-    alSourcef(mSource, AL_GAIN, volume);
+    ALuint source = mSystem->mInstances.at(mID)->GetSource();
+    alSourcef(source, AL_GAIN, volume);
 }
 
 void OpenAL::Handler::SetPitch(float value) {
-    alSourcef(mSource, AL_PITCH, value);
+    ALuint source = mSystem->mInstances.at(mID)->GetSource();
+    alSourcef(source, AL_PITCH, value);
 }
 
 // todo: 他のパラメータ用？
 void OpenAL::Handler::SetParameter(const std::string& name, float value) {};
 
 bool OpenAL::Handler::GetPaused() const {
+    ALuint source = mSystem->mInstances.at(mID)->GetSource();
     ALint state;
-    alGetSourcei(mSource, AL_SOURCE_STATE, &state);
+    alGetSourcei(source, AL_SOURCE_STATE, &state);
     return state == AL_PAUSED;
 }
 
 float OpenAL::Handler::GetVolume() const {
+    ALuint source = mSystem->mInstances.at(mID)->GetSource();
     ALfloat volume;
-    alGetSourcef(mSource, AL_GAIN, &volume);
+    alGetSourcef(source, AL_GAIN, &volume);
     return volume;
 }
 
 float OpenAL::Handler::GetPitch() const {
+    ALuint source = mSystem->mInstances.at(mID)->GetSource();
     ALfloat pitch;
-    alGetSourcef(mSource, AL_PITCH, &pitch);
+    alGetSourcef(source, AL_PITCH, &pitch);
     return pitch;
 }
 
@@ -66,21 +78,20 @@ float OpenAL::Handler::GetParameter(const std::string& name) { return 0.0; }
 // イベントが3Dオーディオか？
 bool OpenAL::Handler::Is3D() const {
     // イベントの取得
-    if (!mSystem) return false;
-    auto iter = mSystem->mEvents.find(mEventID);
-    if (iter != mSystem->mEvents.end()) {
-        return iter->second->mIs3D;
-    }
-    return false;
+    Event* event = mSystem->mInstances.at(mID)->GetEvent();
+    return event->mIs3D;
 }
 
 // ワールド行列を受け取って，音声が再生される座標を設定
 void OpenAL::Handler::Set3DAttributes(const Matrix4& worldTrans) {
+    ALuint source = mSystem->mInstances.at(mID)->GetSource();
+
     // イベントが3Dオーディオか？
     if (!Is3D()) return;
 
     // イベントの座標
-    ALfloat pos[] = VecToOpenAL(worldTrans.GetTranslation());
+    Vector3 vec = VecToOpenAL(worldTrans.GetTranslation());
+    ALfloat pos[] = {vec.x, vec.y, vec.z};
 
     // 向いている方向
     // 逆ビューでは第3行が前方向
@@ -89,19 +100,13 @@ void OpenAL::Handler::Set3DAttributes(const Matrix4& worldTrans) {
     Vector3 up = VecToOpenAL(worldTrans.GetYAxis());
     // {front[3], up[3]}，{前方向ベクトル (x, y, z), 上方向ベクトル (x, y,
     // z)}からなる6要素の配列
-    ALfloat ori[] = {forward, up};
+    ALfloat ori[] = {forward.x, forward.y, forward.z, up.x, up.y, up.z};
 
     // 速度
-    ALfloat vel[3] = {0, 0, 0};
+    ALfloat vel[] = {0, 0, 0};
 
     // それぞれ設定
-    alSourcefv(mSource, AL_POSITION, pos);
-    alSourcefv(mSource, AL_ORIENTATION, ori);
-    alSourcefv(mSource, AL_VELOCITY, vel);
-}
-
-ALint OpenAL::Handler::GetState() const {
-    ALint state;
-    alGetSourcei(mSource, AL_SOURCE_STATE, &state);
-    return state;
+    alSourcefv(source, AL_POSITION, pos);
+    alSourcefv(source, AL_ORIENTATION, ori);
+    alSourcefv(source, AL_VELOCITY, vel);
 }

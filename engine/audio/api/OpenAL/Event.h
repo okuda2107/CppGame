@@ -3,10 +3,12 @@
 
 #include "Helper.h"
 #include "SDL.h"
+#include "api/OpenAL/Bank.h"
 
 namespace OpenAL {
+// イベントで再生するサウンドのパラメータを保持
 class Event {
-    class OpenAL::Bank* mBank;
+    class Bank* mBank;
 
    public:
     std::string mSoundID;
@@ -16,7 +18,7 @@ class Event {
     float mVolume;
     float mPitch;
 
-    Event(class OpenAL::Bank* bank) : mBank(bank) {};
+    Event(class Bank* bank) : mBank(bank) {};
     ~Event() {};
 
     ALuint GetSound() { return mBank->GetSound(mSoundID); };
@@ -29,7 +31,7 @@ class Event {
         if (!mIs3D) {
             // リスナーから見て相対的な位置で再生する
             alSourcei(source, AL_SOURCE_RELATIVE, AL_TRUE);
-            // 常にここで設定した総体座標で再生する
+            // 常にここで設定した相対座標で再生する
             ALfloat pos[] = {0, 0, 0};
             alSourcefv(source, AL_POSITION, pos);
         }

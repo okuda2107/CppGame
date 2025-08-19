@@ -6,6 +6,7 @@
 #include "al.h"
 #include "alut.h"
 #include "api/OpenAL/Bank.h"
+#include "api/OpenAL/EventInstance.h"
 #include "api/OpenAL/Handler.h"
 #include "api/OpenAL/Helper.h"
 
@@ -91,18 +92,18 @@ void OpenAL::System::UnloadAllBanks() {
 void OpenAL::System::Update(float deltaTime) {
     // stopしたハンドラを探す
     std::vector<unsigned int> done;
-    for (auto& iter : mHandlers) {
-        // ハンドラの状態を取得
-        Handler* handler = iter.second;
-        ALint state = handler->GetState();
+    for (auto& iter : mInstances) {
+        // イベントインスタンスの状態を取得
+        EventInstance* event = iter.second;
+        ALint state = event->GetState();
         if (state == AL_STOPPED) {
             // リソースを解放してidを終了リストに追加
-            alDeleteSources(1, &handler->mSource);
+            delete iter.second;
             done.emplace_back(iter.first);
         }
     };
     // 終了したイベントインスタンを連想配列から削除
-    for (auto id : done) mHandlers.erase(id);
+    for (auto id : done) mInstances.erase(id);
 }
 
 void OpenAL::System::SetListener(const Matrix4& viewMatrix) {
@@ -111,7 +112,8 @@ void OpenAL::System::SetListener(const Matrix4& viewMatrix) {
     invView.Invert();
 
     // リスナーの座標
-    ALfloat pos[] = VecToOpenAL(invView.GetTranslation());
+    Vector3 vec = VecToOpenAL(invView.GetTranslation());
+    ALfloat pos[] = {vec.x, vec.y, vec.z};
 
     // 向いている方向
     // 逆ビューでは第3行が前方向
@@ -120,10 +122,10 @@ void OpenAL::System::SetListener(const Matrix4& viewMatrix) {
     Vector3 up = VecToOpenAL(invView.GetYAxis());
     // {front[3], up[3]}，{前方向ベクトル (x, y, z), 上方向ベクトル (x, y,
     // z)}からなる6要素の配列
-    ALfloat ori[] = {forward, up};
+    ALfloat ori[] = {forward.x, forward.y, forward.z, up.x, up.y, up.z};
 
     // 速度
-    ALfloat vel[3] = {0, 0, 0};
+    ALfloat vel[] = {0, 0, 0};
 
     // それぞれ設定
     alListenerfv(AL_POSITION, pos);
@@ -135,13 +137,13 @@ void OpenAL::System::SetListener(const Matrix4& viewMatrix) {
 SoundHandler* OpenAL::System::PlayEvent(const std::string& name) {
     auto iter = mEvents.find(name);
     if (iter != mEvents.end()) {
+        // イベントインスタンスを作成，登録
+        OpenAL::EventInstance* instance =
+            new OpenAL::EventInstance(iter->second);
+        mInstances.emplace(instance->GetSource(), instance);
         // サウンドハンドラを作成
-        ALuint source;
-        source = iter->second->CreateSource();
-        // サウンドハンドラを登録
-        OpenAL::Handler* handler = new OpenAL::Handler(this, source);
-        handler->mEventID = name;
-        mHandlers.emplace(source, handler);
+        OpenAL::Handler* handler =
+            new OpenAL::Handler(this, instance->GetSource());
         return handler;
     } else
         return nullptr;

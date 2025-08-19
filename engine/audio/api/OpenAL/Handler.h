@@ -8,13 +8,12 @@
 namespace OpenAL {
 class Handler : public SoundHandler {
     class System* mSystem;
-    std::string mEventID;
-    ALuint mSource;
+    unsigned int mID;
 
     friend class System;
 
    public:
-    Handler(class System* system, ALuint source);
+    Handler(class System* system, unsigned int id);
     ~Handler();
 
     bool IsValid();
@@ -34,7 +33,5 @@ class Handler : public SoundHandler {
 
     bool Is3D() const;
     void Set3DAttributes(const Matrix4& worldTrans);
-
-    ALint GetState() const;
 };
 }  // namespace OpenAL
