@@ -125,6 +125,7 @@ void OpenAL::System::SetListener(const Matrix4& viewMatrix) {
     // 速度
     ALfloat vel[3] = {0, 0, 0};
 
+    // それぞれ設定
     alListenerfv(AL_POSITION, pos);
     alListenerfv(AL_ORIENTATION, ori);
     alListenerfv(AL_VELOCITY, vel);
@@ -139,6 +140,7 @@ SoundHandler* OpenAL::System::PlayEvent(const std::string& name) {
         source = iter->second->CreateSource();
         // サウンドハンドラを登録
         OpenAL::Handler* handler = new OpenAL::Handler(this, source);
+        handler->mEventID = name;
         mHandlers.emplace(source, handler);
         return handler;
     } else

@@ -60,6 +60,7 @@ Notes: ver1のフォーマット
         {
             "id": "bgm_main",
             "file": "audio/bgm_main.ogg",
+            "is3D": false,
             "stream": false,
             "loop": true,
             "volume": 1.0,
@@ -87,6 +88,7 @@ bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
                     "properties": {
                         "id": {"type": "string"},
                         "file": {"type": "string"},
+                        "is3D": {"type": "boolean"},
                         "stream": {"type": "boolean"},
                         "loop": {"type": "boolean"},
                         "volume": {"type": "number"},
@@ -154,6 +156,7 @@ bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
         if (eventIter == mEvents.end()) {
             OpenAL::Event* e = new OpenAL::Event(this);
             e->mSoundID = soundFileName;
+            e->mIs3D = events[i]["is3D"].GetBool();
             e->mIsStream = events[i]["stream"].GetBool();
             e->mIsLoop = events[i]["loop"].GetBool();
             e->mVolume = events[i]["volume"].GetFloat();

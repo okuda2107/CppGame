@@ -5,6 +5,7 @@
         {
             "id": "bgm_main",
             "file": "Assets/mac.mp3",
+            "is3D": false,
             "stream": false,
             "loop": true,
             "volume": 1.0,

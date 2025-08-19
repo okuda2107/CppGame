@@ -8,6 +8,7 @@
 namespace OpenAL {
 class Handler : public SoundHandler {
     class System* mSystem;
+    std::string mEventID;
     ALuint mSource;
 
     friend class System;
