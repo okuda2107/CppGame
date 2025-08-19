@@ -57,6 +57,9 @@
         "ctime": "cpp",
         "map": "cpp",
         "regex": "cpp",
-        "xhash": "cpp"
+        "xhash": "cpp",
+        "*.bank": "json",
+        "*.gplevel": "json",
+        "*.gpmesh": "json",
     }
 }
