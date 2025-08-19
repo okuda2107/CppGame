@@ -3,7 +3,7 @@
 
 class SoundHandler {
    protected:
-    friend Audio;
+    friend class AudioSystem;
     SoundHandler() {};
     virtual ~SoundHandler() {};
 

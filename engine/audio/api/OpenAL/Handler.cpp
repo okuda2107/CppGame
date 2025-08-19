@@ -7,7 +7,7 @@ OpenAL::Handler::Handler(OpenAL::System* system, ALuint source)
 OpenAL::Handler::~Handler() {}
 
 bool OpenAL::Handler::IsValid() {
-    auto iter = mSystem->GetHandlers().find(mSource);
+    auto iter = mSystem->mHandlers.find(mSource);
     if (iter != mSystem->GetHandlers().end()) {
         return true;
     }

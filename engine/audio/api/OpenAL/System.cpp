@@ -90,8 +90,15 @@ void OpenAL::System::UnloadAllBanks() {
     mEvents.clear();
 }
 
+// 再生が終了したハンドラをクリーンアップする
 void OpenAL::System::Update(float deltaTime) {
-    ;
+    // stopしたハンドラを探す
+    std::vector<unsigned int> done;
+    for (auto& iter : mHandlers) {
+        // ハンドラの状態を取得
+        Handler* handler = iter.second;
+        ALint state = handler->GetState();
+    };
     ;
 }
 

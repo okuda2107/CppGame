@@ -1,5 +1,6 @@
 #pragma once
 #include <AL/al.h>
+#include <Math.h>
 
 #include <string>
 
@@ -20,4 +21,17 @@ inline const char* alGetErrorString(ALenum error) {
         default:
             return "Unknown AL error";
     }
+}
+
+/*
+エンジンの座標系からOpenALの座標系に変換
++x: 前方, +y: 右, +z: 上
+-> +x: 右, +y: 上, +z: 後方
+*/
+inline Vector3 VecToOpenAL(const Vector3& in) {
+    Vector3 out;
+    out.x = in.y;
+    out.y = in.z;
+    out.z = -in.x;
+    return out;
 }

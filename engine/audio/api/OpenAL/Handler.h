@@ -31,5 +31,7 @@ class Handler : public SoundHandler {
 
     bool Is3D() const;
     void Set3DAttributes(const Matrix4& worldTrans);
+
+    ALint GetState() const;
 };
 }  // namespace OpenAL
