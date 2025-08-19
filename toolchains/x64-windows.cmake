@@ -7,6 +7,8 @@ set(CMAKE_INCLUDE_PATH
     "${CMAKE_SOURCE_DIR}/exlibs/glew-2.2.0/include/GL"
     "${CMAKE_SOURCE_DIR}/exlibs/rapidjson/include/rapidjson"
     "${CMAKE_SOURCE_DIR}/exlibs/Simple-OpenGL-Image-Library/src"
+    "${CMAKE_SOURCE_DIR}/exlibs/openal-soft-1.24.3-bin/include/AL"
+    "${CMAKE_SOURCE_DIR}/exlibs/freealut/include/AL"
 )
 
 set(CMAKE_LIBRARY_PATH
@@ -17,6 +19,7 @@ set(CMAKE_LIBRARY_PATH
     "${CMAKE_SOURCE_DIR}/exlibs/SDL2_ttf-2.24.0/x86_64-w64-mingw32/lib"
     "${CMAKE_SOURCE_DIR}/exlibs/glew-2.2.0/build/lib"
     "${CMAKE_SOURCE_DIR}/exlibs/Simple-OpenGL-Image-Library/build"
+    "${CMAKE_SOURCE_DIR}/exlibs/openal-soft-1.24.3-bin/libs/Win64"
 )
 
 set(CMAKE_EXECUTABLE_SUFFIX ".exe")
@@ -35,4 +38,5 @@ set(OPENGL_LIBRARY
 set(DLL_FILES
     "${CMAKE_SOURCE_DIR}/exlibs/SDL2-2.32.8/x86_64-w64-mingw32/bin/SDL2.dll"
     "${CMAKE_SOURCE_DIR}/exlibs/glew-2.2.0/build/bin/glew32.dll"
+    "${CMAKE_SOURCE_DIR}/exlibs/openal-soft-1.24.3-bin/bin/Win64/soft-oal.dll"
 )
