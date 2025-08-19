@@ -109,7 +109,8 @@ if( -not (Test-Path (Join-Path $ExlibsDir "openal-soft-1.24.3-bin"))) {
 
 if( -not (Test-Path (Join-Path $ExlibsDir "freealut"))) {
     $TmpDir = $(Join-Path $ExlibsDir "freealut")
+    $OpenALDir = $(Join-Path $ExlibsDir "openal-soft-1.24.3-bin")
     git clone https://github.com/vancegroup/freealut.git $TmpDir
-    cmake -S $TmpDir -B $(Join-Path $TmpDir "build") -G "MinGW Makefiles"
+    cmake -S $TmpDir -B $(Join-Path $TmpDir "build") -G "MinGW Makefiles" -DOPENAL_LIBRARY="$(Join-Path $OpenALDir "libs/Win64/OpenAL32.lib")" -DOPENAL_INCLUDE_DIR="$(Join-Path $OpenALDir "include")"
     cmake --build $(Join-Path $TmpDir "build") --config Release
 }
