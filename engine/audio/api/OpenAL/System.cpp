@@ -1,16 +1,13 @@
 #include "System.h"
 
 #include "Game.h"
+#include "Math.h"
 #include "SDL_mixer.h"
 #include "al.h"
-#include "alc.h"
-#include "alext.h"
 #include "alut.h"
 #include "api/OpenAL/Bank.h"
 #include "api/OpenAL/Handler.h"
-#include "efx-creative.h"
-#include "efx-presets.h"
-#include "efx.h"
+#include "api/OpenAL/Helper.h"
 
 OpenAL::System::System(class Game* game) : AudioSystem(game) {}
 OpenAL::System::~System() {}
@@ -109,8 +106,28 @@ void OpenAL::System::Update(float deltaTime) {
 }
 
 void OpenAL::System::SetListener(const Matrix4& viewMatrix) {
-    ;
-    ;
+    // ベクトルを得るためのビュー行列の逆行列を計算
+    Matrix4 invView = viewMatrix;
+    invView.Invert();
+
+    // リスナーの座標
+    ALfloat pos[] = VecToOpenAL(invView.GetTranslation());
+
+    // 向いている方向
+    // 逆ビューでは第3行が前方向
+    Vector3 forward = VecToOpenAL(invView.GetZAxis());
+    // 逆ビューでは第2行が上方向
+    Vector3 up = VecToOpenAL(invView.GetYAxis());
+    // {front[3], up[3]}，{前方向ベクトル (x, y, z), 上方向ベクトル (x, y,
+    // z)}からなる6要素の配列
+    ALfloat ori[] = {forward, up};
+
+    // 速度
+    ALfloat vel[3] = {0, 0, 0};
+
+    alListenerfv(AL_POSITION, pos);
+    alListenerfv(AL_ORIENTATION, ori);
+    alListenerfv(AL_VELOCITY, vel);
 }
 
 // OpenALのSourceを作成．失敗するとnullptrを返す．
