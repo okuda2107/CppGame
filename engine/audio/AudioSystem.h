@@ -13,21 +13,15 @@ class AudioSystem {
     virtual ~AudioSystem() {};
 
     virtual bool Initialize() = 0;
-    virtual void Shutdown() {};
+    virtual void Shutdown() = 0;
 
-    virtual void LoadBank(const std::string& name) {};
-    virtual void UnloadBank(const std::string& name) {};
-    virtual void UnloadAllBanks() {};
+    virtual void LoadBank(const std::string& name) = 0;
+    virtual void UnloadBank(const std::string& name) = 0;
+    virtual void UnloadAllBanks() = 0;
 
-    virtual void Update(float deltaTime) {};
+    virtual void Update(float deltaTime) = 0;
 
-    virtual void SetListener(const Matrix4& viewMatrix) {};
+    virtual void SetListener(const Matrix4& viewMatrix) = 0;
 
     virtual class SoundHandler* PlayEvent(const std::string& name) = 0;
-
-    virtual void loadtest() {
-
-    };
-
-    virtual void unloadtest() {};
 };

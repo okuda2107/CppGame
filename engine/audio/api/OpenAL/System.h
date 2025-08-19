@@ -37,49 +37,6 @@ class System : public AudioSystem {
     void Update(float deltaTIme) override;
 
     void SetListener(const Matrix4& viewMatrix) override;
-    SoundHandler* PlayEvent(const std::string& name) override;
-
-    void loadtest() {
-        using namespace std;
-        cout << "mBanksNum: " << mBanks.size() << endl;
-        cout << "mBanksContents:" << endl;
-        for (auto bank : mBanks)
-            cout << bank.first << ":" << bank.second << endl;
-        cout << endl;
-        auto bank = mBanks.at("./Assets/Bank.json");
-        cout << "eventNum in bank: " << bank->GetEvents().size() << endl;
-        cout << "mEventsNum:" << mEvents.size() << endl;
-        cout << "mEventsContents:" << endl;
-        for (auto event : mEvents)
-            cout << event.first << ":" << event.second << endl;
-        cout << endl;
-        alGetError();
-
-        ALuint source;
-        alGenSources(1, &source);
-        ALfloat ListenerPos[] = {5.0, 0.0, 0.0};
-        alSourcefv(source, AL_POSITION, ListenerPos);
-        alSourcei(source, AL_BUFFER, mEvents.at("bgm_main")->GetSound());
-        alSourcePlay(source);
-        SDL_Delay(3000);
-        alSourceStop(source);
-
-        ALenum error = alGetError();
-        if (error != AL_NO_ERROR) SDL_Log("error: %s", alGetErrorString(error));
-    };
-
-    void unloadtest() {
-        using namespace std;
-        cout << "mBanksNum: " << mBanks.size() << endl;
-        cout << "mBanksContents:" << endl;
-        for (auto bank : mBanks)
-            cout << bank.first << ":" << bank.second << endl;
-        cout << endl;
-        cout << "mEventsNum:" << mEvents.size() << endl;
-        cout << "mEventsContents:" << endl;
-        for (auto event : mEvents)
-            cout << event.first << ":" << event.second << endl;
-        cout << endl;
-    }
+    class SoundHandler* PlayEvent(const std::string& name) override;
 };
 }  // namespace OpenAL

@@ -44,11 +44,6 @@ bool Game::Initialize() {
         return false;
     }
 
-    mAudioSystem->LoadBank("./Assets/Bank.json");
-    mAudioSystem->loadtest();
-    mAudioSystem->UnloadAllBanks();
-    mAudioSystem->unloadtest();
-
     LoadData();
 
     mTicksCount = SDL_GetTicks();
@@ -157,6 +152,7 @@ void Game::UpdateActors(float deltatime) {
 }
 
 void Game::LoadData() {
+    mAudioSystem->LoadBank("Assets/Master.bank");
     LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
     // Quaternion q(Vector3::UnitY, -Math::PiOver2);
     // q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::Pi +
@@ -171,5 +167,8 @@ void Game::UnloadData() {
     if (mRenderer) {
         mRenderer->UnloadData();
     }
-    // erase()はメモリの解放はしないが、メモリの内容をnullにする
+    // erase()は中身のメモリの解放はしない
+    if (mAudioSystem) {
+        mAudioSystem->UnloadAllBanks();
+    }
 }

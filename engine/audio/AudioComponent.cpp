@@ -1,70 +1,73 @@
-// #include "AudioComponent.h"
-// #include "Game.h"
-// #include "Actor.h"
-// #include "AudioSystem.h"
+#include "AudioComponent.h"
 
-// AudioComponent::AudioComponent(Actor* owner, int updateOrder) :
-// Component(owner, updateOrder) {}
+#include "Actor.h"
+#include "Game.h"
+#include "SoundHandler.h"
 
-// AudioComponent::~AudioComponent() {
-//     StopAllEvents();
-// }
+AudioComponent::AudioComponent(Actor* owner, int updateOrder)
+    : Component(owner, updateOrder) {}
 
-// void AudioComponent::Update(float deltaTime) {
-//     Component::Update(deltaTime);
+AudioComponent::~AudioComponent() { StopAllEvents(); }
 
-//     // Remove invalid 2D events
-//     auto iter = mEvents2D.begin();
-//     while (iter != mEvents2D.end()) {
-//         if (!iter->IsValid()) {
-//             iter = mEvents2D.erase(iter);
-//         } else {
-//             ++iter;
-//         }
-//     }
+void AudioComponent::Update(float deltaTime) {
+    Component::Update(deltaTime);
 
-//     // Remove invalid 3D events
-//     iter = mEvents3D.begin();
-//     while (iter != mEvents3D.end()) {
-//         if (!iter->IsValid()) {
-//             iter = mEvents3D.erase(iter);
-//         } else {
-//             ++iter;
-//         }
-//     }
-// }
+    // Remove invalid 2D events
+    auto iter = mEvents2D.begin();
+    while (iter != mEvents2D.end()) {
+        if (!(*iter)->IsValid()) {
+            delete *iter;
+            iter = mEvents2D.erase(iter);
+        } else {
+            ++iter;
+        }
+    }
 
-// void AudioComponent::OnUpdateWorldTransform() {
-//     //Update 3D event's world transforms
-//     Matrix4 world = mOwner->GetWorldTransform();
-//     for (auto& event : mEvents3D) {
-//         if (event.IsValid()) {
-//             event.Set3DAttributes(world);
-//         }
-//     }
-// }
+    // Remove invalid 3D events
+    iter = mEvents3D.begin();
+    while (iter != mEvents3D.end()) {
+        if (!(*iter)->IsValid()) {
+            delete *iter;
+            iter = mEvents3D.erase(iter);
+        } else {
+            ++iter;
+        }
+    }
+}
 
-// SoundEvent AudioComponent::PlayEvent(const std::string& name) {
-//     SoundEvent e = mOwner->GetGame()->GetAudioSystem()->PlayEvent(name);
-//     // Is this 2D or 3D?
-//     if (e.Is3D()) {
-//         mEvents3D.emplace_back(e);
-//         // Set initial 3D attributes
-//         e.Set3DAttributes(mOwner->GetWorldTransform());
-//     } else {
-//         mEvents2D.emplace_back(e);
-//     }
-//     return e;
-// }
+void AudioComponent::OnUpdateWorldTransform() {
+    // Update 3D event's world transforms
+    Matrix4 world = mOwner->GetWorldTransform();
+    for (auto event : mEvents3D) {
+        if (event->IsValid()) {
+            event->Set3DAttributes(world);
+        }
+    }
+}
 
-// void AudioComponent::StopAllEvents() {
-//     // Stop all sounds
-//     for (auto& e : mEvents2D) {
-//         e.Stop();
-//     }
-//     for (auto& e : mEvents3D) {
-//         e.Stop();
-//     }
-//     mEvents2D.clear();
-//     mEvents3D.clear();
-// }
+SoundHandler* AudioComponent::PlayEvent(const std::string& name) {
+    auto e = mOwner->GetGame()->GetAudioSystem()->PlayEvent(name);
+    // Is this 2D or 3D?
+    if (e->Is3D()) {
+        mEvents3D.emplace_back(e);
+        // Set initial 3D attributes
+        e->Set3DAttributes(mOwner->GetWorldTransform());
+    } else {
+        mEvents2D.emplace_back(e);
+    }
+    return e;
+}
+
+void AudioComponent::StopAllEvents() {
+    // Stop all sounds
+    for (auto& e : mEvents2D) {
+        e->Stop();
+        delete e;
+    }
+    for (auto& e : mEvents3D) {
+        e->Stop();
+        delete e;
+    }
+    mEvents2D.clear();
+    mEvents3D.clear();
+}

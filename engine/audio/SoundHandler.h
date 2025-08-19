@@ -1,7 +1,6 @@
 #pragma once
 #include "AudioSystem.h"
 
-// サウンドイベントの実体
 // Actorに付与されて，再生，停止やポジショナルな情報などを伝達する役割
 class SoundHandler {
    protected:
@@ -10,21 +9,21 @@ class SoundHandler {
 
    public:
     virtual ~SoundHandler() {};
-    virtual bool IsValid() { return false; };
-    virtual void Restart() {};
-    virtual void Stop(bool allowedFadeOut = true) {};
+    virtual bool IsValid() = 0;
+    virtual void Restart() = 0;
+    virtual void Stop(bool allowedFadeOut = true) = 0;
 
-    virtual void SetPaused(bool pause) {};
+    virtual void SetPaused(bool pause) = 0;
     // Set the volume (0.0f to 1.0f)
-    virtual void SetVolume(float volume) {};
-    virtual void SetPitch(float value) {};
-    virtual void SetParameter(const std::string& name, float value) {};
+    virtual void SetVolume(float volume) = 0;
+    virtual void SetPitch(float value) = 0;
+    virtual void SetParameter(const std::string& name, float value) = 0;
 
-    virtual bool GetPaused() const { return false; };
-    virtual float GetVolume() const { return 0.0; };
-    virtual float GetPitch() const { return 0.0; };
-    virtual float GetParameter(const std::string& name) { return 0.0; };
+    virtual bool GetPaused() const = 0;
+    virtual float GetVolume() const = 0;
+    virtual float GetPitch() const = 0;
+    virtual float GetParameter(const std::string& name) = 0;
 
-    virtual bool Is3D() const { return false; };
-    virtual void Set3DAttributes(const Matrix4& worldTrans) {};
+    virtual bool Is3D() const = 0;
+    virtual void Set3DAttributes(const Matrix4& worldTrans) = 0;
 };
