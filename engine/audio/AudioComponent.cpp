@@ -46,7 +46,8 @@ void AudioComponent::OnUpdateWorldTransform() {
 }
 
 SoundHandler* AudioComponent::PlayEvent(const std::string& name) {
-    auto e = mOwner->GetGame()->GetAudioSystem()->PlayEvent(name);
+    // ここでSoundHandlerがnewされる．
+    SoundHandler* e = mOwner->GetGame()->GetAudioSystem()->PlayEvent(name);
     // Is this 2D or 3D?
     if (e->Is3D()) {
         mEvents3D.emplace_back(e);
