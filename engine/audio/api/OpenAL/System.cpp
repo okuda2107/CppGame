@@ -98,8 +98,14 @@ void OpenAL::System::Update(float deltaTime) {
         // ハンドラの状態を取得
         Handler* handler = iter.second;
         ALint state = handler->GetState();
+        if (state == AL_STOPPED) {
+            // リソースを解放してidを終了リストに追加
+            alDeleteSources(1, &handler->mSource);
+            done.emplace_back(iter.first);
+        }
     };
-    ;
+    // 終了したイベントインスタンを連想配列から削除
+    for (auto id : done) mHandlers.erase(id);
 }
 
 void OpenAL::System::SetListener(const Matrix4& viewMatrix) {

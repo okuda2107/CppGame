@@ -4,8 +4,9 @@
 
 #include "AudioSystem.h"
 #include "Helper.h"
+#include "Math.h"
 #include "SDL.h"
-#include "api/OpenAL/Bank.h"
+#include "alut.h"
 #include "api/OpenAL/Event.h"
 
 namespace OpenAL {
@@ -18,6 +19,8 @@ class System : public AudioSystem {
     // ハンドラ: 再生中の音声を管理
     // 再生が終了するタイミングは不明であり，アクセスがランダムであるのでunordered_map
     std::unordered_map<unsigned int, class Handler*> mHandlers;
+
+    friend class Handler;
 
    public:
     System(class Game* game);

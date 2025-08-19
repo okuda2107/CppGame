@@ -8,7 +8,7 @@ OpenAL::Handler::~Handler() {}
 
 bool OpenAL::Handler::IsValid() {
     auto iter = mSystem->mHandlers.find(mSource);
-    if (iter != mSystem->GetHandlers().end()) {
+    if (iter != mSystem->mHandlers.end()) {
         return true;
     }
     return false;
@@ -61,3 +61,9 @@ float OpenAL::Handler::GetPitch() const {
 
 // todo: 他のパラメータ用？
 float OpenAL::Handler::GetParameter(const std::string& name) { return 0.0; }
+
+ALint OpenAL::Handler::GetState() const {
+    ALint state;
+    alGetSourcei(mSource, AL_SOURCE_STATE, &state);
+    return state;
+}

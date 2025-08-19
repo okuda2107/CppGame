@@ -10,6 +10,8 @@ class Handler : public SoundHandler {
     class System* mSystem;
     ALuint mSource;
 
+    friend class System;
+
    public:
     Handler(class System* system, ALuint source);
     ~Handler();

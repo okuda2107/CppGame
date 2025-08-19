@@ -8,7 +8,13 @@
                 "/usr/include/SOIL",
                 "/usr/include/GL",
                 "/usr/include/AL",
-                "/usr/include/rapidjson"
+                "/usr/include/rapidjson",
+                "${workspaceFolder}/exlibs/freealut/include/AL",
+                "${workspaceFolder}/exlibs/openal-soft-1.24.3-bin/include/AL",
+                "${workspaceFolder}/exlibs/openal-soft-1.24.3-bin/include",
+                "${workspaceFolder}/exlibs/SDL2-2.32.8/x86_64-w64-mingw32/include/SDL2",
+                "${workspaceFolder}/exlibs/rapidjson/include/rapidjson",
+                "${workspaceFolder}/exlibs/SDL2_mixer-2.8.1/x86_64-w64-mingw32/include/SDL2"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",

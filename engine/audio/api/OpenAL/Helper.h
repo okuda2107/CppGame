@@ -1,8 +1,9 @@
 #pragma once
 #include <AL/al.h>
-#include <Math.h>
 
 #include <string>
+
+#include "Math.h"
 
 inline const char* alGetErrorString(ALenum error) {
     switch (error) {
