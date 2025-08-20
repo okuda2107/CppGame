@@ -18,9 +18,15 @@ bool OpenAL::Handler::IsValid() {
 }
 
 void OpenAL::Handler::Restart() {
-    ALuint source = mSystem->mInstances.at(mID)->GetSource();
-    alSourceRewind(source);
-    alSourcePlay(source);
+    EventInstance* e = mSystem->mInstances.at(mID);
+    ALuint source = e->GetSource();
+    ALint state = e->GetState();
+    if (state == AL_PLAYING) {  // 既に鳴っていたら位置をリセットするのみ
+        alSourceRewind(source);
+    } else if (state == AL_PAUSED || state == AL_STOPPED) {
+        alSourceRewind(source);  // 位置をリセット
+        alSourcePlay(source);    // 再生
+    }
 }
 
 // todo: フェードアウトはサポートしない．時間があったらする．
@@ -30,10 +36,13 @@ void OpenAL::Handler::Stop(bool allowedFadeOut) {
 }
 
 void OpenAL::Handler::SetPaused(bool pause) {
-    ALuint source = mSystem->mInstances.at(mID)->GetSource();
-    if (pause) {
+    EventInstance* e = mSystem->mInstances.at(mID);
+    ALuint source = e->GetSource();
+    ALint state = e->GetState();
+
+    if (pause && state == AL_PLAYING) {
         alSourcePause(source);
-    } else {
+    } else if (!pause && state == AL_PAUSED) {
         alSourcePlay(source);
     }
 }

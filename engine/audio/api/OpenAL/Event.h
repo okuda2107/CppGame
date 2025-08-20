@@ -8,6 +8,7 @@
 
 namespace OpenAL {
 // イベントで再生するサウンドのパラメータを保持
+// イベントインスタンスを管理する．
 class Event {
     class Bank* mBank;
     std::vector<class EventInstance*> mInstances;

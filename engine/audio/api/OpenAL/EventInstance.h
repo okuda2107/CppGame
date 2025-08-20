@@ -5,6 +5,7 @@
 
 namespace OpenAL {
 // イベントの実体
+// このクラスはEventクラスで管理される．
 class EventInstance {
     class Event* mEvent;
     ALuint mSource;
