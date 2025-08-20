@@ -18,4 +18,6 @@ class AudioComponent : public Component {
 
     SoundHandler* PlayEvent(const std::string& name);
     void StopAllEvents();
+
+    TypeID GetType() const { return TypeID::TAudioComponent; };
 };

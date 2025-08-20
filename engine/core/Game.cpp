@@ -151,12 +151,11 @@ void Game::UpdateActors(float deltatime) {
     }
 }
 
+#include "TestActor.h"
 void Game::LoadData() {
+    // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
     mAudioSystem->LoadBank("Assets/Master.bank");
-    LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
-    // Quaternion q(Vector3::UnitY, -Math::PiOver2);
-    // q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::Pi +
-    // Math::Pi / 4.0f)); a->SetRotation(q);
+    TestActor* ta = new TestActor(this);
 }
 
 void Game::UnloadData() {

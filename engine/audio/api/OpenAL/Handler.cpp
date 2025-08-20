@@ -11,7 +11,7 @@ OpenAL::Handler::~Handler() {}
 // イベントの実体とは外れて存在するapiのため，実体がまだあるかのチェック
 bool OpenAL::Handler::IsValid() {
     auto iter = mSystem->mInstances.find(mID);
-    if (iter != mSystem->mInstances.end()) {
+    if (iter != mSystem->mInstances.end() && iter->second) {
         return true;
     }
     return false;

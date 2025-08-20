@@ -1,14 +1,16 @@
 #pragma once
+#include <algorithm>
 #include <string>
+#include <vector>
 
-#include "Helper.h"
+#include "Bank.h"
 #include "SDL.h"
-#include "api/OpenAL/Bank.h"
 
 namespace OpenAL {
 // イベントで再生するサウンドのパラメータを保持
 class Event {
     class Bank* mBank;
+    std::vector<class EventInstance*> mInstances;
 
    public:
     std::string mSoundID;
@@ -18,29 +20,12 @@ class Event {
     float mVolume;
     float mPitch;
 
-    Event(class Bank* bank) : mBank(bank) {};
-    ~Event() {};
+    Event(class Bank* bank);
+    ~Event();
 
     ALuint GetSound() { return mBank->GetSound(mSoundID); };
 
-    ALuint CreateSource() {
-        alGetError();
-        ALuint source;
-        alGenSources(1, &source);
-        alSourcei(source, AL_BUFFER, GetSound());
-        if (!mIs3D) {
-            // リスナーから見て相対的な位置で再生する
-            alSourcei(source, AL_SOURCE_RELATIVE, AL_TRUE);
-            // 常にここで設定した相対座標で再生する
-            ALfloat pos[] = {0, 0, 0};
-            alSourcefv(source, AL_POSITION, pos);
-        }
-        ALenum error = alGetError();
-        if (error != AL_NO_ERROR) {
-            SDL_Log("Failed to create source: %s", alGetErrorString(error));
-            return AL_NONE;
-        }
-        return source;
-    }
+    void AddInstance(class EventInstance* instance);
+    void RemoveInstance(class EventInstance* instance);
 };
 }  // namespace OpenAL

@@ -62,8 +62,8 @@ void OpenAL::System::UnloadBank(const std::string& name) {
     auto iter = mBanks.find(name);
     if (iter == mBanks.end()) return;
 
-    // イベントのコピーを開放
-    // イベントはバンクのイベントを参照しているはずなので，イベントの実体を開放する必要はない？
+    // イベントのコピーを解放
+    // イベントはバンクのイベントを参照しているはずなので，イベントの実体を解放する必要はない？
     auto events = iter->second->GetEvents();
     for (auto event : events) {
         auto iter = mEvents.find(event.first);
@@ -95,6 +95,10 @@ void OpenAL::System::Update(float deltaTime) {
     for (auto& iter : mInstances) {
         // イベントインスタンスの状態を取得
         EventInstance* event = iter.second;
+        if (!event) {
+            done.emplace_back(iter.first);
+            continue;
+        }
         ALint state = event->GetState();
         if (state == AL_STOPPED) {
             // リソースを解放してidを終了リストに追加
@@ -102,7 +106,7 @@ void OpenAL::System::Update(float deltaTime) {
             done.emplace_back(iter.first);
         }
     };
-    // 終了したイベントインスタンを連想配列から削除
+    // 終了したイベントインスタンスを連想配列から削除
     for (auto id : done) mInstances.erase(id);
 }
 

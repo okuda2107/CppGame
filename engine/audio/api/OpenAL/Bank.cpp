@@ -169,6 +169,11 @@ bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
 }
 
 bool OpenAL::Bank::Unload() {
+    // イベントのメモリ解放
+    for (auto event : mEvents) {
+        delete event.second;
+    }
+
     alGetError();
     // サウンドバッファのメモリ開放
     std::vector<ALuint> buffers;
@@ -182,11 +187,6 @@ bool OpenAL::Bank::Unload() {
     if (error != AL_NO_ERROR) {
         SDL_Log("Failed to delete buffer: %s", alGetErrorString(error));
         return false;
-    }
-
-    // イベントのメモリ解放
-    for (auto event : mEvents) {
-        delete event.second;
     }
 
     mEvents.clear();

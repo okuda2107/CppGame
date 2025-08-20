@@ -13,7 +13,7 @@ add_executable(app ${CXX_FILES})
 file(GLOB INCLUDE_ROOT
     "${CMAKE_SOURCE_DIR}/engine/*"
 )
-target_include_directories(app PRIVATE ${INCLUDE_ROOT})
+target_include_directories(app PRIVATE ${INCLUDE_ROOT} "${CMAKE_SOURCE_DIR}/test")
 
 target_include_directories(app PRIVATE ${CMAKE_INCLUDE_PATH})
 
