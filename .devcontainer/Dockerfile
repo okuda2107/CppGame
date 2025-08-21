@@ -51,7 +51,7 @@ RUN sudo apt-get update && sudo apt-get install -y \
         libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libsdl2-ttf-dev \
         libsoil-dev \
         libglew-dev libgl1-mesa-dev xorg-dev libglu1-mesa-dev \
-        libopenal-dev libalut-dev pulseaudio \
+        libopenal-dev libalut-dev libpulse0 libpulse-dev \
         rapidjson-dev \
         # mingw-w64 gcc-mingw-w64 g++-mingw-w64 \
         # python3 python3-jinja2 \
