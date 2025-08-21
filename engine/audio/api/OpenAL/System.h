@@ -38,5 +38,11 @@ class System : public AudioSystem {
 
     void SetListener(const Matrix4& viewMatrix) override;
     class SoundHandler* PlayEvent(const std::string& name) override;
+
+    // idのインスタンスが無ければ，nullptrを返す
+    class EventInstance* GetInstance(unsigned int id) {
+        auto iter = mInstances.find(id);
+        return iter != mInstances.end() ? iter->second : nullptr;
+    };
 };
 }  // namespace OpenAL

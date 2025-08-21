@@ -10,11 +10,8 @@ OpenAL::Handler::~Handler() {}
 
 // イベントの実体とは外れて存在するapiのため，実体がまだあるかのチェック
 bool OpenAL::Handler::IsValid() {
-    auto iter = mSystem->mInstances.find(mID);
-    if (iter != mSystem->mInstances.end() && iter->second) {
-        return true;
-    }
-    return false;
+    std::cout << "debug" << std::endl;
+    return mSystem && mSystem->GetInstance(mID);
 }
 
 void OpenAL::Handler::Restart() {
@@ -23,7 +20,8 @@ void OpenAL::Handler::Restart() {
     ALint state = e->GetState();
     if (state == AL_PLAYING) {  // 既に鳴っていたら位置をリセットするのみ
         alSourceRewind(source);
-    } else if (state == AL_PAUSED || state == AL_STOPPED) {
+    } else if (state == AL_INITIAL || state == AL_PAUSED ||
+               state == AL_STOPPED) {
         alSourceRewind(source);  // 位置をリセット
         alSourcePlay(source);    // 再生
     }
@@ -103,10 +101,10 @@ void OpenAL::Handler::Set3DAttributes(const Matrix4& worldTrans) {
     ALfloat pos[] = {vec.x, vec.y, vec.z};
 
     // 向いている方向
-    // 逆ビューでは第3行が前方向
-    Vector3 forward = VecToOpenAL(worldTrans.GetZAxis());
-    // 逆ビューでは第2行が上方向
-    Vector3 up = VecToOpenAL(worldTrans.GetYAxis());
+    // ワールド空間では第1行が前方向
+    Vector3 forward = VecToOpenAL(worldTrans.GetXAxis());
+    // ワールド空間では第3行が上方向
+    Vector3 up = VecToOpenAL(worldTrans.GetZAxis());
     // {front[3], up[3]}，{前方向ベクトル (x, y, z), 上方向ベクトル (x, y,
     // z)}からなる6要素の配列
     ALfloat ori[] = {forward.x, forward.y, forward.z, up.x, up.y, up.z};

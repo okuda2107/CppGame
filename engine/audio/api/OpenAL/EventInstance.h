@@ -15,7 +15,7 @@ class EventInstance {
     ~EventInstance();
 
     class Event* GetEvent() { return mEvent; }
-    ALuint& GetSource() { return mSource; }
+    ALuint GetSource() { return mSource; }
     ALint GetState() {
         ALint state;
         alGetSourcei(mSource, AL_SOURCE_STATE, &state);

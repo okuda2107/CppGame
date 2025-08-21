@@ -144,10 +144,10 @@ SoundHandler* OpenAL::System::PlayEvent(const std::string& name) {
         // イベントインスタンスを作成，登録
         OpenAL::EventInstance* instance =
             new OpenAL::EventInstance(iter->second);
-        mInstances.emplace(instance->GetSource(), instance);
+        unsigned int id = instance->GetSource();
+        mInstances.emplace(id, instance);
         // サウンドハンドラを作成
-        OpenAL::Handler* handler =
-            new OpenAL::Handler(this, instance->GetSource());
+        OpenAL::Handler* handler = new OpenAL::Handler(this, id);
         return handler;
     } else
         return nullptr;

@@ -7,12 +7,11 @@
 
 namespace OpenAL {
 class Handler : public SoundHandler {
-    class System* mSystem;
-    unsigned int mID;
-
     friend class System;
 
    public:
+    class System* mSystem;
+    unsigned int mID;
     Handler(class System* system, unsigned int id);
     ~Handler();
 

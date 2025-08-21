@@ -9,6 +9,8 @@
 class TestActor : Actor {
     SoundHandler* handler;
 
+    Matrix4 mView;
+
    public:
     TestActor(class Game* game) : Actor(game) {
         this->SetPosition(Vector3(200, 100, 0));
@@ -16,14 +18,19 @@ class TestActor : Actor {
         mc->SetMesh(GetGame()->GetRenderer()->GetMesh("Assets/Sphere.gpmesh"));
         AudioComponent* ac = new AudioComponent(this);
         handler = ac->PlayEvent("bgm_main");
+        mView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX,
+                                      Vector3::UnitZ);
+        GetGame()->GetAudioSystem()->SetListener(mView);
     };
     ~TestActor() {};
 
     void ActorInput(const uint8_t* keystate) {
-        if (handler->IsValid()) {
+        if (handler && handler->IsValid()) {  // 削除された直後のここでセグフォ
             if (keystate[SDL_SCANCODE_S]) handler->Restart();
             if (keystate[SDL_SCANCODE_X]) handler->SetPaused(true);
             if (keystate[SDL_SCANCODE_C]) handler->SetPaused(false);
+        } else {
+            std::cout << "debug" << std::endl;
         }
         if (keystate[SDL_SCANCODE_A]) this->SetPosition(Vector3(200, -100, 0));
         if (keystate[SDL_SCANCODE_D]) this->SetPosition(Vector3(200, 100, 0));

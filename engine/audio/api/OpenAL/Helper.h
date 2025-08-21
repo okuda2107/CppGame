@@ -5,6 +5,7 @@
 
 #include "Math.h"
 
+namespace OpenAL {
 inline const char* alGetErrorString(ALenum error) {
     switch (error) {
         case AL_NO_ERROR:
@@ -29,10 +30,12 @@ inline const char* alGetErrorString(ALenum error) {
 +x: 前方, +y: 右, +z: 上
 -> +x: 右, +y: 上, +z: 後方
 */
+static constexpr float rate = 0.01;
 inline Vector3 VecToOpenAL(const Vector3& in) {
     Vector3 out;
-    out.x = in.y;
-    out.y = in.z;
-    out.z = -in.x;
+    out.x = in.y * rate;
+    out.y = in.z * rate;
+    out.z = -in.x * rate;
     return out;
 }
+}  // namespace OpenAL
