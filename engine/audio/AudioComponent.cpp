@@ -48,9 +48,11 @@ void AudioComponent::OnUpdateWorldTransform() {
 //
 SoundHandler* AudioComponent::GetEvent(const std::string& name) {
     auto iter3D = mEvents3D.find(name);
-    if (iter3D != mEvents3D.end()) return iter3D->second;
+    if (iter3D != mEvents3D.end() && iter3D->second->IsValid())
+        return iter3D->second;
     auto iter2D = mEvents2D.find(name);
-    if (iter2D != mEvents2D.end()) return iter2D->second;
+    if (iter2D != mEvents2D.end() && iter2D->second->IsValid())
+        return iter2D->second;
     return nullptr;
 }
 
