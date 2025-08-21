@@ -9,10 +9,7 @@ OpenAL::Handler::Handler(OpenAL::System* system, unsigned int id)
 OpenAL::Handler::~Handler() {}
 
 // イベントの実体とは外れて存在するapiのため，実体がまだあるかのチェック
-bool OpenAL::Handler::IsValid() {
-    std::cout << "debug" << std::endl;
-    return mSystem && mSystem->GetInstance(mID);
-}
+bool OpenAL::Handler::IsValid() { return mSystem && mSystem->GetInstance(mID); }
 
 void OpenAL::Handler::Restart() {
     EventInstance* e = mSystem->mInstances.at(mID);
