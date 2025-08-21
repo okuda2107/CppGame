@@ -25,7 +25,7 @@ target_link_libraries(app PRIVATE SDL2_mixer)
 target_link_libraries(app PRIVATE SDL2_net)
 target_link_libraries(app PRIVATE SDL2_ttf)
 target_link_libraries(app PRIVATE SOIL)
-target_link_libraries(app PRIVATE openal alut)
+target_link_libraries(app PRIVATE ${OPENAL_LIBRARY})
 target_link_libraries(app PRIVATE ${OPENGL_LIBRARY})
 
 set(RELEASE_DIR "${CMAKE_SOURCE_DIR}/Release")

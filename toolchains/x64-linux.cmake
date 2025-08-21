@@ -32,6 +32,11 @@ set(OPENGL_LIBRARY
     GLEW
 )
 
+set(OPENAL_LIBRARY
+    openal
+    alut
+)
+
 set(DLL_FILES
     "/usr/lib/x86_64-linux-gnu/libSDL2.so"
     "/usr/lib/x86_64-linux-gnu/libalut.so"
