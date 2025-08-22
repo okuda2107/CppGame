@@ -64,6 +64,13 @@ if ( -not (Test-Path $msys64Path)) {
     $env:Path += ";$mingwBin"
 }
 
+if( -not (Test-Path (Join-Path $ExlibsDir "googletest-1.17.0"))) {
+    $TmpDir = $(Join-Path $ExlibsDir "googletest-1.17.0")
+    Download-Lib "https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip" $ExlibsDir
+    cmake -S $(Join-Path $TmpDir "build/cmake")-B $(Join-Path $TmpDir "build") -G "MinGW Makefiles"
+    cmake --build $(Join-Path $TmpDir "build") --config Release
+}
+
 if( -not (Test-Path (Join-Path $ExlibsDir "SDL2-2.32.8"))) {
     Download-Lib "https://github.com/libsdl-org/SDL/releases/download/release-2.32.8/SDL2-devel-2.32.8-mingw.zip" $ExlibsDir
 }
