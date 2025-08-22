@@ -14,11 +14,11 @@ OpenAL::System::System(class Game* game) : AudioSystem(game) {}
 OpenAL::System::~System() {}
 
 bool OpenAL::System::Initialize() {
-    if (!Mix_Init(MIX_INIT_MP3 || MIX_INIT_OGG)) {
+    if (!Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG)) {
         SDL_Log("Failed to Initialize SDL_Mixer");
         return false;
     }
-    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048)) {
+    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 1, 2048)) {
         SDL_Log("Failed to open auido device");
         return false;
     }

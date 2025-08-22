@@ -137,7 +137,7 @@ bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
 
             // PCMデータをバッファに流し込む
             alGetError();
-            alBufferData(buffers[i], AL_FORMAT_STEREO16, chunk->abuf,
+            alBufferData(buffers[i], AL_FORMAT_MONO16, chunk->abuf,
                          static_cast<ALsizei>(chunk->alen),
                          MIX_DEFAULT_FREQUENCY);
             Mix_FreeChunk(chunk);
