@@ -66,44 +66,9 @@ install_pkg() {
 
 install_command git g++ make cmake curl tar
 
-# cd "$EXLIBS_DIR"
-
-# if [ ! -d "SDL2-2.32.0" ]; then
-#     curl -fsSL "https://github.com/libsdl-org/SDL/releases/download/release-2.32.0/SDL2-devel-2.32.0-mingw.tar.gz" | tar -xz
-# fi
-
-# if [ ! -d "SDL2_image-2.8.5" ]; then
-#     curl -fsSL "https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.5/SDL2_image-devel-2.8.5-mingw.tar.gz" | tar -xz
-# fi
-
-# if [ ! -d "SDL2_mixer-2.8.1" ]; then
-#     curl -fsSL "https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.8.1/SDL2_mixer-devel-2.8.1-mingw.tar.gz" | tar -xz
-# fi
-
-# if [ ! -d "SDL2_net-2.2.0" ]; then
-#     curl -fsSL "https://github.com/libsdl-org/SDL_net/releases/download/release-2.2.0/SDL2_net-devel-2.2.0-mingw.tar.gz" | tar -xz
-# fi
-
-# if [ ! -d "SDL2_ttf-2.24.0" ]; then
-#     curl -fsSL "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.24.0/SDL2_ttf-devel-2.24.0-mingw.tar.gz" | tar -xz
-# fi
-
-# if [ ! -d "rapidjson-1.1.0" ]; then
-#     curl -fsSL "https://github.com/Tencent/rapidjson/archive/refs/tags/v1.1.0.tar.gz" | tar -xz
-# fi
-
-# if [ ! -d "glew-2.2.0" ]; then
-#     install_pkg libgl1-mesa-dev libglu1-mesa-dev
-#     curl -fsSL "https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.tgz" | tar -xz
-#     cd "$EXLIBS_DIR"/glew-2.2.0/build
-#     cmake ./cmake
-#     make -j4
-#     cd "$EXLIBS_DIR"
-# fi
-
-# if [ ! -d "Simple-OpenGL-Image-Library" ]; then
-#     git clone https://github.com/kbranigan/Simple-OpenGL-Image-Library.git
-#     cd "$EXLIBS_DIR"/Simple-OpenGL-Image-Library
-#     make
-#     cd "$EXLIBS_DIR"
-# fi
+if [ ! -d "googletest-1.17.0" ]; then
+    TMP_DIR="$EXLIBS_DIR/googletest-1.17.0"
+    curl -fsSL "https://github.com/google/googletest/releases/download/v1.17.0/googletest-1.17.0.tar.gz" | tar -xz -C "$EXLIBS_DIR"
+    cmake -S "$TMP_DIR" -B "$TMP_DIR/build"
+    cmake --build "$TMP_DIR/build" --config Release
+fi
