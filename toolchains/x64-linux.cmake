@@ -13,18 +13,17 @@ set(CMAKE_INCLUDE_PATH
 #     "${CMAKE_SOURCE_DIR}/exlibs/xxx""
 # )
 
-set(SDL2_LIBRARY
-    SDL2
-)
-
-set(OPENGL_LIBRARY
-    GL
-    GLEW
-)
-
-set(OPENAL_LIBRARY
-    openal
-    alut
+set(CMAKE_LIBRARIES
+    "SDL2"
+    "SDL2_image"
+    "SDL2_mixer"
+    "SDL2_net"
+    "SDL2_ttf"
+    "SOIL"
+    "GL"
+    "GLEW"
+    "openal"
+    "alut"
 )
 
 set(DLL_FILES

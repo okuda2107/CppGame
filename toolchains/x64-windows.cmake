@@ -32,20 +32,19 @@ set(CMAKE_LIBRARY_PATH
 
 set(CMAKE_EXECUTABLE_SUFFIX ".exe")
 
-set(SDL2_LIBRARY
-    mingw32
-    SDL2main
-    SDL2
-)
-
-set(OPENGL_LIBRARY
-    OPENGL32
-    GLEW32
-)
-
-set(OPENAL_LIBRARY
-    OpenAL32
-    alut
+set(CMAKE_LIBRARIES
+    "mingw32"
+    "SDL2main"
+    "SDL2"
+    "SDL2_image"
+    "SDL2_mixer"
+    "SDL2_net"
+    "SDL2_ttf"
+    "SOIL"
+    "OPENGL32"
+    "GLEW32"
+    "OpenAL32"
+    "alut"
 )
 
 set(DLL_FILES
