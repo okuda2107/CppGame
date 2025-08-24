@@ -10,8 +10,6 @@ set(CMAKE_INCLUDE_PATH
 #     "${CMAKE_SOURCE_DIR}/exlibs/xxx""
 # )
 
-# set(GTEST_SUBDIR "${CMAKE_SOURCE_DIR}/exlibs/googletest-1.17.0/build")
-
 set(SDL2_LIBRARY
     SDL2
 )

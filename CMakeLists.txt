@@ -1,5 +1,5 @@
-file(GLOB_RECURSE CXX_FILES
-    "engine/*/*.cpp"
+file(GLOB_RECURSE CXX_FILES CONFIGURE_DEPENDS
+    "${CMAKE_SOURCE_DIR}/engine/*/*.cpp"
 )
 
 cmake_minimum_required(VERSION 3.21)
@@ -18,13 +18,6 @@ target_include_directories(app PRIVATE ${INCLUDE_ROOT})
 target_include_directories(app PRIVATE ${CMAKE_INCLUDE_PATH})
 
 target_link_directories(app PRIVATE ${CMAKE_LIBRARY_PATH})
-
-# add_subdirectory(${GTEST_SUBDIR})
-
-# file(GLOB_RECURSE TEST_FILES
-#     "engine/*/*.cpp"
-#     "test/*/*.cpp"
-# )
 
 target_link_libraries(app PRIVATE ${SDL2_LIBRARY})
 target_link_libraries(app PRIVATE SDL2_image)
