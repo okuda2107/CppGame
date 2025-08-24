@@ -1,5 +1,7 @@
+set(ROOT_DIR "${CMAKE_SOURCE_DIR}")
+
 file(GLOB_RECURSE CXX_FILES CONFIGURE_DEPENDS
-    "${CMAKE_SOURCE_DIR}/engine/*/*.cpp"
+    "${ROOT_DIR}/engine/*/*.cpp"
 )
 
 cmake_minimum_required(VERSION 3.21)
@@ -11,7 +13,7 @@ add_executable(app ${CXX_FILES})
 # エンジンのヘッダファイルを読み込み
 # 再帰的にディレクトリのみを取得
 file(GLOB INCLUDE_ROOT
-    "${CMAKE_SOURCE_DIR}/engine/*"
+    "${ROOT_DIR}/engine/*"
 )
 target_include_directories(app PRIVATE ${INCLUDE_ROOT})
 
@@ -28,13 +30,13 @@ target_link_libraries(app PRIVATE SOIL)
 target_link_libraries(app PRIVATE ${OPENAL_LIBRARY})
 target_link_libraries(app PRIVATE ${OPENGL_LIBRARY})
 
-set(RELEASE_DIR "${CMAKE_SOURCE_DIR}/Release")
+set(RELEASE_DIR "${ROOT_DIR}/Release")
 add_custom_command(
     TARGET app
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${RELEASE_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:app> ${RELEASE_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy_if_different ${DLL_FILES} ${RELEASE_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/Assets" "${RELEASE_DIR}/Assets"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/Shaders" "${RELEASE_DIR}/Shaders"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${ROOT_DIR}/Assets" "${RELEASE_DIR}/Assets"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${ROOT_DIR}/Shaders" "${RELEASE_DIR}/Shaders"
 )

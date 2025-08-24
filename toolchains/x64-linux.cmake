@@ -1,3 +1,6 @@
+get_filename_component(TOOLCHAIN_DIR "${CMAKE_TOOLCHAIN_FILE}" DIRECTORY)
+set(ROOT_DIR "${TOOLCHAIN_DIR}/..")
+
 set(CMAKE_INCLUDE_PATH
 "/usr/include/SDL2"
 "/usr/include/SOIL"
