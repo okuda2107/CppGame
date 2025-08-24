@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "Math.h"
+#include "SDL.h"
 #include "SDL_mixer.h"
 #include "al.h"
 #include "alut.h"
@@ -18,21 +19,43 @@ bool OpenAL::System::Initialize() {
         SDL_Log("Failed to Initialize SDL_Mixer");
         return false;
     }
-    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 1, 2048)) {
+    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, AUDIO_S16SYS, 1, 2048)) {
         SDL_Log("Failed to open auido device");
         return false;
     }
-    if (alutInit(NULL, NULL) != AL_TRUE) {
-        SDL_Log("Failed to Initialize OpenAL");
+
+    // deviceのオープン
+    mDevice = alcOpenDevice(NULL);
+    if (!mDevice) {
+        SDL_Log("Failed to open OpenAL device");
         return false;
     }
-    alutGetError();
+
+    // 音を再生する環境 (=context) の作成
+    mContext = alcCreateContext(mDevice, NULL);
+    if (!mContext) {
+        SDL_Log("Failed to create OpenAL context");
+        alcCloseDevice(mDevice);
+        return false;
+    }
+
+    // 現在のスレッドにcontextをアタッチ
+    if (!alcMakeContextCurrent(mContext)) {
+        SDL_Log("Failed to Initialize OpenAL");
+        alcDestroyContext(mContext);
+        alcCloseDevice(mDevice);
+        return false;
+    }
+
+    alGetError();
 
     return true;
 }
 
 void OpenAL::System::Shutdown() {
-    alutExit();
+    alcMakeContextCurrent(NULL);
+    alcDestroyContext(mContext);
+    alcCloseDevice(mDevice);
     Mix_CloseAudio();
     Mix_Quit();
 }
