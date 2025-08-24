@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/engine/**",
+                "${workspaceFolder}/exlibs/googletest-1.17.0/googletest/include",
                 "/usr/include/SDL2",
                 "/usr/include/SOIL",
                 "/usr/include/GL",
