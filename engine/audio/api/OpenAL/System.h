@@ -21,6 +21,10 @@ class System : public AudioSystem {
     // 再生が終了するタイミングは不明であり，アクセスがランダムであるのでunordered_map
     std::unordered_map<unsigned int, class EventInstance*> mInstances;
 
+    ALCdevice* mDevice;
+
+    ALCcontext* mContext;
+
     friend class Handler;
 
    public:

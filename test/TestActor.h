@@ -11,6 +11,8 @@ class TestActor : Actor {
 
     Matrix4 mView;
 
+    bool prevS = false;
+
    public:
     TestActor(class Game* game) : Actor(game) {
         this->SetPosition(Vector3(200, 100, 0));
@@ -27,7 +29,8 @@ class TestActor : Actor {
     void ActorInput(const uint8_t* keystate) {
         SoundHandler* handler = ac->GetEvent("bgm_main");
         if (handler) {  // 削除された直後のここでセグフォ
-            if (keystate[SDL_SCANCODE_S]) handler->Restart();
+            if (keystate[SDL_SCANCODE_S] && !prevS) handler->Restart();
+            prevS = keystate[SDL_SCANCODE_S];
             if (keystate[SDL_SCANCODE_X]) handler->SetPaused(true);
             if (keystate[SDL_SCANCODE_C]) handler->SetPaused(false);
         }

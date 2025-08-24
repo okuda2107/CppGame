@@ -134,12 +134,23 @@ bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
                 SDL_Log("Failed to load sound file: %s", Mix_GetError());
                 return false;
             }
+            int pcmFrequency, pcmChannels;
+            Uint16 pcmFormat;
+            if (!Mix_QuerySpec(&pcmFrequency, &pcmFormat, &pcmChannels)) {
+                SDL_Log("Failed to get pcm spec");
+            }
+
+            // 周波数，チャンネル，フォーマットからPCMデータを整形
+            ALsizei frequency = pcmFrequency;
+            ALenum format = AL_FORMAT_MONO16;
+            if (pcmChannels == 2) {
+                frequency *= 2;
+            }
 
             // PCMデータをバッファに流し込む
             alGetError();
-            alBufferData(buffers[i], AL_FORMAT_MONO16, chunk->abuf,
-                         static_cast<ALsizei>(chunk->alen),
-                         MIX_DEFAULT_FREQUENCY);
+            alBufferData(buffers[i], format, chunk->abuf,
+                         static_cast<ALsizei>(chunk->alen), frequency);
             Mix_FreeChunk(chunk);
             ALenum error = alGetError();
             if (error != AL_NO_ERROR) {
