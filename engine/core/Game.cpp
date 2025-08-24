@@ -151,11 +151,9 @@ void Game::UpdateActors(float deltatime) {
     }
 }
 
-#include "TestActor.h"
 void Game::LoadData() {
-    // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
     mAudioSystem->LoadBank("Assets/Master.bank");
-    TestActor* ta = new TestActor(this);
+    // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
 }
 
 void Game::UnloadData() {
