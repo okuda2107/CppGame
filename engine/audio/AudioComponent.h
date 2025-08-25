@@ -21,5 +21,5 @@ class AudioComponent : public Component {
     void RegisterEvent(const std::string& name);
     void StopAllEvents();
 
-    TypeID GetType() const { return TypeID::TAudioComponent; };
+    TypeID GetType() const { return TypeID::TAudioComponent; }
 };
