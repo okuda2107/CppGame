@@ -47,6 +47,6 @@ class System : public AudioSystem {
     class EventInstance* GetInstance(unsigned int id) {
         auto iter = mInstances.find(id);
         return iter != mInstances.end() ? iter->second : nullptr;
-    };
+    }
 };
 }  // namespace OpenAL

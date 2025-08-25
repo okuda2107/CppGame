@@ -23,7 +23,7 @@ class Bank {
 
     std::unordered_map<std::string, class Event*>& GetEvents() {
         return mEvents;
-    };
+    }
 
     ALuint GetSound(const std::string soundID) {
         auto iter = mSounds.find(soundID);

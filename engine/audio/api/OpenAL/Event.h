@@ -24,7 +24,7 @@ class Event {
     Event(class Bank* bank);
     ~Event();
 
-    ALuint GetSound() { return mBank->GetSound(mSoundID); };
+    ALuint GetSound() { return mBank->GetSound(mSoundID); }
 
     void AddInstance(class EventInstance* instance);
     void RemoveInstance(class EventInstance* instance);
