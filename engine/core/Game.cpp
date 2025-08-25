@@ -150,10 +150,11 @@ void Game::UpdateActors(float deltatime) {
         delete actor;
     }
 }
-
+#include "TestActor.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
+    new TestActor(this);
 }
 
 void Game::UnloadData() {

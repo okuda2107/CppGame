@@ -12,6 +12,7 @@ class Component {
         TSpriteComponent,
         TInputComponent,
         TAudioComponent,
+        TFPSComponent,
         NUM_COMPONENT_TYPES
     };
 
@@ -25,7 +26,7 @@ class Component {
     virtual void OnUpdateWorldTransform() {}
 
     const int GetUpdateOrder() { return mUpdateOrder; }
-    virtual TypeID GetType() const = 0;
+    virtual TypeID GetType() const { return TComponent; }
 
     virtual void LoadProperties(const rapidjson::Value& inObj);
 

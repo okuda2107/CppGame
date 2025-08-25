@@ -1,32 +1,36 @@
 #pragma once
-#include "MoveComponent.h"
-#include "LevelLoader.h"
-#include "SDL.h"
 #include <cstdint>
 
-class InputComponent : public MoveComponent
-{
-public:
-	InputComponent(class Actor* owner);
-	void ProcessInput(const uint8_t* keystate);
+#include "LevelLoader.h"
+#include "MoveComponent.h"
+#include "SDL.h"
 
-	void SetMaxForwardSpeed(float speed) { mMaxForwardSpeed = speed; }
-	void SetMaxAngularSpeed(float speed) { mMaxAngularSpeed = speed; }
+class InputComponent : public MoveComponent {
+    float mMaxForwardSpeed;
+    float mMaxStrafeSpeed;
+    float mMaxYawSpeed;
 
-	TypeID GetType() const { return TypeID::TInputComponent; }
-	
-	void LoadProperties(const rapidjson::Value& inObj) override ;
+    const static int mForwardKey = SDL_SCANCODE_W;
+    const static int mBackKey = SDL_SCANCODE_S;
 
-private:
-	float mMaxForwardSpeed;
-	float mMaxAngularSpeed;
+    const static int mRightKey = SDL_SCANCODE_D;
+    const static int mLeftKey = SDL_SCANCODE_A;
 
-	const static int xRotationKey = SDL_SCANCODE_C;
-	const static int xAnti = SDL_SCANCODE_Z;
+    const static int mTurnKey = SDL_SCANCODE_J;
+    const static int mOppositeTurnKey = SDL_SCANCODE_L;
 
-	const static int mForwardKey = SDL_SCANCODE_W;
-	const static int mBackKey = SDL_SCANCODE_S;
+   public:
+    InputComponent(class Actor* owner);
+    void ProcessInput(const uint8_t* keystate);
 
-	const static int mClockwiseKey = SDL_SCANCODE_A;
-	const static int mCounterClockwiseKey = SDL_SCANCODE_D;
+    void SetMaxForwardSpeed(float maxFowardSpeed) {
+        mMaxForwardSpeed = maxFowardSpeed;
+    }
+    void SetMaxStrafeSpeed(float maxStrafeSpeed) {
+        mMaxStrafeSpeed = maxStrafeSpeed;
+    }
+
+    void SetMaxYawSpeed(float maxYawSpeed) { mMaxYawSpeed = maxYawSpeed; }
+
+    TypeID GetType() const { return TypeID::TInputComponent; }
 };
