@@ -23,5 +23,7 @@ class FPSComponent : public CameraComponent {
     void ProcessInput(const uint8_t* keystate) override;
     void Update(float deltatime) override;
 
+    void SetPitchSpeed(float pitchSpeed) { mPitchSpeed = pitchSpeed; }
+
     TypeID GetType() const { return TypeID::TFPSComponent; }
 };

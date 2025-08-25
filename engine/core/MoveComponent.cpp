@@ -38,9 +38,9 @@ void MoveComponent::Update(float deltatime) {
     if (!Math::NearZero(mUpSpeed))
         SetOwnerPosition(mOwner->GetUp(), mUpSpeed, deltatime);
     if (!Math::NearZero(mYawSpeed))
-        SetOwnerRotation(mOwner->GetRight(), mYawSpeed, deltatime);
+        SetOwnerRotation(mOwner->GetUp(), mYawSpeed, deltatime);
     if (!Math::NearZero(mPitchSpeed))
-        SetOwnerRotation(mOwner->GetUp(), mPitchSpeed, deltatime);
+        SetOwnerRotation(mOwner->GetRight(), mPitchSpeed, deltatime);
     if (!Math::NearZero(mRollSpeed))
         SetOwnerRotation(mOwner->GetForward(), mRollSpeed, deltatime);
 

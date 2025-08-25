@@ -150,11 +150,11 @@ void Game::UpdateActors(float deltatime) {
         delete actor;
     }
 }
-#include "TestActor.h"
+#include "FPSTestActor.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
-    new TestActor(this);
+    new FPSTestActor(this);
 }
 
 void Game::UnloadData() {

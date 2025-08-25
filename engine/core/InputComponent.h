@@ -16,8 +16,8 @@ class InputComponent : public MoveComponent {
     const static int mRightKey = SDL_SCANCODE_D;
     const static int mLeftKey = SDL_SCANCODE_A;
 
-    const static int mTurnKey = SDL_SCANCODE_J;
-    const static int mOppositeTurnKey = SDL_SCANCODE_L;
+    const static int mTurnKey = SDL_SCANCODE_L;
+    const static int mOppositeTurnKey = SDL_SCANCODE_J;
 
    public:
     InputComponent(class Actor* owner);

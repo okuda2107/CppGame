@@ -10,11 +10,11 @@ void InputComponent::ProcessInput(const uint8_t* keystate) {
 
     float rightSpeed = 0.0f;
     if (keystate[mRightKey]) rightSpeed += mMaxStrafeSpeed;
-    if (keystate[mBackKey]) rightSpeed -= mMaxStrafeSpeed;
-    SetYAngularSpeed(rightSpeed);
+    if (keystate[mLeftKey]) rightSpeed -= mMaxStrafeSpeed;
+    SetRightSpeed(rightSpeed);
 
     float yawSpeed = 0.0f;
     if (keystate[mTurnKey]) yawSpeed += mMaxYawSpeed;
     if (keystate[mOppositeTurnKey]) yawSpeed -= mMaxYawSpeed;
-    SetZAngularSpeed(yawSpeed);
+    SetYawSpeed(yawSpeed);
 }

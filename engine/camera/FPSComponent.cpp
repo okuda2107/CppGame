@@ -17,18 +17,19 @@ FPSComponent::~FPSComponent() {}
 
 void FPSComponent::ProcessInput(const uint8_t* keystate) {
     mInput = 0;
-    if (keystate[mLookUpKey]) mInput += 1;
-    if (keystate[mLookDownKey]) mInput -= 1;
+    if (keystate[mLookUpKey]) mInput = 1;
+    if (keystate[mLookDownKey]) mInput = -1;
 }
 
 void FPSComponent::Update(float deltatime) {
     CameraComponent::Update(deltatime);
+    std::cout << mPitchSpeed << std::endl;
 
     // カメラの位置は所有アクターの位置
     Vector3 cameraPos = mOwner->GetPosition();
 
     // pitchの角速度に基づいてpitchを更新
-    mPitch += mPitchSpeed + deltatime;
+    mPitch += mPitchSpeed * mInput * deltatime;
     // pitchを最大角度の範囲に収める
     mPitch = Math::Clamp(mPitch, -mMaxPitch, mMaxPitch);
     // pitch回転を表すクォータニオン
