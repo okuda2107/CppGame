@@ -21,7 +21,7 @@ target_include_directories(engine PUBLIC ${INCLUDE_ROOT})
 
 target_include_directories(engine PUBLIC ${CMAKE_INCLUDE_PATH})
 
-target_link_directories(engine PRIVATE ${CMAKE_LIBRARY_PATH})
+target_link_directories(engine PUBLIC ${CMAKE_LIBRARY_PATH})
 
 target_link_libraries(engine PRIVATE ${CMAKE_LIBRARIES})
 
