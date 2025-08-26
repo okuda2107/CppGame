@@ -23,8 +23,6 @@ void FPSComponent::ProcessInput(const uint8_t* keystate) {
 
 void FPSComponent::Update(float deltatime) {
     CameraComponent::Update(deltatime);
-    std::cout << mPitchSpeed << std::endl;
-
     // カメラの位置は所有アクターの位置
     Vector3 cameraPos = mOwner->GetPosition();
 
