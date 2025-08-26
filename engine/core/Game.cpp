@@ -6,6 +6,7 @@
 #include "Actor.h"
 #include "AudioSystem.h"
 #include "InputComponent.h"
+#include "InputSystem.h"
 #include "LevelLoader.h"
 #include "MeshComponent.h"
 #include "Renderer.h"
@@ -44,6 +45,14 @@ bool Game::Initialize() {
         return false;
     }
 
+    mInputSystem = new InputSystem();
+    if (!mInputSystem->Initialize()) {
+        SDL_Log("Failed to initialize input system");
+        delete mInputSystem;
+        mInputSystem = nullptr;
+        return false;
+    }
+
     LoadData();
 
     mTicksCount = SDL_GetTicks();
@@ -60,6 +69,8 @@ void Game::RunLoop() {
 }
 
 void Game::ProcessInput() {
+    mInputSystem->PrepareForUpdate();
+
     SDL_Event mEvent;
     while (SDL_PollEvent(&mEvent)) {
         switch (mEvent.type)
@@ -67,8 +78,11 @@ void Game::ProcessInput() {
             mIsRunning = false;
         break;
     }
-    const Uint8* state = SDL_GetKeyboardState(NULL);
-    if (state[SDL_SCANCODE_ESCAPE]) {
+
+    mInputSystem->Update();
+    const InputState& state = mInputSystem->GetState();
+
+    if (state.Keyboard.GetKeyState(SDL_SCANCODE_ESCAPE) == EReleased) {
         mIsRunning = false;
     }
 
@@ -96,12 +110,9 @@ void Game::GenerateOutput() { mRenderer->Draw(); }
 
 void Game::Shutdown() {
     UnloadData();
-    if (mRenderer) {
-        mRenderer->Shutdown();
-    }
-    if (mAudioSystem) {
-        mAudioSystem->Shutdown();
-    }
+    if (mRenderer) mRenderer->Shutdown();
+    if (mAudioSystem) mAudioSystem->Shutdown();
+    if (mInputSystem) mInputSystem->Shutdown();
 
     SDL_Quit();
 }

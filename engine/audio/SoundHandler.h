@@ -3,8 +3,9 @@
 
 // Actorに付与されて，再生，停止やポジショナルな情報などを伝達する役割
 class SoundHandler {
-   protected:
     friend class AudioSystem;
+
+   protected:
     SoundHandler() {};
 
    public:

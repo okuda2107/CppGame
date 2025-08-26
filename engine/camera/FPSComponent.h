@@ -13,14 +13,14 @@ class FPSComponent : public CameraComponent {
     float mInput;
 
     // pitchの操作キー
-    const static int mLookUpKey = SDL_SCANCODE_K;
-    const static int mLookDownKey = SDL_SCANCODE_I;
+    const static SDL_Scancode mLookUpKey = SDL_SCANCODE_K;
+    const static SDL_Scancode mLookDownKey = SDL_SCANCODE_I;
 
    public:
     FPSComponent(class Actor* owner, int drawOrder = 200);
     ~FPSComponent();
 
-    void ProcessInput(const uint8_t* keystate) override;
+    void ProcessInput(const class InputState& keystate) override;
     void Update(float deltatime) override;
 
     void SetMaxPitch(float maxPitch) { mMaxPitch = maxPitch; }

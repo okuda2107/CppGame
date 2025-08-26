@@ -12,6 +12,8 @@
 namespace OpenAL {
 // サウンドイベントの管理
 class System : public AudioSystem {
+    friend class Handler;
+
     // バンク: 複数のイベントを編集，ロード単位で管理
     std::unordered_map<std::string, class Bank*> mBanks;
     // イベント: ゲームから要請される単位で音声データとその再生情報を管理
@@ -24,8 +26,6 @@ class System : public AudioSystem {
     ALCdevice* mDevice;
 
     ALCcontext* mContext;
-
-    friend class Handler;
 
    public:
     System(class Game* game);

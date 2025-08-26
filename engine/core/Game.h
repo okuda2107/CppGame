@@ -9,19 +9,6 @@
 #include "SDL_image.h"
 
 class Game {
-   public:
-    Game();
-    bool Initialize();
-    void RunLoop();
-    void Shutdown();
-
-    void AddActor(class Actor* actor);
-    void RemoveActor(class Actor* actor);
-
-    class Renderer* GetRenderer() { return mRenderer; }
-    class AudioSystem* GetAudioSystem() { return mAudioSystem; }
-
-   private:
     void ProcessInput();
     void UpdateGame();
     void GenerateOutput();
@@ -33,6 +20,7 @@ class Game {
 
     class Renderer* mRenderer;
     class AudioSystem* mAudioSystem;
+    class InputSystem* mInputSystem;
 
     bool mIsRunning;
     Uint32 mTicksCount;
@@ -41,4 +29,16 @@ class Game {
     std::vector<class Actor*> mPendingActors;
 
     bool mUpdatingActors;
+
+   public:
+    Game();
+    bool Initialize();
+    void RunLoop();
+    void Shutdown();
+
+    void AddActor(class Actor* actor);
+    void RemoveActor(class Actor* actor);
+
+    class Renderer* GetRenderer() { return mRenderer; }
+    class AudioSystem* GetAudioSystem() { return mAudioSystem; }
 };

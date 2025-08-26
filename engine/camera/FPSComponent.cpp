@@ -3,6 +3,7 @@
 #include "Actor.h"
 #include "AudioSystem.h"
 #include "Game.h"
+#include "InputSystem.h"
 #include "Math.h"
 #include "Renderer.h"
 
@@ -15,10 +16,10 @@ FPSComponent::FPSComponent(class Actor* owner, int updateOrder)
 
 FPSComponent::~FPSComponent() {}
 
-void FPSComponent::ProcessInput(const uint8_t* keystate) {
+void FPSComponent::ProcessInput(const InputState& keystate) {
     mInput = 0;
-    if (keystate[mLookUpKey]) mInput = 1;
-    if (keystate[mLookDownKey]) mInput = -1;
+    if (keystate.Keyboard.GetKeyValue(mLookUpKey)) mInput = 1;
+    if (keystate.Keyboard.GetKeyValue(mLookDownKey)) mInput = -1;
 }
 
 void FPSComponent::Update(float deltatime) {

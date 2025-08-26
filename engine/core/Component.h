@@ -19,7 +19,7 @@ class Component {
     Component(class Actor* owner, int updateOrder = 100);
     ~Component();
 
-    virtual void ProcessInput(const uint8_t* keystate) {}
+    virtual void ProcessInput(const class InputState& keystate) {}
 
     virtual void Update(float deltatime);
 

@@ -10,18 +10,18 @@ class InputComponent : public MoveComponent {
     float mMaxStrafeSpeed;
     float mMaxYawSpeed;
 
-    const static int mForwardKey = SDL_SCANCODE_W;
-    const static int mBackKey = SDL_SCANCODE_S;
+    const static SDL_Scancode mForwardKey = SDL_SCANCODE_W;
+    const static SDL_Scancode mBackKey = SDL_SCANCODE_S;
 
-    const static int mRightKey = SDL_SCANCODE_D;
-    const static int mLeftKey = SDL_SCANCODE_A;
+    const static SDL_Scancode mRightKey = SDL_SCANCODE_D;
+    const static SDL_Scancode mLeftKey = SDL_SCANCODE_A;
 
-    const static int mTurnKey = SDL_SCANCODE_L;
-    const static int mOppositeTurnKey = SDL_SCANCODE_J;
+    const static SDL_Scancode mTurnKey = SDL_SCANCODE_L;
+    const static SDL_Scancode mOppositeTurnKey = SDL_SCANCODE_J;
 
    public:
     InputComponent(class Actor* owner);
-    void ProcessInput(const uint8_t* keystate);
+    void ProcessInput(const class InputState& keystate);
 
     void SetMaxForwardSpeed(float maxFowardSpeed) {
         mMaxForwardSpeed = maxFowardSpeed;
