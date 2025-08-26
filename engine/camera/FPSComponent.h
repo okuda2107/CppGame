@@ -9,8 +9,9 @@ class FPSComponent : public CameraComponent {
     float mMaxPitch;
     // pitchの角速度
     float mPitchSpeed;
-    // 現在の入力状況 0 or 1 or -1
-    float mInput;
+    // pitchの入力角速度
+    float mInputPitchSpeed;
+    ;
 
     // pitchの操作キー
     const static SDL_Scancode mLookUpKey = SDL_SCANCODE_K;
@@ -24,7 +25,9 @@ class FPSComponent : public CameraComponent {
     void Update(float deltatime) override;
 
     void SetMaxPitch(float maxPitch) { mMaxPitch = maxPitch; }
-    void SetPitchSpeed(float pitchSpeed) { mPitchSpeed = pitchSpeed; }
+    void SetInputPitchSpeed(float inputPitchSpeed) {
+        mInputPitchSpeed = inputPitchSpeed;
+    }
 
     TypeID GetType() const { return TypeID::TFPSComponent; }
 };

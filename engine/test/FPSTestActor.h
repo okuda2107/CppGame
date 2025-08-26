@@ -30,7 +30,7 @@ class FPSTestActor : Actor {
         ic->SetMaxYawSpeed(0.5);
         FPSComponent* fc = new FPSComponent(this);
         fc->SetMaxPitch(Math::Pi / 4);
-        fc->SetPitchSpeed(0.5);
+        fc->SetInputPitchSpeed(0.5);
     };
     ~FPSTestActor() {};
 };

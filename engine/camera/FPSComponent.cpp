@@ -12,14 +12,17 @@ FPSComponent::FPSComponent(class Actor* owner, int updateOrder)
       mPitch(0.0f),
       mMaxPitch(0.0f),
       mPitchSpeed(0.0f),
-      mInput(0) {}
+      mInputPitchSpeed(0.0f) {}
 
 FPSComponent::~FPSComponent() {}
 
 void FPSComponent::ProcessInput(const InputState& keystate) {
-    mInput = 0;
-    if (keystate.Keyboard.GetKeyValue(mLookUpKey)) mInput = 1;
-    if (keystate.Keyboard.GetKeyValue(mLookDownKey)) mInput = -1;
+    mPitchSpeed = 0;
+    if (keystate.Keyboard.GetKeyValue(mLookUpKey))
+        mPitchSpeed += mInputPitchSpeed;
+    if (keystate.Keyboard.GetKeyValue(mLookDownKey))
+        mPitchSpeed -= mInputPitchSpeed;
+    ;
 }
 
 void FPSComponent::Update(float deltatime) {
@@ -28,7 +31,7 @@ void FPSComponent::Update(float deltatime) {
     Vector3 cameraPos = mOwner->GetPosition();
 
     // pitchの角速度に基づいてpitchを更新
-    mPitch += mPitchSpeed * mInput * deltatime;
+    if (!Math::NearZero(mPitchSpeed)) mPitch += mPitchSpeed * deltatime;
     // pitchを最大角度の範囲に収める
     mPitch = Math::Clamp(mPitch, -mMaxPitch, mMaxPitch);
     // pitch回転を表すクォータニオン
