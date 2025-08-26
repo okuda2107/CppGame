@@ -1,7 +1,6 @@
 #pragma once
+#include "ButtonState.h"
 #include "SDL.h"
-
-enum ButtonState { ENone, EPressed, EReleased, EHeld };
 
 class KeyboardState {
     friend class InputSystem;

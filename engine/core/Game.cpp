@@ -69,25 +69,36 @@ void Game::RunLoop() {
 }
 
 void Game::ProcessInput() {
+    // 入力状態の保存
     mInputSystem->PrepareForUpdate();
 
-    SDL_Event mEvent;
-    while (SDL_PollEvent(&mEvent)) {
-        switch (mEvent.type)
-        case SDL_QUIT:
-            mIsRunning = false;
-        break;
+    // ユーザからの入力イベント or 入力機器の状態をポーリング (定期問い合わせ)
+    // イベントが入力されてたら，イベントを処理．
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_QUIT:
+                mIsRunning = false;
+                break;
+            case SDL_MOUSEWHEEL:
+                // イベントドリブンで入力状態更新
+                mInputSystem->ProcessEvent(event);
+                break;
+        }
     }
 
+    // ポーリングで入力状態更新
     mInputSystem->Update();
     const InputState& state = mInputSystem->GetState();
 
+    // 入力に対して，Gameクラスを反応させる
     if (state.Keyboard.GetKeyState(SDL_SCANCODE_ESCAPE) == EReleased) {
         mIsRunning = false;
     }
 
     mUpdatingActors = true;
     for (auto actor : mActors) {
+        // 入力に対して，ゲームオブジェクトを反応させる
         actor->ProcessInput(state);
     }
     mUpdatingActors = false;
@@ -161,11 +172,13 @@ void Game::UpdateActors(float deltatime) {
         delete actor;
     }
 }
-#include "FPSTestActor.h"
+// #include "FPSTestActor.h"
+#include "MouseTestActor.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
-    new FPSTestActor(this);
+    // new FPSTestActor(this);
+    new MouseTestActor(this);
 }
 
 void Game::UnloadData() {
