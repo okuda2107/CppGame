@@ -5,7 +5,7 @@
 #include "MoveComponent.h"
 #include "SDL.h"
 
-class InputComponent : public MoveComponent {
+class Input2DComponent : public MoveComponent {
     float mMaxForwardSpeed;
     float mMaxStrafeSpeed;
     float mMaxYawSpeed;
@@ -16,11 +16,8 @@ class InputComponent : public MoveComponent {
     const static SDL_Scancode mRightKey = SDL_SCANCODE_D;
     const static SDL_Scancode mLeftKey = SDL_SCANCODE_A;
 
-    const static SDL_Scancode mTurnKey = SDL_SCANCODE_L;
-    const static SDL_Scancode mOppositeTurnKey = SDL_SCANCODE_J;
-
    public:
-    InputComponent(class Actor* owner);
+    Input2DComponent(class Actor* owner);
     void ProcessInput(const class InputState& keystate);
 
     void SetMaxForwardSpeed(float maxFowardSpeed) {

@@ -3,6 +3,8 @@
 #include "Math.h"
 #include "document.h"
 
+// 相対空間，絶対空間のどちらにも対応しているが，処理を簡略化するためのお互いの整合性は取っていない
+// つまり，相対空間方向の軸にspeedを加えても，自動で絶対空間のspeedに値が加わらない．
 class MoveComponent : public Component {
     // 相対空間
     float mForwardSpeed;
@@ -32,6 +34,20 @@ class MoveComponent : public Component {
    public:
     MoveComponent(class Actor* owner, int updateOrder = 10);
     void Update(float deltatime);
+
+    float GetForwardSpeed() const { return mForwardSpeed; }
+    float GetRightSpeed() const { return mRightSpeed; }
+    float GetUpSpeed() const { return mUpSpeed; }
+    float GetYawSpeed() const { return mYawSpeed; }
+    float GetPitchSpeed() const { return mPitchSpeed; }
+    float GetRollSpeed() const { return mRollSpeed; }
+
+    float GetXSpeed() const { return mXSpeed; }
+    float GetYSpeed() const { return mYSpeed; }
+    float GetZSpeed() const { return mZSpeed; }
+    float GetXAngularSpeed() const { return mXAngularSpeed; }
+    float GetYAngularSpeed() const { return mYAngularSpeed; }
+    float GetZAngularSpeed() const { return mZAngularSpeed; }
 
     void SetForwardSpeed(float forwardSpeed) { mForwardSpeed = forwardSpeed; }
     void SetRightSpeed(float rightSpeed) { mRightSpeed = rightSpeed; }

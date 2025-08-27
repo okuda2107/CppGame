@@ -11,21 +11,9 @@ FPSComponent::FPSComponent(class Actor* owner, int updateOrder)
     : CameraComponent(owner, updateOrder),
       mPitch(0.0f),
       mMaxPitch(0.0f),
-      mPitchSpeed(0.0f),
-      mInputPitchSpeed(0.0f) {}
+      mPitchSpeed(0.0f) {}
 
 FPSComponent::~FPSComponent() {}
-
-void FPSComponent::ProcessInput(const InputState& state) {
-    const int maxMouseSpeed = 500;
-    const float maxAngularSpeed = Math::Pi * 8;
-    mPitchSpeed = 0;
-    Vector2 mousePos = state.Mouse.GetPostion();
-    if (!Math::NearZero(mousePos.y)) {
-        mPitchSpeed = static_cast<float>(mousePos.y) / maxMouseSpeed;
-        mPitchSpeed *= maxAngularSpeed;
-    }
-}
 
 void FPSComponent::Update(float deltatime) {
     CameraComponent::Update(deltatime);
@@ -45,7 +33,7 @@ void FPSComponent::Update(float deltatime) {
     Vector3 target = cameraPos + viewForward * 100.0f;
 
     // 上方ベクトルを回転
-    Vector3 up = Vector3::Transform(mOwner->GetUp(), q);
+    Vector3 up = Vector3::Transform(Vector3::UnitZ, q);
 
     // 注視行列を作って，viewに設定
     Matrix4 view = Matrix4::CreateLookAt(cameraPos, target, up);

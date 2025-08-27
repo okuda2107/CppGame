@@ -5,7 +5,6 @@
 
 #include "Actor.h"
 #include "AudioSystem.h"
-#include "InputComponent.h"
 #include "InputSystem.h"
 #include "LevelLoader.h"
 #include "MeshComponent.h"
@@ -172,13 +171,13 @@ void Game::UpdateActors(float deltatime) {
         delete actor;
     }
 }
-#include "FPSTestActor.h"
 // #include "MouseTestActor.h"
+#include "FPSActor.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
-    new FPSTestActor(this);
     // new MouseTestActor(this);
+    new FPSActor(this);
 }
 
 void Game::UnloadData() {
