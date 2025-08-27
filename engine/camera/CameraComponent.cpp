@@ -1,0 +1,19 @@
+#include "CameraComponent.h"
+
+#include "Actor.h"
+#include "AudioSystem.h"
+#include "Game.h"
+#include "Math.h"
+#include "Renderer.h"
+
+CameraComponent::CameraComponent(class Actor* owner, int updateOrder)
+    : Component(owner, updateOrder) {}
+
+CameraComponent::~CameraComponent() {}
+
+// viewをrendererとaudio systemに渡す．
+void CameraComponent::SetViewMatrix(const class Matrix4& view) {
+    Game* game = mOwner->GetGame();
+    game->GetRenderer()->SetViewMatrix(view);
+    game->GetAudioSystem()->SetListener(view);
+}
