@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+
 #include "Math.h"
 
 // 線分
@@ -8,7 +10,7 @@ struct LineSegment {
 
     Vector3 mStart;
     Vector3 mEnd;
-}
+};
 
 // 平面
 struct Plane {
@@ -18,7 +20,7 @@ struct Plane {
 
     Vector3 mNormal;
     float mD;
-}
+};
 
 // 球
 struct Sphere {
@@ -26,41 +28,43 @@ struct Sphere {
 
     Vector3 mCenter;
     float mRadius;
-}
+};
 
-// 軸平行バウンディングボックス (axes-aligned bouding box) (軸に平行な辺を持つ立方体)
+// 軸平行バウンディングボックス (axes-aligned bouding box)
+// (軸に平行な辺を持つ立方体)
 struct AABB {
+    AABB(const Vector3& min, const Vector3& max);
+
     void UpdateMinMax(const Vector3& point);
     void Rotate(const Quaternion& q);
     bool Contains(const Vector3& point) const;
+    float MinDistSq(const Vector3& point) const;
 
     Vector3 mMin;
     Vector3 mMax;
-}
+};
 
 // 有向バウンディングボックス (回転を考慮した立方体)
 struct OBB {
     Vector3 mCenter;
     Quaternion mRotation;
-    Vector3 mExtents
-}
-
-struct Capsule
-{
-	Capsule(const Vector3& start, const Vector3& end, float radius);
-	// Get point along segment where 0 <= t <= 1
-	Vector3 PointOnSegment(float t) const;
-	bool Contains(const Vector3& point) const;
-
-	LineSegment mSegment;
-	float mRadius;
+    Vector3 mExtents;
 };
 
-struct ConvexPolygon
-{
-	bool Contains(const Vector2& point) const;
-	// Vertices have a clockwise ordering
-	std::vector<Vector2> mVertices;
+struct Capsule {
+    Capsule(const Vector3& start, const Vector3& end, float radius);
+    // Get point along segment where 0 <= t <= 1
+    Vector3 PointOnSegment(float t) const;
+    bool Contains(const Vector3& point) const;
+
+    LineSegment mSegment;
+    float mRadius;
+};
+
+struct ConvexPolygon {
+    bool Contains(const Vector2& point) const;
+    // Vertices have a clockwise ordering
+    std::vector<Vector2> mVertices;
 };
 
 // Intersection functions
@@ -72,6 +76,7 @@ bool Intersect(const Sphere& s, const AABB& box);
 bool Intersect(const LineSegment& l, const Sphere& s, float& outT);
 bool Intersect(const LineSegment& l, const Plane& p, float& outT);
 bool Intersect(const LineSegment& l, const AABB& b, float& outT,
-	Vector3& outNorm);
+               Vector3& outNorm);
 
-bool SweptSphere(const Sphere& P0, const Sphere& P1, const Sphere& Q0, const Sphere& Q1, float& t);
+bool SweptSphere(const Sphere& P0, const Sphere& P1, const Sphere& Q0,
+                 const Sphere& Q1, float& t);

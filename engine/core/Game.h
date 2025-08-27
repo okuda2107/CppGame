@@ -21,6 +21,7 @@ class Game {
     class Renderer* mRenderer;
     class AudioSystem* mAudioSystem;
     class InputSystem* mInputSystem;
+    class PhysWorld* mPhysWorld;
 
     bool mIsRunning;
     Uint32 mTicksCount;
@@ -42,4 +43,5 @@ class Game {
     class Renderer* GetRenderer() { return mRenderer; }
     class AudioSystem* GetAudioSystem() { return mAudioSystem; }
     class InputSystem* GetInputSystem() { return mInputSystem; }
+    class PhysWorld* GetPhysWorld() { return mPhysWorld; }
 };
