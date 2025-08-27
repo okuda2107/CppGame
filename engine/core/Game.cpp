@@ -45,7 +45,7 @@ bool Game::Initialize() {
         return false;
     }
 
-    mInputSystem = new InputSystem();
+    mInputSystem = new InputSystem(this);
     if (!mInputSystem->Initialize()) {
         SDL_Log("Failed to initialize input system");
         delete mInputSystem;
@@ -172,13 +172,13 @@ void Game::UpdateActors(float deltatime) {
         delete actor;
     }
 }
-// #include "FPSTestActor.h"
-#include "MouseTestActor.h"
+#include "FPSTestActor.h"
+// #include "MouseTestActor.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
-    // new FPSTestActor(this);
-    new MouseTestActor(this);
+    new FPSTestActor(this);
+    // new MouseTestActor(this);
 }
 
 void Game::UnloadData() {

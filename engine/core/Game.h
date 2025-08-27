@@ -41,4 +41,5 @@ class Game {
 
     class Renderer* GetRenderer() { return mRenderer; }
     class AudioSystem* GetAudioSystem() { return mAudioSystem; }
+    class InputSystem* GetInputSystem() { return mInputSystem; }
 };

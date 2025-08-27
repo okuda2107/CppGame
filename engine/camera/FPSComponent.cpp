@@ -16,13 +16,15 @@ FPSComponent::FPSComponent(class Actor* owner, int updateOrder)
 
 FPSComponent::~FPSComponent() {}
 
-void FPSComponent::ProcessInput(const InputState& keystate) {
+void FPSComponent::ProcessInput(const InputState& state) {
+    const int maxMouseSpeed = 500;
+    const float maxAngularSpeed = Math::Pi * 8;
     mPitchSpeed = 0;
-    if (keystate.Keyboard.GetKeyValue(mLookUpKey))
-        mPitchSpeed += mInputPitchSpeed;
-    if (keystate.Keyboard.GetKeyValue(mLookDownKey))
-        mPitchSpeed -= mInputPitchSpeed;
-    ;
+    Vector2 mousePos = state.Mouse.GetPostion();
+    if (!Math::NearZero(mousePos.y)) {
+        mPitchSpeed = static_cast<float>(mousePos.y) / maxMouseSpeed;
+        mPitchSpeed *= maxAngularSpeed;
+    }
 }
 
 void FPSComponent::Update(float deltatime) {

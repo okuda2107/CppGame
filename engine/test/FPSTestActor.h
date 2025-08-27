@@ -31,6 +31,8 @@ class FPSTestActor : Actor {
         FPSComponent* fc = new FPSComponent(this);
         fc->SetMaxPitch(Math::Pi / 4);
         fc->SetInputPitchSpeed(0.5);
+
+        GetGame()->GetInputSystem()->SetRelativeMouseMode(true);
     };
     ~FPSTestActor() {};
 };

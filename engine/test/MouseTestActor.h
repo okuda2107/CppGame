@@ -1,15 +1,20 @@
 #pragma once
 #include "Actor.h"
+#include "Game.h"
 #include "InputSystem.h"
 
 class MouseTestActor : Actor {
    public:
-    MouseTestActor(class Game* game) : Actor(game) {};
+    MouseTestActor(class Game* game) : Actor(game) {
+        GetGame()->GetInputSystem()->SetRelativeMouseMode(true);
+    };
     void ActorInput(const InputState& state) override {
         // マウス
         const MouseState& mouse = state.Mouse;
 
         const Vector2& vec = mouse.GetPostion();
+
+        std::cout << vec.x << ", " << vec.y << std::endl;
 
         if (mouse.GetButtonState(SDL_BUTTON_LEFT)) {
             std::cout << vec.x << ", " << vec.y << std::endl;

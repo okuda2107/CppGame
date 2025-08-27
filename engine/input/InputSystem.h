@@ -11,9 +11,12 @@ struct InputState {
 
 // 入力の状態を管理
 class InputSystem {
+    class Game* mGame;
     InputState mState;
 
    public:
+    InputSystem(class Game* game);
+
     bool Initialize();
     void Shutdown();
 

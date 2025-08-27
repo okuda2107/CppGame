@@ -36,7 +36,11 @@ class Renderer {
     class Mesh* GetMesh(const std::string& fileName);
     class Shader* GetShader(const std::string& shaderName);
 
+    // SDL_Windowは不完全型
+    class SDL_Window* GetWindow() const { return mWindow; }
+
     void SetViewMatrix(const class Matrix4& view) { mView = view; }
+
     void SetAmbientLight(const Vector3& ambient) {
         mAmbientLight = ambient;
     }  // 全体に一つしかないのでRendererに書く

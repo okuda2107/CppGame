@@ -1,5 +1,10 @@
 #include "InputSystem.h"
 
+#include "Game.h"
+#include "Renderer.h"
+
+InputSystem::InputSystem(class Game* game) : mGame(game) {}
+
 bool InputSystem::Initialize() {
     // キーボード
     // 現在の状態を示すポインタを保存
@@ -8,8 +13,8 @@ bool InputSystem::Initialize() {
     memset(mState.Keyboard.mPrevState, 0, SDL_NUM_SCANCODES);
 
     // マウス
-    // SDL_ShowCursor(SDL_FALSE);
-    SDL_ShowCursor(SDL_TRUE);
+    mState.Mouse.mCurrButtons = 0;
+    mState.Mouse.mPrevButtons = 0;
     mState.Mouse.mIsRelative = false;
 
     return true;
