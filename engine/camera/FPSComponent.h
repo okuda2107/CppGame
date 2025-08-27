@@ -2,6 +2,7 @@
 #include "CameraComponent.h"
 #include "SDL.h"
 
+// FPS視点の位置にカメラをアタッチする
 class FPSComponent : public CameraComponent {
     // pitchのみActorに依存していないので，変数を持つ必要がある．
     // 現在のpitch

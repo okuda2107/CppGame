@@ -2,7 +2,7 @@
 #include "Actor.h"
 #include "SDL.h"
 
-// マウスでのカメラ操作ができるFPS視点のActor
+//  キーマウでの操作ができるFPS視点のActor
 class FPSActor : public Actor {
     class MoveComponent* mMoveComp;
     class AudioComponent* mAudioComp;
