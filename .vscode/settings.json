@@ -3,7 +3,8 @@
         "*.dll": true,
         "obj/*.obj": true
     },
-    "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, IndentWidth: 4 }",
+    "C_Cpp.vcFormat.indent.preserveComments": false,
+    "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, IndentWidth: 4, ReflowComments: false }",
     "editor.formatOnSave": true,
     "files.associations": {
         "array": "cpp",

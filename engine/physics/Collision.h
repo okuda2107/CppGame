@@ -10,6 +10,8 @@ struct LineSegment {
     Vector3 PointOnSegment(float t) const;
     float MinDistSq(const Vector3& point) const;
 
+    static float MinDistSq(const LineSegment& s1, const LineSegment& s2);
+
     Vector3 mStart;
     Vector3 mEnd;
 };
@@ -48,6 +50,7 @@ struct AABB {
 };
 
 // 有向バウンディングボックス (回転を考慮した立方体)
+// todo: 未実装
 struct OBB {
     Vector3 mCenter;
     Quaternion mRotation;
@@ -64,6 +67,8 @@ struct Capsule {
     float mRadius;
 };
 
+// 2Dゲームでの凸ポリゴン 多角形
+// todo: 未実装
 struct ConvexPolygon {
     bool Contains(const Vector2& point) const;
     // Vertices have a clockwise ordering
@@ -74,12 +79,13 @@ struct ConvexPolygon {
 bool Intersect(const Sphere& a, const Sphere& b);
 bool Intersect(const AABB& a, const AABB& b);
 bool Intersect(const Capsule& a, const Capsule& b);
-bool Intersect(const Sphere& s, const AABB& box);
 
+bool Intersect(const Sphere& s, const AABB& box);
 bool Intersect(const LineSegment& l, const Sphere& s, float& outT);
 bool Intersect(const LineSegment& l, const Plane& p, float& outT);
 bool Intersect(const LineSegment& l, const AABB& b, float& outT,
                Vector3& outNorm);
 
+// 球スイープの交差
 bool SweptSphere(const Sphere& P0, const Sphere& P1, const Sphere& Q0,
                  const Sphere& Q1, float& t);

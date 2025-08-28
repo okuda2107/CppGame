@@ -30,6 +30,73 @@ float LineSegment::MinDistSq(const Vector3& point) const {
     return (ac - p).LengthSq();
 }
 
+float LineSegment::MinDistSq(const LineSegment& s1, const LineSegment& s2) {
+    // 2つの直線間のベクトルを2直線のパラメータs, tで表し，それを最小化する
+    Vector3 u = s1.mEnd - s1.mStart;
+    Vector3 v = s2.mEnd - s2.mStart;
+    Vector3 w = s1.mStart - s2.mStart;
+    float a = Vector3::Dot(u, u);
+    float b = Vector3::Dot(u, v);
+    float c = Vector3::Dot(v, v);
+    float d = Vector3::Dot(u, w);
+    float e = Vector3::Dot(v, w);
+    float D = a * c - b * b;  // always >= 0
+    float sc, sN, sD = D;     // sc = sN / sD, default sD = D >= 0
+    float tc, tN, tD = D;     // tc = tN / tD, default tD = D >= 0
+
+    // compute the line parameters of the two closest points
+    if (Math::NearZero(D)) {  // the lines are almost parallel
+        sN = 0.0;             // force using point P0 on segment S1
+        sD = 1.0;             // to prevent possible division by 0.0 later
+        tN = e;
+        tD = c;
+    } else {  // get the closest points on the infinite lines
+        sN = (b * e - c * d);
+        tN = (a * e - b * d);
+        if (sN < 0.0) {  // sc < 0 => the s=0 edge is visible
+            sN = 0.0;
+            tN = e;
+            tD = c;
+        } else if (sN > sD) {  // sc > 1  => the s=1 edge is visible
+            sN = sD;
+            tN = e + b;
+            tD = c;
+        }
+    }
+
+    if (tN < 0.0) {  // tc < 0 => the t=0 edge is visible
+        tN = 0.0;
+        // recompute sc for this edge
+        if (-d < 0.0)
+            sN = 0.0;
+        else if (-d > a)
+            sN = sD;
+        else {
+            sN = -d;
+            sD = a;
+        }
+    } else if (tN > tD) {  // tc > 1  => the t=1 edge is visible
+        tN = tD;
+        // recompute sc for this edge
+        if ((-d + b) < 0.0)
+            sN = 0;
+        else if ((-d + b) > a)
+            sN = sD;
+        else {
+            sN = (-d + b);
+            sD = a;
+        }
+    }
+    // finally do the division to get sc and tc
+    sc = (Math::NearZero(sN) ? 0.0f : sN / sD);
+    tc = (Math::NearZero(tN) ? 0.0f : tN / tD);
+
+    // get the difference of the two closest points
+    Vector3 dP = w + (sc * u) - (tc * v);  // =  S1(sc) - S2(tc)
+
+    return dP.LengthSq();  // return the closest distance squared
+}
+
 Plane::Plane(const Vector3& a, const Vector3& b, const Vector3& c) {
     Vector3 ab = b - a;
     Vector3 ac = c - a;
@@ -115,9 +182,47 @@ float AABB::MinDistSq(const Vector3& point) const {
     return dx * dx + dy * dy + dz * dz;
 }
 
+// OBB
+
+Capsule::Capsule(const Vector3& start, const Vector3& end, float radius)
+    : mSegment(LineSegment(start, end)), mRadius(radius) {}
+
+Vector3 Capsule::PointOnSegment(float t) const {
+    return mSegment.PointOnSegment(t);
+}
+
+bool Capsule::Contains(const Vector3& point) const {
+    float distSq = mSegment.MinDistSq(point);
+    return distSq <= mRadius;
+}
+
+// todo: 未実装
+// bool ConvexPolygon::Contains(const Vector2& point) const {
+//     ;
+//     ;
+// }
+
 // バウンディングボリューム間の交差判定
 bool Intersect(const Sphere& a, const Sphere& b) {
     float distSq = (a.mCenter - b.mCenter).LengthSq();
+    float sumRadii = a.mRadius + b.mRadius;
+    return distSq <= (sumRadii * sumRadii);
+}
+
+/*
+分離軸の定理: 2つの凸オブジェクトA, Bが交差しないならば，A, Bを分離する軸が必ず存在する．
+分離する軸とは，A,Bオブジェクトを軸に射影したとき，オブジェクトの範囲が重ならない軸
+よって，x, y, zにおいて，それぞれオブジェクトが重なっていないかを判定するだけで良い
+*/
+bool Intersect(const AABB& a, const AABB& b) {
+    bool no = a.mMax.x < b.mMin.x || b.mMax.x < a.mMin.x ||
+              a.mMax.y < b.mMin.y || b.mMax.y < a.mMin.y ||
+              a.mMax.z < b.mMin.z || b.mMax.z < a.mMin.z;
+    return !no;
+}
+
+bool Intersect(const Capsule& a, const Capsule& b) {
+    float distSq = LineSegment::MinDistSq(a.mSegment, b.mSegment);
     float sumRadii = a.mRadius + b.mRadius;
     return distSq <= (sumRadii * sumRadii);
 }
@@ -126,6 +231,12 @@ bool Intersect(const Sphere& s, const AABB& box) {
     float distSq = box.MinDistSq(s.mCenter);
     return distSq <= (s.mRadius * s.mRadius);
 }
+
+// todo: 未実装
+// bool Intersect(const LineSegment& l, const Sphere& s, float& outT) {
+//     ;
+//     ;
+// }
 
 bool Intersect(const LineSegment& l, const Plane& p, float& outT) {
     // First test if there's a solution for t
@@ -149,3 +260,17 @@ bool Intersect(const LineSegment& l, const Plane& p, float& outT) {
         }
     }
 }
+
+// todo: 未実装
+// bool Intersect(const LineSegment& l, const AABB& b, float& outT,
+//                Vector3& outNorm) {
+//     ;
+//     ;
+// }
+
+// todo: 未実装
+// bool SweptSphere(const Sphere& P0, const Sphere& P1, const Sphere& Q0,
+//                  const Sphere& Q1, float& t) {
+//     ;
+//     ;
+// }
