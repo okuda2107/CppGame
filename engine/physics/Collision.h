@@ -5,7 +5,9 @@
 
 // 線分
 struct LineSegment {
-    Vector3 PointOnSegment(float t);
+    LineSegment(const Vector3& start, const Vector3& end);
+
+    Vector3 PointOnSegment(float t) const;
     float MinDistSq(const Vector3& point) const;
 
     Vector3 mStart;
@@ -19,6 +21,7 @@ struct Plane {
     float SignedDist(const Vector3& point) const;
 
     Vector3 mNormal;
+    // 平面と原点との符号付き最短距離
     float mD;
 };
 

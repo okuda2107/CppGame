@@ -20,6 +20,7 @@
             "name": "Windows",
             "includePath": [
                 "${workspaceFolder}/engine/**",
+                "${workspaceFolder}/engine/core",
                 "${workspaceFolder}/exlibs/googletest-1.17.0/googletest/include",
                 "${workspaceFolder}/exlibs/SDL2-2.32.8/x86_64-w64-mingw32/include/SDL2",
                 "${workspaceFolder}/exlibs/SDL2_image-2.8.8/x86_64-w64-mingw32/include/SDL2",

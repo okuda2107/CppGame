@@ -3,6 +3,50 @@
 #include <algorithm>
 #include <array>
 
+LineSegment::LineSegment(const Vector3& start, const Vector3& end)
+    : mStart(start), mEnd(end) {}
+
+Vector3 LineSegment::PointOnSegment(float t) const {
+    return (mEnd - mStart) * t + mStart;
+}
+
+float LineSegment::MinDistSq(const Vector3& point) const {
+    Vector3 ab = mEnd - mStart;
+    Vector3 ba = -1.0f * ab;
+    Vector3 ac = point - mStart;
+    Vector3 bc = point - mEnd;
+
+    // ケース1: CがAの前に突き出ている
+    if (Vector3::Dot(ab, ac) < 0.0f) return ac.LengthSq();
+
+    // ケース2: CがBのあとに突き出ている
+    if (Vector3::Dot(ba, bc) < 0.0f) return bc.LengthSq();
+
+    // ケース3: 点から線分に垂線を下せる場合
+    // Cを線分に射影する． 射影点pを計算
+    float scalar = Vector3::Dot(ac, ab) / Vector3::Dot(ab, ab);
+    Vector3 p = scalar * ab;
+
+    return (ac - p).LengthSq();
+}
+
+Plane::Plane(const Vector3& a, const Vector3& b, const Vector3& c) {
+    Vector3 ab = b - a;
+    Vector3 ac = c - a;
+    // クロス積と正規化で法線を得る
+    mNormal = Vector3::Cross(ab, ac);
+    mNormal.Normalize();
+
+    // 原点Oから法線を伸ばして平面との交点をpとすると，三角形Opaはpが直角の三角形になる．
+    // つまり求めるのはVector aの法線成分を逆にした長さ
+    mD = -Vector3::Dot(a, mNormal);
+}
+
+// 戻り値が負の値の時，pointは平面から見て，法線と反対の向きにあり，正の値の時，法線と同じ向きにある．
+float Plane::SignedDist(const Vector3& point) const {
+    return Vector3::Dot(point, mNormal) - mD;
+}
+
 // 球が点を含むかどうかの判定をしている
 // 包含判定はある領域の内側にいるのか判定するために使える
 bool Sphere::Contains(const Vector3& point) const {

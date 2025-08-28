@@ -25,6 +25,7 @@ class Component {
 
     virtual void OnUpdateWorldTransform() {}
 
+    class Actor* GetOwner() const { return mOwner; }
     const int GetUpdateOrder() { return mUpdateOrder; }
     virtual TypeID GetType() const { return TComponent; }
 

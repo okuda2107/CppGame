@@ -8,6 +8,7 @@
 #include "InputSystem.h"
 #include "LevelLoader.h"
 #include "MeshComponent.h"
+#include "PhysWorld.h"
 #include "Renderer.h"
 #include "Shader.h"
 #include "SpriteComponent.h"
@@ -51,6 +52,8 @@ bool Game::Initialize() {
         mInputSystem = nullptr;
         return false;
     }
+
+    mPhysWorld = new PhysWorld(this);
 
     LoadData();
 
