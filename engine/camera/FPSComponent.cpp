@@ -11,7 +11,9 @@ FPSComponent::FPSComponent(class Actor* owner, int updateOrder)
     : CameraComponent(owner, updateOrder),
       mPitch(0.0f),
       mMaxPitch(0.0f),
-      mPitchSpeed(0.0f) {}
+      mPitchSpeed(0.0f) {
+    mOwner->GetGame()->GetInputSystem()->SetRelativeMouseMode(true);
+}
 
 FPSComponent::~FPSComponent() {}
 
