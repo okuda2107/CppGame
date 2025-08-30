@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "MeshComponent.h"
 #include "Shader.h"
+#include "SkydomeComponent.h"
 #include "SpriteComponent.h"
 #include "Texture.h"
 #include "VertexArray.h"
@@ -16,6 +17,7 @@ Renderer::Renderer(class Game* game)
       mContext(nullptr),
       mScreenHeight(0.0f),
       mScreenWidth(0.0f),
+      mSkydome(nullptr),
       mSpriteVerts(nullptr),
       mSpriteShader(nullptr),
       mWindow(nullptr) {}
@@ -107,6 +109,27 @@ void Renderer::UnloadData() {
 void Renderer::Draw() {
     glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // 背景描画
+    // todo: 複数の背景オブジェクトに対応？
+    if (mSkydome != nullptr) {
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
+        glDisable(GL_DEPTH_TEST);
+        glDepthMask(GL_FALSE);  // 深度書き込み禁止
+
+        // 背景用のビュー行列 (平行移動成分を除去)
+        Matrix4 viewNoTrans = mView;
+        viewNoTrans.mat[3][0] = 0.0f;  // x平行移動消去
+        viewNoTrans.mat[3][1] = 0.0f;  // y平行移動消去
+        viewNoTrans.mat[3][2] = 0.0f;  // z平行移動消去
+
+        Matrix4 viewProj = viewNoTrans * mProjection;
+        mSkydome->Draw(viewProj);
+
+        glDepthMask(GL_TRUE);
+        glDisable(GL_CULL_FACE);
+    }
 
     // メッシュ描画
     glEnable(GL_DEPTH_TEST);

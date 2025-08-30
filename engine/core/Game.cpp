@@ -174,13 +174,12 @@ void Game::UpdateActors(float deltatime) {
         delete actor;
     }
 }
-// #include "MouseTestActor.h"
-#include "FPSActor.h"
+
+#include "SkydomeTestActor.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
-    // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
-    // new MouseTestActor(this);
-    new FPSActor(this);
+    LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
+    new SkydomeTestActor(this);
 }
 
 void Game::UnloadData() {

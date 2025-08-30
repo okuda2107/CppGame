@@ -32,6 +32,9 @@ class Renderer {
     void AddMeshComp(class MeshComponent* mesh);
     void RemoveMeshComp(class MeshComponent* mesh);
 
+    void AddSkydome(class SkydomeComponent* skydome) { mSkydome = skydome; }
+    void RemoveSkydome() { mSkydome = nullptr; }
+
     class Texture* GetTexture(const std::string& fileName);
     class Mesh* GetMesh(const std::string& fileName);
     class Shader* GetShader(const std::string& shaderName);
@@ -62,6 +65,8 @@ class Renderer {
     std::unordered_map<std::string, class Shader*> mShaders;
     std::vector<class SpriteComponent*> mSprites;
     std::vector<class MeshComponent*> mMeshComps;
+
+    class SkydomeComponent* mSkydome;
 
     class Shader* mSpriteShader;
     class VertexArray* mSpriteVerts;
