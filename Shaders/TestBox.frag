@@ -9,5 +9,5 @@ uniform samplerCube uSkybox;
 void main()
 {
     // サンプルテクスチャはキューブマップ
-    outColor = vec4(0.0, 0.0, 1.0, 1.0);
+    outColor = vec4(vTexCoord, 1.0);
 }
