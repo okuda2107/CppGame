@@ -1,5 +1,5 @@
 #version 330
-in vec3 TexCoords;
+in vec2 TexCoords;
 out vec4 FragColor;
 
 float hash(vec2 p) {

@@ -18,7 +18,7 @@ SkydomeComponent::~SkydomeComponent() {
 }
 
 void SkydomeComponent::Draw(Matrix4 viewProj) {
-    if (mMesh || mShader) return;
+    if (!mMesh || !mShader) return;
     mShader->SetActive();
     mShader->SetMatrixUniform("uViewProj", viewProj);
     mShader->SetMatrixUniform("uWorldTransform", mOwner->GetWorldTransform());

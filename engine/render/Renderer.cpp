@@ -114,7 +114,7 @@ void Renderer::Draw() {
     // todo: 複数の背景オブジェクトに対応？
     if (mSkydome != nullptr) {
         glEnable(GL_CULL_FACE);
-        glCullFace(GL_FRONT);
+        glCullFace(GL_BACK);
         glDisable(GL_DEPTH_TEST);
         glDepthMask(GL_FALSE);  // 深度書き込み禁止
 

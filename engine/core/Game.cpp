@@ -175,11 +175,14 @@ void Game::UpdateActors(float deltatime) {
     }
 }
 
+#include "KeyboardTestActor.h"
 #include "SkydomeTestActor.h"
+
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
-    LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
+    // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
     new SkydomeTestActor(this);
+    new KeyboardTestActor(this);
 }
 
 void Game::UnloadData() {
