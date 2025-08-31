@@ -10,12 +10,21 @@
 #include "SoundHandler.h"
 
 class SkydomeTestActor : Actor {
+    float mTime;
+    class SkydomeComponent* sc;
+
    public:
-    SkydomeTestActor(class Game* game) : Actor(game) {
+    SkydomeTestActor(class Game* game) : Actor(game), mTime(0) {
         Actor* a = new Actor(game);
-        SkydomeComponent* sc = new SkydomeComponent(a);
+        sc = new SkydomeComponent(a);
         a->SetScale(100.0);
         sc->SetMesh(game->GetRenderer()->GetMesh("Assets/Cube.gpmesh"));
-        sc->SetShader(game->GetRenderer()->GetShader("Shaders/TestBox"));
+        sc->SetShader(game->GetRenderer()->GetShader("Shaders/NightSky"));
+    }
+
+    void UpdateActor(float deltatime) override {
+        mTime += deltatime;
+        sc->GetShader()->SetActive();
+        sc->GetShader()->SetFloatUniform("uTime", mTime);
     }
 };

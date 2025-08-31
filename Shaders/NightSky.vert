@@ -7,11 +7,12 @@ layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec3 inNormal;
 layout(location = 2) in vec2 inTexCoord;
 
-out vec2 flagTexCoord;
+out vec3 vDir;
 
 void main()
 {
 	vec4 pos = vec4(inPosition, 1.0);
 	gl_Position = pos * uWorldTransform * uViewProj;
-	flagTexCoord = inTexCoord;
+	// オブジェクトの中心が原点であることを前提とした受け渡し
+	vDir = inPosition;
 }

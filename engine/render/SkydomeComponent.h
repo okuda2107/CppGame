@@ -13,6 +13,8 @@ class SkydomeComponent : public Component {
 
     void Draw(Matrix4 viewProj);
 
+    class Shader* GetShader() { return mShader; }
+
     void SetMesh(class Mesh* mesh) { mMesh = mesh; }
     void SetShader(class Shader* shader) { mShader = shader; }
     void SetTextureIndex(size_t index) { mTextureIndex = index; }
