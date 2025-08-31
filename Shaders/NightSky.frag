@@ -3,7 +3,7 @@ in vec3 vDir;
 out vec4 outColor;
 
 uniform float uTime;   // 経過秒
-uniform vec3  uHorizonColor = vec3(0.03, 0.05, 0.10);
+uniform vec3  uHorizonColor = vec3(0.01, 0.02, 0.1);
 uniform vec3  uZenithColor  = vec3(0.00, 0.00, 0.02);
 
 // 2Dハッシュ（セル→[0,1)）
@@ -16,10 +16,13 @@ float hash21(vec2 p){
 
 // 2Dハッシュでセル内オフセット
 vec2 hash22(vec2 p){
-    float n = hash21(p);
-    p = fract(p * vec2(12.9898,78.233));
-    p += dot(p, p + 37.719);
-    return fract(vec2(n, p.x * p.y));
+    // 2Dベクトルを受け取り、[0,1)範囲の乱数ベクトルを返す
+    return fract(
+        sin(vec2(
+            dot(p, vec2(127.1, 311.7)),
+            dot(p, vec2(269.5, 183.3))
+        )) * 43758.5453
+    );
 }
 
 // ラジアン/π の定数
@@ -51,7 +54,7 @@ void main(){
     // レイヤーパラメータ
     for(int i=0;i<3;i++){
         float scale     = 300.0 * pow(1.9, i); // セル密度
-        float threshold = mix(0.985, 0.997, float(i)/2.0); // 星が出る確率（上層ほど疎）
+        float threshold = mix(0.985, 0.99, float(i)/2.0); // 星が出る確率（上層ほど疎）
         float size      = mix(0.55, 0.35, float(i)/2.0);   // 星サイズ（セル内半径）
 
         vec2  suv   = uv * scale;
@@ -66,7 +69,8 @@ void main(){
             vec2  c     = hash22(cell);
             float dist  = length(f - c);
             // 柔らかいコア（ガウシアン風）
-            float core  = exp(-pow(dist / size, 2.0) * 12.0);
+            // float core  = exp(-pow(dist / size, 2.0) * 12.0);
+            float core = exp(-pow(dist / (size * 0.45), 2.0) * 20.0);
 
             // 星色：僅かに色温度差
             float warm  = hash21(cell + 17.0);
@@ -82,12 +86,13 @@ void main(){
             // 微小ランダムで瞬きの揺らぎ
             float twk2  = 0.85 + 0.3 * sin(uTime * (rate*0.37) + phase*1.7);
 
-            float starB = baseB * mix(0.6, 1.0, twk) * twk2;
+            float starB = baseB * mix(0.2, 1.5, twk) * twk2;
 
             // コロナ（十字スパイクのような微妙な広がり）
-            float spike = pow(max(0.0, 1.0 - dist/ (size*2.0)), 3.0);
+            // float spike = pow(max(0.0, 1.0 - dist/ (size*2.0)), 3.0);
+            float spike = exp(-pow(dist / (size * 1.4), 2.0) * 6.0);
 
-            float lum   = core + 0.25 * spike;
+            float lum   = core + 0.12 * spike;
 
             starLum += lum * starB * 0.7;
             starCol += color * lum * starB;

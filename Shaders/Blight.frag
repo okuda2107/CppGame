@@ -4,7 +4,7 @@ out vec4 FragColor;
 in vec3 vPos;
 
 uniform vec3 glowColor = vec3(1.0, 0.3, 0);  // 発光色
-uniform float radius;     // 発光の広がり
+uniform float radius = 2;     // 発光の広がり
 
 void main()
 {
