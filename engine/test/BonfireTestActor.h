@@ -1,5 +1,6 @@
 #pragma once
 #include "Actor.h"
+#include "AudioComponent.h"
 #include "FPSComponent.h"
 #include "Game.h"
 #include "InputSystem.h"
@@ -39,6 +40,14 @@ class BonfireTestActor : Actor {
         a->SetScale(30.0);
         MeshComponent* a_mc = new MeshComponent(a);
         a_mc->SetMesh(GetGame()->GetRenderer()->GetMesh("Assets/Cube.gpmesh"));
+        AudioComponent* a_ac = new AudioComponent(a);
+        a_ac->RegisterEvent("takibi");
+        SoundHandler* e = a_ac->GetEvent("takibi");
+        if (!e) {
+            std::cerr << "failed to get sound event" << std::endl;
+        } else {
+            e->Restart();
+        }
 
         fc = new FPSComponent(this);
         fc->SetMaxPitch(Math::Pi / 4);
