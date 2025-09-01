@@ -49,6 +49,16 @@ class BonfireTestActor : Actor {
             e->Restart();
         }
 
+        // 床配置
+        Actor* b = new Actor(game);
+        b->SetScale(10.0f);
+        b->SetPosition(Vector3(0, 0, -70));
+        MeshComponent* b_mc = new MeshComponent(b);
+        b_mc->SetMesh(game->GetRenderer()->GetMesh("Assets/Plane.gpmesh"));
+
+        // 環境光
+        game->GetRenderer()->SetAmbientLight(Vector3(0.1, 0.1, 0.2));
+
         fc = new FPSComponent(this);
         fc->SetMaxPitch(Math::Pi / 4);
         mc = new MoveComponent(this);
