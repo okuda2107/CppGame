@@ -4,6 +4,7 @@ set(ROOT_DIR "${TOOLCHAIN_DIR}/..")
 set(CMAKE_C_COMPILER   "C:/msys64/mingw64/bin/gcc.exe")
 set(CMAKE_CXX_COMPILER "C:/msys64/mingw64/bin/g++.exe")
 
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
 
 set(CMAKE_INCLUDE_PATH
     "${ROOT_DIR}/exlibs/SDL2-2.32.8/x86_64-w64-mingw32/include/SDL2"
@@ -54,4 +55,5 @@ set(DLL_FILES
     "${ROOT_DIR}/exlibs/openal-soft-1.24.3-bin/bin/Win64/soft_oal.dll"
     "${ROOT_DIR}/exlibs/openal-soft-1.24.3-bin/router/Win64/OpenAL32.dll"
     "${ROOT_DIR}/exlibs/freealut/build/src/libalut.dll"
+    "C:/msys64/mingw64/bin/libwinpthread-1.dll"
 )
