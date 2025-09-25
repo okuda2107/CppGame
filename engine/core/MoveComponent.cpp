@@ -12,7 +12,10 @@ MoveComponent::MoveComponent(class Actor* owner, int updateOrder)
       mZSpeed(0.0f),
       mYawSpeed(0.0f),
       mPitchSpeed(0.0f),
-      mRollSpeed(0.0f) {}
+      mRollSpeed(0.0f),
+      mXAngularSpeed(0.0f),
+      mYAngularSpeed(0.0f),
+      mZAngularSpeed(0.0f) {}
 
 void MoveComponent::SetOwnerPosition(const class Vector3& direction,
                                      float speed, float deltatime) {
