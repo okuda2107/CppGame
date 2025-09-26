@@ -2,17 +2,9 @@
 #include <unordered_map>
 #include <vector>
 
+#include "Light.h"
 #include "Math.h"
 #include "SDL.h"
-
-struct DirectionalLight {
-    // 光の方向
-    Vector3 mDirection;
-    // 拡散反射光
-    Vector3 mDiffuseColor;
-    // 鏡面反射光
-    Vector3 mSpecColor;
-};
 
 class Renderer {
    public:
