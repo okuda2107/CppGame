@@ -60,7 +60,7 @@
         "regex": "cpp",
         "xhash": "cpp",
         "*.bank": "json",
-        "*.gplevel": "json",
-        "*.gpmesh": "json",
+        "*.gplevel": "jsonc",
+        "*.gpmesh": "jsonc",
     }
 }
