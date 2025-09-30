@@ -175,6 +175,7 @@ void Game::UpdateActors(float deltatime) {
     }
 }
 
+#include "BonfireTestActor.h"
 #include "KeyboardTestActor.h"
 #include "SkydomeTestActor.h"
 
@@ -183,6 +184,7 @@ void Game::LoadData() {
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
     new SkydomeTestActor(this);
     new KeyboardTestActor(this);
+    new BonfireTestActor(this);
 }
 
 void Game::UnloadData() {
