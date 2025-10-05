@@ -9,7 +9,7 @@ class Texture {
     bool Load(const std::string& fileName);
     void Unload();
 
-    void SetActive(size_t index);
+    void SetActive(size_t index = 0);
 
     int GetWidth() const { return mWidth; }
     int GetHeight() const { return mHeight; }
