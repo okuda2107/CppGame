@@ -15,10 +15,13 @@ void OpenAL::Handler::Restart() {
     EventInstance* e = mSystem->mInstances.at(mID);
     ALuint source = e->GetSource();
     ALint state = e->GetState();
-    if (state == AL_PLAYING) {  // 既に鳴っていたら位置をリセットするのみ
-        alSourceRewind(source);
-    } else if (state == AL_INITIAL || state == AL_PAUSED ||
-               state == AL_STOPPED) {
+    if (state == AL_INITIAL) {  // 既に鳴っていたら位置をリセットするのみ
+        alSourcePlay(source);
+    } else if (state == AL_PLAYING) {
+        alSourcePause(source);
+        alSourceRewind(source);  // 位置をリセット
+        alSourcePlay(source);    // 再生
+    } else if (state == AL_PAUSED || state == AL_STOPPED) {
         alSourceRewind(source);  // 位置をリセット
         alSourcePlay(source);    // 再生
     }
