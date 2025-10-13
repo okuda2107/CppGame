@@ -17,6 +17,9 @@ OpenAL::EventInstance::EventInstance(class Event* event) : mEvent(event) {
         ALfloat pos[] = {0, 0, 0};
         alSourcefv(mSource, AL_POSITION, pos);
     }
+    if (event->mIsLoop) {
+        alSourcei(mSource, AL_LOOPING, AL_TRUE);
+    }
     ALenum error = alGetError();
     if (error != AL_NO_ERROR) {
         SDL_Log("Failed to create source: %s", alGetErrorString(error));

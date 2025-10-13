@@ -60,7 +60,7 @@ SoundHandler* AudioComponent::GetEvent(const std::string& name) {
 void AudioComponent::RegisterEvent(const std::string& name) {
     // ここでSoundHandlerがnewされる．
     SoundHandler* e = mOwner->GetGame()->GetAudioSystem()->PlayEvent(name);
-    if (e != nullptr) return;
+    if (e == nullptr) return;
     // Is this 2D or 3D?
     if (e->Is3D()) {
         mEvents3D.emplace(name, e);
