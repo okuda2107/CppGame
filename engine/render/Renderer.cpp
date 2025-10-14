@@ -12,6 +12,24 @@
 #include "VertexArray.h"
 #include "glew.h"
 
+/*
+現在の実装では，configの項目が少ないため，項目で分岐させて列挙体のTypeIDで管理するので十分
+メリット: どのIDがどの設定が分かるため，デバッグが容易
+デメリット: 設定項目が多くなると，実装が煩雑．スケールしない．
+設定項目が多くなってきたら，設定項目をハッシュ値に変換する実装に切り替える
+メリット: 設定項目が多くても，実装がシンプル．
+デメリット: ハッシュ値に変換すると，元の設定内容が分からないため，デバッグに工夫が必要
+*/
+ConfigID HashRenderConfig(const MeshConfig& config) {
+    if (config.mSkyObject && config.mCullFaceBack) {
+        return ConfigID::Dome;
+    } else if (config.mBlend && !config.mDepthMask && config.mDepthTest) {
+        return ConfigID::Translucent;
+    } else {
+        return ConfigID::Opaque;
+    }
+}
+
 Renderer::Renderer(class Game* game)
     : mGame(game),
       mContext(nullptr),
@@ -135,12 +153,38 @@ void Renderer::Draw() {
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
 
-    for (auto shader : mShaders) {
-        shader.second->SetActive();
-        shader.second->SetMatrixUniform("uViewProj", mView * mProjection);
-        SetLightUniforms(shader.second);
-        for (auto mc : mMeshComps) {
-            mc->Draw(shader.first, shader.second);
+    // for (auto shader : mShaders) {
+    //     shader.second->SetActive();
+    //     shader.second->SetMatrixUniform("uViewProj", mView * mProjection);
+    //     SetLightUniforms(shader.second);
+    //     for (auto mc : mMeshComps) {
+    //         mc->Draw(shader.first, shader.second);
+    //     }
+    // }
+
+    // メッシュ描画
+    for (auto mc : mMeshComps) {
+        if (mc.second.first.mBlend) {
+            glEnable(GL_BLEND);
+        } else if (!mc.second.first.mBlend) {
+            glDisable(GL_BLEND);
+        }
+        if (mc.second.first.mCullFaceBack) {
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
+        }
+
+        for (auto shader : mShaders) {
+            shader.second->SetActive();
+            shader.second->SetMatrixUniform("uViewProj", mView * mProjection);
+            SetLightUniforms(shader.second);
+            for (auto mc : mc.second.second) {
+                mc->Draw(shader.first, shader.second);
+            }
+        }
+
+        if (mc.second.first.mCullFaceBack) {
+            glDisable(GL_CULL_FACE);
         }
     }
 

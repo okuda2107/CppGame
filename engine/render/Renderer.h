@@ -1,4 +1,6 @@
 #pragma once
+#include <functional>
+#include <map>
 #include <unordered_map>
 #include <vector>
 
@@ -13,6 +15,26 @@ struct DirectionalLight {
     // 鏡面反射光
     Vector3 mSpecColor;
 };
+
+// 将来的に描画設定を個別に設定できるようにする
+struct MeshConfig {
+    bool mDepthTest;
+    bool mDepthMask;
+    bool mBlend;
+    bool mCullFaceBack;
+    bool mSkyObject;
+    int mOrder = 100;  // 設定別の描画優先順位
+};
+
+// 将来的にハッシュ値になる可能性
+enum ConfigID {
+    Translucent = 0,
+    Dome,
+    Opaque,
+    NUM_CONFIG_ID,
+};
+
+ConfigID HashRenderConfig(const MeshConfig& config);
 
 class Renderer {
    public:
@@ -65,6 +87,8 @@ class Renderer {
     std::unordered_map<std::string, class Shader*> mShaders;
     std::vector<class SpriteComponent*> mSprites;
     std::vector<class MeshComponent*> mMeshComps;
+    std::map<ConfigID, std::pair<MeshConfig, std::vector<class MeshComponent*>>>
+        mMeshComps;
 
     class SkydomeComponent* mSkydome;
 
