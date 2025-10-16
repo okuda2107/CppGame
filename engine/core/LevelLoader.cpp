@@ -21,9 +21,6 @@ std::unordered_map<std::string, ActorFunc> LevelLoader::sActorFactoryMap = {
 
 std::unordered_map<std::string, std::pair<int, ComponentFunc>>
     LevelLoader::sComponentFactoryMap = {
-        {"MeshComponent",
-         {Component::TypeID::TMeshComponent,
-          &Component::Create<MeshComponent>}},
         {"MoveComponent",
          {Component::TypeID::TMoveComponent,
           &Component::Create<MoveComponent>}},

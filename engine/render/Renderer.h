@@ -17,24 +17,22 @@ struct DirectionalLight {
 };
 
 // 将来的に描画設定を個別に設定できるようにする
-struct MeshConfig {
+struct RenderConfig {
     bool mDepthTest;
     bool mDepthMask;
     bool mBlend;
     bool mCullFaceBack;
-    bool mSkyObject;
     int mOrder = 100;  // 設定別の描画優先順位
 };
 
 // 将来的にハッシュ値になる可能性
+// 現在はここで順序を設定
 enum ConfigID {
-    Translucent = 0,
-    Dome,
+    Dome = 0,
+    Translucent,
     Opaque,
     NUM_CONFIG_ID,
 };
-
-ConfigID HashRenderConfig(const MeshConfig& config);
 
 class Renderer {
    public:
@@ -51,8 +49,8 @@ class Renderer {
     void AddSprite(class SpriteComponent* sprite);
     void RemoveSprite(class SpriteComponent* sprite);
 
-    void AddMeshComp(class MeshComponent* mesh);
-    void RemoveMeshComp(class MeshComponent* mesh);
+    void AddMeshComp(const ConfigID config, class MeshComponent* mesh);
+    void RemoveMeshComp(const ConfigID config, class MeshComponent* mesh);
 
     void AddSkydome(class SkydomeComponent* skydome) { mSkydome = skydome; }
     void RemoveSkydome() { mSkydome = nullptr; }
@@ -71,6 +69,9 @@ class Renderer {
     }  // 全体に一つしかないのでRendererに書く
     DirectionalLight& GetDirectionalLight() { return mDirLight; }
 
+    // order順に比較できるhashを返す
+    ConfigID GetConfigID(const RenderConfig& config);
+
    private:
     bool LoadShaders();
     void CreateSpriteVerts();
@@ -86,9 +87,9 @@ class Renderer {
     std::unordered_map<std::string, class Mesh*> mMeshes;
     std::unordered_map<std::string, class Shader*> mShaders;
     std::vector<class SpriteComponent*> mSprites;
-    std::vector<class MeshComponent*> mMeshComps;
-    std::map<ConfigID, std::pair<MeshConfig, std::vector<class MeshComponent*>>>
-        mMeshComps;
+    std::map<ConfigID, std::vector<class MeshComponent*>> mMeshComps;
+    // 設定辞書
+    std::unordered_map<ConfigID, RenderConfig> mMeshConfigs;
 
     class SkydomeComponent* mSkydome;
 

@@ -38,7 +38,12 @@ class BonfireTestActor : Actor {
         Actor* a = new Actor(GetGame());
         a->SetPosition(Vector3(100, -100, -50));
         a->SetScale(30.0);
-        MeshComponent* a_mc = new MeshComponent(a);
+        RenderConfig config;
+        config.mBlend = false;
+        config.mCullFaceBack = false;
+        config.mDepthMask = true;
+        config.mDepthTest = true;
+        MeshComponent* a_mc = new MeshComponent(a, &config);
         a_mc->SetMesh(GetGame()->GetRenderer()->GetMesh("Assets/Cube.gpmesh"));
         AudioComponent* a_ac = new AudioComponent(a);
         a_ac->RegisterEvent("takibi");
@@ -53,7 +58,8 @@ class BonfireTestActor : Actor {
         Actor* b = new Actor(game);
         b->SetScale(10.0f);
         b->SetPosition(Vector3(0, 0, -70));
-        MeshComponent* b_mc = new MeshComponent(b);
+
+        MeshComponent* b_mc = new MeshComponent(b, &config);
         b_mc->SetMesh(game->GetRenderer()->GetMesh("Assets/Plane.gpmesh"));
 
         // 環境光

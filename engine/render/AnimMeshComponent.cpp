@@ -2,8 +2,9 @@
 
 #include "Mesh.h"
 
-AnimMeshComponent::AnimMeshComponent(class Actor* owner)
-    : MeshComponent(owner), mTime(0.0f) {}
+AnimMeshComponent::AnimMeshComponent(class Actor* owner,
+                                     class RenderConfig* config)
+    : MeshComponent(owner, config), mTime(0.0f) {}
 
 AnimMeshComponent::~AnimMeshComponent() {}
 

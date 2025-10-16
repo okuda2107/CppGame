@@ -12,24 +12,6 @@
 #include "VertexArray.h"
 #include "glew.h"
 
-/*
-現在の実装では，configの項目が少ないため，項目で分岐させて列挙体のTypeIDで管理するので十分
-メリット: どのIDがどの設定が分かるため，デバッグが容易
-デメリット: 設定項目が多くなると，実装が煩雑．スケールしない．
-設定項目が多くなってきたら，設定項目をハッシュ値に変換する実装に切り替える
-メリット: 設定項目が多くても，実装がシンプル．
-デメリット: ハッシュ値に変換すると，元の設定内容が分からないため，デバッグに工夫が必要
-*/
-ConfigID HashRenderConfig(const MeshConfig& config) {
-    if (config.mSkyObject && config.mCullFaceBack) {
-        return ConfigID::Dome;
-    } else if (config.mBlend && !config.mDepthMask && config.mDepthTest) {
-        return ConfigID::Translucent;
-    } else {
-        return ConfigID::Opaque;
-    }
-}
-
 Renderer::Renderer(class Game* game)
     : mGame(game),
       mContext(nullptr),
@@ -150,40 +132,41 @@ void Renderer::Draw() {
     }
 
     // メッシュ描画
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_BLEND);
-
-    // for (auto shader : mShaders) {
-    //     shader.second->SetActive();
-    //     shader.second->SetMatrixUniform("uViewProj", mView * mProjection);
-    //     SetLightUniforms(shader.second);
-    //     for (auto mc : mMeshComps) {
-    //         mc->Draw(shader.first, shader.second);
-    //     }
-    // }
-
-    // メッシュ描画
     for (auto mc : mMeshComps) {
-        if (mc.second.first.mBlend) {
+        RenderConfig config = mMeshConfigs.at(mc.first);
+        if (config.mBlend) {
             glEnable(GL_BLEND);
-        } else if (!mc.second.first.mBlend) {
+        } else if (!config.mBlend) {
             glDisable(GL_BLEND);
         }
-        if (mc.second.first.mCullFaceBack) {
+
+        if (config.mCullFaceBack) {
             glEnable(GL_CULL_FACE);
             glCullFace(GL_BACK);
+        }
+
+        if (config.mDepthMask) {
+            glDepthMask(GL_TRUE);
+        } else if (!config.mDepthMask) {
+            glDepthMask(GL_FALSE);
+        }
+
+        if (config.mDepthTest) {
+            glEnable(GL_DEPTH_TEST);
+        } else if (!config.mDepthTest) {
+            glDisable(GL_DEPTH_TEST);
         }
 
         for (auto shader : mShaders) {
             shader.second->SetActive();
             shader.second->SetMatrixUniform("uViewProj", mView * mProjection);
             SetLightUniforms(shader.second);
-            for (auto mc : mc.second.second) {
+            for (auto mc : mc.second) {
                 mc->Draw(shader.first, shader.second);
             }
         }
 
-        if (mc.second.first.mCullFaceBack) {
+        if (config.mCullFaceBack) {
             glDisable(GL_CULL_FACE);
         }
     }
@@ -219,13 +202,20 @@ void Renderer::RemoveSprite(class SpriteComponent* sprite) {
     mSprites.erase(iter);
 }
 
-void Renderer::AddMeshComp(MeshComponent* mesh) {
-    mMeshComps.emplace_back(mesh);
+void Renderer::AddMeshComp(const ConfigID id, MeshComponent* mesh) {
+    auto iter = mMeshComps.find(id);
+    if (iter != mMeshComps.end()) {
+        iter->second.push_back(mesh);
+    } else {
+        mMeshComps.emplace(id, std::vector<MeshComponent*>{mesh});
+    }
 }
 
-void Renderer::RemoveMeshComp(MeshComponent* mesh) {
-    auto iter = std::find(mMeshComps.begin(), mMeshComps.end(), mesh);
-    mMeshComps.erase(iter);
+void Renderer::RemoveMeshComp(const ConfigID id, MeshComponent* mesh) {
+    auto iter = mMeshComps.find(id);
+    if (iter != mMeshComps.end()) {
+        mMeshComps.erase(iter);
+    }
 }
 
 Texture* Renderer::GetTexture(const std::string& filename) {
@@ -328,4 +318,26 @@ void Renderer::SetLightUniforms(Shader* shader) {
     shader->SetVectorUniform("uDirLight.mDiffuseColor",
                              mDirLight.mDiffuseColor);
     shader->SetVectorUniform("uDirLight.mSpecColor", mDirLight.mSpecColor);
+}
+
+/*
+現在の実装では，configの項目が少ないため，項目で分岐させて列挙体のTypeIDで管理するので十分
+メリット: どのIDがどの設定が分かるため，デバッグが容易
+デメリット: 設定項目が多くなると，実装が煩雑．スケールしない．
+設定項目が多くなってきたら，設定項目をハッシュ値に変換する実装に切り替える
+メリット: 設定項目が多くても，実装がシンプル．
+デメリット: ハッシュ値に変換すると，元の設定内容が分からないため，デバッグに工夫が必要．
+ハッシュ値を出力するようにする場合，描画順序を考慮させることが難しい．そのため上位ピットのいくつかは描画順序を表す数字にして，mapの描画順序を表す
+*/
+ConfigID Renderer::GetConfigID(const RenderConfig& config) {
+    ConfigID id;
+    if (config.mCullFaceBack) {
+        id = ConfigID::Dome;
+    } else if (config.mBlend && !config.mDepthMask && config.mDepthTest) {
+        id = ConfigID::Translucent;
+    } else {
+        id = ConfigID::Opaque;
+    }
+    mMeshConfigs.emplace(id, config);
+    return id;
 }

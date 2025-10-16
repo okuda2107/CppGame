@@ -10,12 +10,15 @@
 #include "Texture.h"
 #include "VertexArray.h"
 
-MeshComponent::MeshComponent(Actor* owner) : Component(owner), mMesh(nullptr) {
-    mOwner->GetGame()->GetRenderer()->AddMeshComp(this);
+MeshComponent::MeshComponent(Actor* owner, RenderConfig* config)
+    : Component(owner), mMesh(nullptr) {
+    ConfigID id = mOwner->GetGame()->GetRenderer()->GetConfigID(*config);
+    mConfigID = id;
+    mOwner->GetGame()->GetRenderer()->AddMeshComp(id, this);
 }
 
 MeshComponent::~MeshComponent() {
-    mOwner->GetGame()->GetRenderer()->RemoveMeshComp(this);
+    mOwner->GetGame()->GetRenderer()->RemoveMeshComp(mConfigID, this);
 }
 
 void MeshComponent::Draw(const std::string& shaderName, Shader* shader) {

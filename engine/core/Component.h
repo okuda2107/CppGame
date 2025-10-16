@@ -7,7 +7,6 @@ class Component {
    public:
     enum TypeID {
         TComponent = 0,
-        TMeshComponent,
         TMoveComponent,
         TSpriteComponent,
         TInputComponent,
