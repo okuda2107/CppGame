@@ -134,28 +134,25 @@ void Renderer::Draw() {
     // メッシュ描画
     for (auto mc : mMeshComps) {
         RenderConfig config = mMeshConfigs.at(mc.first);
-        if (config.mBlend) {
+        if (config.mBlend)
             glEnable(GL_BLEND);
-        } else if (!config.mBlend) {
+        else if (!config.mBlend)
             glDisable(GL_BLEND);
-        }
 
         if (config.mCullFaceBack) {
             glEnable(GL_CULL_FACE);
             glCullFace(GL_BACK);
         }
 
-        if (config.mDepthMask) {
+        if (config.mDepthMask)
             glDepthMask(GL_TRUE);
-        } else if (!config.mDepthMask) {
+        else if (!config.mDepthMask)
             glDepthMask(GL_FALSE);
-        }
 
-        if (config.mDepthTest) {
+        if (config.mDepthTest)
             glEnable(GL_DEPTH_TEST);
-        } else if (!config.mDepthTest) {
+        else if (!config.mDepthTest)
             glDisable(GL_DEPTH_TEST);
-        }
 
         for (auto shader : mShaders) {
             shader.second->SetActive();
@@ -166,9 +163,9 @@ void Renderer::Draw() {
             }
         }
 
-        if (config.mCullFaceBack) {
-            glDisable(GL_CULL_FACE);
-        }
+        // todo: 状態をリセットすることを検討
+        if (config.mCullFaceBack) glDisable(GL_CULL_FACE);
+        if (!config.mDepthMask) glDepthMask(GL_TRUE);
     }
 
     // スプライト描画

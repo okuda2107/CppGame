@@ -175,11 +175,13 @@ void Game::UpdateActors(float deltatime) {
     }
 }
 
+#include "Bonfire.h"
 #include "BonfireTestActor.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
     new BonfireTestActor(this);
+    new Bonfire(this);
 }
 
 void Game::UnloadData() {

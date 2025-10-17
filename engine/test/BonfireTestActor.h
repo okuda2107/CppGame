@@ -45,6 +45,7 @@ class BonfireTestActor : Actor {
         config.mDepthTest = true;
         MeshComponent* a_mc = new MeshComponent(a, &config);
         a_mc->SetMesh(GetGame()->GetRenderer()->GetMesh("Assets/Cube.gpmesh"));
+        a_mc->AddTextureIndex(0);
         AudioComponent* a_ac = new AudioComponent(a);
         a_ac->RegisterEvent("takibi");
         SoundHandler* e = a_ac->GetEvent("takibi");
@@ -61,6 +62,7 @@ class BonfireTestActor : Actor {
 
         MeshComponent* b_mc = new MeshComponent(b, &config);
         b_mc->SetMesh(game->GetRenderer()->GetMesh("Assets/Plane.gpmesh"));
+        b_mc->AddTextureIndex(0);
 
         // 環境光
         game->GetRenderer()->SetAmbientLight(Vector3(0.1, 0.1, 0.2));

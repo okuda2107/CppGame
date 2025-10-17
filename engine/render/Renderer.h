@@ -29,8 +29,8 @@ struct RenderConfig {
 // 現在はここで順序を設定
 enum ConfigID {
     Dome = 0,
-    Translucent,
     Opaque,
+    Translucent,
     NUM_CONFIG_ID,
 };
 
