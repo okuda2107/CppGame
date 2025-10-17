@@ -19,6 +19,11 @@ std::unordered_map<std::string, ActorFunc> LevelLoader::sActorFactoryMap = {
     {"Actor", &Actor::Create<Actor>},
 };
 
+/*
+todo:
+MeshComponentのコンストラクタの引数を変えたことにより，Create関数の整合性が保てなくなった．
+そのため，jsonから指定する際の生成ロジックを改める必要がある．
+*/
 std::unordered_map<std::string, std::pair<int, ComponentFunc>>
     LevelLoader::sComponentFactoryMap = {
         {"MoveComponent",
