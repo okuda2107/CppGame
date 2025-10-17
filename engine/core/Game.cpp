@@ -175,13 +175,16 @@ void Game::UpdateActors(float deltatime) {
     }
 }
 
+#include "BackDome.h"
 #include "Bonfire.h"
-#include "BonfireTestActor.h"
+#include "Floor.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
-    new BonfireTestActor(this);
     new Bonfire(this);
+    new Floor(this);
+    new BackDome(this);
+    // cameraのロード
 }
 
 void Game::UnloadData() {
