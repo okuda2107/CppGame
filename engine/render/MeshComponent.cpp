@@ -10,9 +10,9 @@
 #include "Texture.h"
 #include "VertexArray.h"
 
-MeshComponent::MeshComponent(Actor* owner, RenderConfig* config)
+MeshComponent::MeshComponent(Actor* owner, RenderConfig config)
     : Component(owner), mMesh(nullptr) {
-    ConfigID id = mOwner->GetGame()->GetRenderer()->GetConfigID(*config);
+    ConfigID id = mOwner->GetGame()->GetRenderer()->GetConfigID(config);
     mConfigID = id;
     mOwner->GetGame()->GetRenderer()->AddMeshComp(id, this);
 }

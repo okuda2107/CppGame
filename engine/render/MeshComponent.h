@@ -5,7 +5,7 @@
 
 class MeshComponent : public Component {
    public:
-    MeshComponent(class Actor* owner, struct RenderConfig* config);
+    MeshComponent(class Actor* owner, struct RenderConfig config);
     ~MeshComponent();
     // Draw this mesh component
     virtual void Draw(const std::string& shaderName, class Shader* shader);

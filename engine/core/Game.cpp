@@ -177,6 +177,7 @@ void Game::UpdateActors(float deltatime) {
 
 #include "BackDome.h"
 #include "Bonfire.h"
+#include "FPSActor.h"
 #include "Floor.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
@@ -184,7 +185,11 @@ void Game::LoadData() {
     new Bonfire(this);
     new Floor(this);
     new BackDome(this);
-    // cameraのロード
+    FPSActor* fa = new FPSActor(this);
+    fa->SetForwardSpeed(60.0f);
+    fa->SetStrafeSpeed(60.0f);
+    // 環境光
+    GetRenderer()->SetAmbientLight(Vector3(0.1, 0.1, 0.2));
 }
 
 void Game::UnloadData() {

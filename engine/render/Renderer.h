@@ -23,6 +23,16 @@ struct RenderConfig {
     bool mBlend;
     bool mCullFaceBack;
     int mOrder = 100;  // 設定別の描画優先順位
+    RenderConfig(bool blend, bool cullFaceBack, bool depthMask, bool depthTest)
+        : mBlend(blend),
+          mCullFaceBack(cullFaceBack),
+          mDepthMask(depthMask),
+          mDepthTest(depthTest) {}
+    RenderConfig()
+        : mBlend(false),
+          mCullFaceBack(false),
+          mDepthMask(true),
+          mDepthTest(true) {}
 };
 
 // 将来的にハッシュ値になる可能性
