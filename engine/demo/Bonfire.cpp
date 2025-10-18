@@ -9,8 +9,11 @@
 Bonfire::Bonfire(class Game* game) : Actor(game) {
     SetPosition(Vector3(100, 50, -50));
     SetScale(50.0);
-    AnimMeshComponent* mc =
-        new AnimMeshComponent(this, RenderConfig(true, false, false, true));
+    RenderConfig config = RenderConfig();
+    config.mBlend = true;
+    config.mDepthMask = false;
+    config.mSortByCamera = true;
+    AnimMeshComponent* mc = new AnimMeshComponent(this, config);
     mc->SetMesh(GetGame()->GetRenderer()->GetMesh("Assets/Bonfire.gpmesh"));
 
     AudioComponent* ac = new AudioComponent(this);

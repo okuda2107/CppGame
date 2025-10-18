@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "Actor.h"
 #include "Game.h"
 #include "Mesh.h"
 #include "MeshComponent.h"
@@ -133,26 +134,7 @@ void Renderer::Draw() {
 
     // メッシュ描画
     for (auto mc : mMeshComps) {
-        RenderConfig config = mMeshConfigs.at(mc.first);
-        if (config.mBlend)
-            glEnable(GL_BLEND);
-        else if (!config.mBlend)
-            glDisable(GL_BLEND);
-
-        if (config.mCullFaceBack) {
-            glEnable(GL_CULL_FACE);
-            glCullFace(GL_BACK);
-        }
-
-        if (config.mDepthMask)
-            glDepthMask(GL_TRUE);
-        else if (!config.mDepthMask)
-            glDepthMask(GL_FALSE);
-
-        if (config.mDepthTest)
-            glEnable(GL_DEPTH_TEST);
-        else if (!config.mDepthTest)
-            glDisable(GL_DEPTH_TEST);
+        ApplyConfig(mc.first);
 
         for (auto shader : mShaders) {
             shader.second->SetActive();
@@ -163,9 +145,7 @@ void Renderer::Draw() {
             }
         }
 
-        // todo: 状態をリセットすることを検討
-        if (config.mCullFaceBack) glDisable(GL_CULL_FACE);
-        if (!config.mDepthMask) glDepthMask(GL_TRUE);
+        ResetConfig();
     }
 
     // スプライト描画
@@ -182,6 +162,52 @@ void Renderer::Draw() {
     }
 
     SDL_GL_SwapWindow(mWindow);
+}
+
+void Renderer::ApplyConfig(const ConfigID id) {
+    RenderConfig config = mMeshConfigs.at(id);
+    if (config.mBlend)
+        glEnable(GL_BLEND);
+    else if (!config.mBlend)
+        glDisable(GL_BLEND);
+
+    if (config.mCullFaceBack) {
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+    }
+
+    if (config.mDepthMask)
+        glDepthMask(GL_TRUE);
+    else if (!config.mDepthMask)
+        glDepthMask(GL_FALSE);
+
+    if (config.mDepthTest)
+        glEnable(GL_DEPTH_TEST);
+    else if (!config.mDepthTest)
+        glDisable(GL_DEPTH_TEST);
+
+    // カメラから遠い順に描画
+    if (config.mSortByCamera) {
+        auto comps = mMeshComps.at(id);
+        Matrix4 invView = mView;
+        invView.Invert();
+        Vector3 cameraPos = invView.GetTranslation();
+        // 半透明相当の描画設定 → 遠い順にソート
+        std::sort(comps.begin(), comps.end(),
+                  [cameraPos](MeshComponent* a, MeshComponent* b) {
+                      float distA =
+                          (a->GetOwner()->GetPosition() - cameraPos).LengthSq();
+                      float distB =
+                          (b->GetOwner()->GetPosition() - cameraPos).LengthSq();
+                      return distA > distB;  // 遠い順
+                  });
+    }
+}
+
+void Renderer::ResetConfig() {
+    // todo: 状態をリセットすることを検討
+    glDisable(GL_CULL_FACE);
+    glDepthMask(GL_TRUE);
 }
 
 void Renderer::AddSprite(class SpriteComponent* sprite) {
