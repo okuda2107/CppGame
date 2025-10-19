@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>
 #include <map>
 #include <unordered_map>
 #include <vector>
@@ -23,7 +22,8 @@ struct RenderConfig {
     bool mBlend;
     bool mCullFaceBack;
     bool mSortByCamera;
-
+    std::string effectName =
+        "";  // かけるエフェクトのシェーダー．エフェクトを何もかけなければ空文字列．
     int mOrder = 100;  // 設定別の描画優先順位
     // 一般的な不透明オブジェクトをデフォルト値とする
     RenderConfig()
@@ -68,8 +68,13 @@ class Renderer {
     class Mesh* GetMesh(const std::string& fileName);
     class Shader* GetShader(const std::string& shaderName);
 
+    class RenderPath* GetRenderPath(const std::string& effectName);
+
     // SDL_Windowは不完全型
     class SDL_Window* GetWindow() const { return mWindow; }
+
+    float GetScreenWidth() const { return mScreenWidth; }
+    float GetScreenHeight() const { return mScreenHeight; }
 
     void SetViewMatrix(const class Matrix4& view) { mView = view; }
 
@@ -91,8 +96,7 @@ class Renderer {
     // 光の計算はシェーダーにとっては必要不可欠ではない
     // 与えられた描画設定を適用する / 解除する
 
-    // 渡された
-    void Draw3DScene();
+    void CreatePostEffectVerts();
 
     void ApplyConfig(const ConfigID id);
     void ResetConfig();
@@ -112,8 +116,8 @@ class Renderer {
     class Shader* mSpriteShader;
     class VertexArray* mSpriteVerts;
 
-    // effect別にFBOを持つ
-    std::unordered_map<std::string, xxxx> mFrameBuffer;
+    // post-effect別にFBOを持つ
+    std::unordered_map<std::string, class RenderPath*> mRenderPath;
     class VertexArray* mPostEffectVerts;
 
     Matrix4 mView;

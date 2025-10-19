@@ -3,7 +3,7 @@ in vec2 TexCoord;
 out vec4 FragColor;
 
 uniform sampler2D uSceneTex;
-uniform float uBlurStrength; // 例: 1.0〜3.0
+uniform float uBlurStrength = 3.0; // 例: 1.0〜3.0
 
 void main()
 {

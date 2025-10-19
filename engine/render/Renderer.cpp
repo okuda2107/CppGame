@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "Mesh.h"
 #include "MeshComponent.h"
+#include "RenderPath.h"
 #include "Shader.h"
 #include "SkydomeComponent.h"
 #include "SpriteComponent.h"
@@ -72,6 +73,8 @@ bool Renderer::Initialize(float screenWidth, float screenHeight) {
     }
 
     CreateSpriteVerts();
+
+    CreatePostEffectVerts();
 
     return true;
 }
@@ -148,6 +151,12 @@ void Renderer::Draw() {
         ResetConfig();
     }
 
+    // 別パスで描画されたオブジェクトの統合
+    mPostEffectVerts->SetActive();
+    for (auto rp : mRenderPath) {
+        rp.second->BlitToScreen();
+    }
+
     // スプライト描画
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -202,12 +211,19 @@ void Renderer::ApplyConfig(const ConfigID id) {
                       return distA > distB;  // 遠い順
                   });
     }
+
+    // 別パスの指定
+    if (config.effectName != "") {
+        auto iter = mRenderPath.find(config.effectName);
+        if (iter != mRenderPath.end()) iter->second->SetActive();
+    }
 }
 
 void Renderer::ResetConfig() {
     // todo: 状態をリセットすることを検討
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_TRUE);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Renderer::AddSprite(class SpriteComponent* sprite) {
@@ -292,6 +308,26 @@ Shader* Renderer::GetShader(const std::string& shaderName) {
     return m;
 }
 
+// ポストエフェクトを適用するレンダリングパスを追加
+// 現在の実装では，レンダリングパスの実装は開発者側が手動で追加しなければならない．
+// 将来的にはMaterialクラスがその責務を担う？
+RenderPath* Renderer::GetRenderPath(const std::string& effectName) {
+    RenderPath* m = nullptr;
+    auto iter = mRenderPath.find(effectName);
+    if (iter != mRenderPath.end()) {
+        m = iter->second;
+    } else {
+        m = new RenderPath(this, effectName);
+        if (m->Load()) {
+            mRenderPath.emplace(effectName, m);
+        } else {
+            delete m;
+            m = nullptr;
+        }
+    }
+    return m;
+}
+
 bool Renderer::LoadShaders() {
     mSpriteShader = new Shader();
 
@@ -317,15 +353,28 @@ bool Renderer::LoadShaders() {
 
 void Renderer::CreateSpriteVerts() {
     float vertexBuffer[] = {
-        -0.5f, 0.5f,  0.f, 0.f, 0.f,  // top left
-        0.5f,  0.5f,  0.f, 1.f, 0.f,  // top right
-        0.5f,  -0.5f, 0.f, 1.f, 1.f,  // bottom right
-        -0.5f, -0.5f, 0.f, 0.f, 1.f   // bottom left
+        -0.5f, 0.5f,  0.f, 0.f, 0.f, 0.f, 0.f, 0.f,  // top left
+        0.5f,  0.5f,  0.f, 1.f, 0.f, 0.f, 0.f, 0.f,  // top right
+        0.5f,  -0.5f, 0.f, 1.f, 1.f, 0.f, 0.f, 0.f,  // bottom right
+        -0.5f, -0.5f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f,  // bottom left
     };
 
     unsigned int indexBuffer[] = {0, 1, 2, 2, 3, 0};
 
     mSpriteVerts = new VertexArray(vertexBuffer, 4, indexBuffer, 6);
+}
+
+void Renderer::CreatePostEffectVerts() {
+    float vertexBuffer[] = {
+        -1.0f, 1.0f,  0.f, 0.f, 0.f, 0.f, 0.f, 0.f,  // top left
+        1.0f,  1.0f,  0.f, 1.f, 0.f, 0.f, 0.f, 0.f,  // top right
+        1.0f,  -1.0f, 0.f, 1.f, 1.f, 0.f, 0.f, 0.f,  // bottom right
+        -1.0f, -1.0f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f,  // bottom left
+    };
+
+    unsigned int indexBuffer[] = {0, 1, 2, 2, 3, 0};
+
+    mPostEffectVerts = new VertexArray(vertexBuffer, 4, indexBuffer, 6);
 }
 
 //ShaderファイルはGLSLへの架け橋の役目，光のセットアップを書いてしまうとそれが崩れる

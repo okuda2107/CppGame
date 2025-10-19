@@ -9,10 +9,13 @@
 Bonfire::Bonfire(class Game* game) : Actor(game) {
     SetPosition(Vector3(100, 50, -50));
     SetScale(50.0);
+    std::string effectName = "Shaders/PostEffectBlur";
+    game->GetRenderer()->GetRenderPath(effectName);
     RenderConfig config = RenderConfig();
     config.mBlend = true;
     config.mDepthMask = false;
     config.mSortByCamera = true;
+    config.effectName = effectName;
     AnimMeshComponent* mc = new AnimMeshComponent(this, config);
     mc->SetMesh(GetGame()->GetRenderer()->GetMesh("Assets/Bonfire.gpmesh"));
 
