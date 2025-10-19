@@ -23,6 +23,7 @@ struct RenderConfig {
     bool mBlend;
     bool mCullFaceBack;
     bool mSortByCamera;
+
     int mOrder = 100;  // 設定別の描画優先順位
     // 一般的な不透明オブジェクトをデフォルト値とする
     RenderConfig()
@@ -80,10 +81,6 @@ class Renderer {
     // order順に比較できるhashを返す
     ConfigID GetConfigID(const RenderConfig& config);
 
-    // 与えられた描画設定を適用する / 解除する
-    void ApplyConfig(const ConfigID id);
-    void ResetConfig();
-
    private:
     bool LoadShaders();
     void CreateSpriteVerts();
@@ -92,6 +89,13 @@ class Renderer {
     // 3D表示するときにしか使わんからRendererファイルでいいかも
     // このファイルに新しく光源の配列作っても良し
     // 光の計算はシェーダーにとっては必要不可欠ではない
+    // 与えられた描画設定を適用する / 解除する
+
+    // 渡された
+    void Draw3DScene();
+
+    void ApplyConfig(const ConfigID id);
+    void ResetConfig();
 
     class Game* mGame;
 
@@ -107,6 +111,10 @@ class Renderer {
 
     class Shader* mSpriteShader;
     class VertexArray* mSpriteVerts;
+
+    // effect別にFBOを持つ
+    std::unordered_map<std::string, xxxx> mFrameBuffer;
+    class VertexArray* mPostEffectVerts;
 
     Matrix4 mView;
     Matrix4 mProjection;
