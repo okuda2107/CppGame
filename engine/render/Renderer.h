@@ -118,6 +118,7 @@ class Renderer {
 
     // post-effect別にFBOを持つ
     std::unordered_map<std::string, class RenderPath*> mRenderPath;
+    class Shader* mPostEffectMergeShader;
     class VertexArray* mPostEffectVerts;
 
     Matrix4 mView;

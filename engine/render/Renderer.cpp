@@ -83,6 +83,9 @@ void Renderer::Shutdown() {
     delete mSpriteVerts;
     mSpriteShader->Unload();
     delete mSpriteShader;
+    delete mPostEffectVerts;
+    mPostEffectMergeShader->Unload();
+    delete mPostEffectMergeShader;
     SDL_GL_DeleteContext(mContext);
     SDL_DestroyWindow(mWindow);
 }
@@ -108,6 +111,12 @@ void Renderer::UnloadData() {
         delete i.second;
     }
     mShaders.clear();
+
+    for (auto i : mRenderPath) {
+        i.second->Unload();
+        delete i.second;
+    }
+    mRenderPath.clear();
 }
 
 void Renderer::Draw() {
@@ -151,10 +160,25 @@ void Renderer::Draw() {
         ResetConfig();
     }
 
-    // 別パスで描画されたオブジェクトの統合
-    mPostEffectVerts->SetActive();
-    for (auto rp : mRenderPath) {
-        rp.second->BlitToScreen();
+    // 別パスで描画されたオブジェクトに効果を適用
+    if (mRenderPath.size() > 0) {
+        for (auto rp : mRenderPath) {
+            rp.second->ApplyEffect(mPostEffectVerts);
+        }
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glDisable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+        mPostEffectMergeShader->SetActive();
+        mPostEffectVerts->SetActive();
+
+        int index = 0;
+        for (auto rp : mRenderPath) {
+            glActiveTexture(GL_TEXTURE0 + index);
+            glBindTexture(GL_TEXTURE_2D, rp.second->GetTextureIndex());
+            ++index;
+        }
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 
     // スプライト描画
@@ -317,7 +341,7 @@ RenderPath* Renderer::GetRenderPath(const std::string& effectName) {
     if (iter != mRenderPath.end()) {
         m = iter->second;
     } else {
-        m = new RenderPath(this, effectName);
+        m = new RenderPath(this);
         if (m->Load()) {
             mRenderPath.emplace(effectName, m);
         } else {
@@ -337,6 +361,13 @@ bool Renderer::LoadShaders() {
 
     mSpriteShader->SetActive();
 
+    mPostEffectMergeShader = new Shader();
+
+    if (!mPostEffectMergeShader->Load("Shaders/Merge.vert",
+                                      "Shaders/Merge.frag")) {
+        return false;
+    }
+
     // ビュー射影行列の情報を流し込む
     Matrix4 viewProj =
         Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
@@ -354,9 +385,9 @@ bool Renderer::LoadShaders() {
 void Renderer::CreateSpriteVerts() {
     float vertexBuffer[] = {
         -0.5f, 0.5f,  0.f, 0.f, 0.f, 0.f, 0.f, 0.f,  // top left
-        0.5f,  0.5f,  0.f, 1.f, 0.f, 0.f, 0.f, 0.f,  // top right
-        0.5f,  -0.5f, 0.f, 1.f, 1.f, 0.f, 0.f, 0.f,  // bottom right
-        -0.5f, -0.5f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f,  // bottom left
+        0.5f,  0.5f,  0.f, 0.f, 0.f, 0.f, 1.f, 0.f,  // top right
+        0.5f,  -0.5f, 0.f, 0.f, 0.f, 0.f, 1.f, 1.f,  // bottom right
+        -0.5f, -0.5f, 0.f, 0.f, 0.f, 0.f, 0.f, 1.f,  // bottom left
     };
 
     unsigned int indexBuffer[] = {0, 1, 2, 2, 3, 0};
@@ -366,10 +397,10 @@ void Renderer::CreateSpriteVerts() {
 
 void Renderer::CreatePostEffectVerts() {
     float vertexBuffer[] = {
-        -1.0f, 1.0f,  0.f, 0.f, 0.f, 0.f, 0.f, 0.f,  // top left
-        1.0f,  1.0f,  0.f, 1.f, 0.f, 0.f, 0.f, 0.f,  // top right
-        1.0f,  -1.0f, 0.f, 1.f, 1.f, 0.f, 0.f, 0.f,  // bottom right
-        -1.0f, -1.0f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f,  // bottom left
+        -1.0f, 1.0f,  0.f, 0.f, 0.f, 0.f, 0.f, 1.f,  // top left
+        1.0f,  1.0f,  0.f, 0.f, 0.f, 0.f, 1.f, 1.f,  // top right
+        1.0f,  -1.0f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f,  // bottom right
+        -1.0f, -1.0f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f,  // bottom left
     };
 
     unsigned int indexBuffer[] = {0, 1, 2, 2, 3, 0};

@@ -8,7 +8,9 @@
 Floor::Floor(class Game* game) : Actor(game) {
     SetPosition(Vector3(0, 0, -70));
     SetScale(10.0);
-    MeshComponent* mc = new MeshComponent(this, RenderConfig());
+    RenderConfig config = RenderConfig();
+    config.effectName = "Shaders/PostEffectBlur";
+    MeshComponent* mc = new MeshComponent(this, config);
     mc->SetMesh(game->GetRenderer()->GetMesh("Assets/Plane.gpmesh"));
     mc->AddTextureIndex(0);
 }
