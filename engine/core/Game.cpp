@@ -254,22 +254,18 @@ Font* Game::GetFont(const std::string& fileName) {
 }
 
 #include "BackDome.h"
-#include "Bonfire.h"
-#include "FPSActor.h"
 #include "Floor.h"
-#include "HUD.h"
+// #include "HUD.h"
+#include "Title.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
-    new Bonfire(this);
     new Floor(this);
     new BackDome(this);
-    FPSActor* fa = new FPSActor(this);
-    fa->SetForwardSpeed(60.0f);
-    fa->SetStrafeSpeed(60.0f);
 
     // UI
     // new HUD(this);
+    new Title(this);
 
     // 環境光
     GetRenderer()->SetAmbientLight(Vector3(0.1, 0.1, 0.2));

@@ -5,7 +5,7 @@
 
 PauseMenu::PauseMenu(Game* game) : UIScreen(game) {
     mGame->SetState(Game::EPaused);
-    SetTitle("PauseTitle");
+    SetTitle("Chill time ... (Paused ...)");
 }
 
 PauseMenu::~PauseMenu() { mGame->SetState(Game::EGameplay); }

@@ -49,7 +49,7 @@ Texture* Font::RenderText(const std::string& text, const Vector3& color,
         TTF_Font* font = iter->second;
         // blendしながらsurfaceに描画
         SDL_Surface* surf =
-            TTF_RenderText_Blended(font, text.c_str(), sdlColor);
+            TTF_RenderUTF8_Blended(font, text.c_str(), sdlColor);
         if (surf != nullptr) {
             /*
             SDL_ttfで使われているFreeTypeがSIMD最適化のため，自動で64Bにパディングする．
