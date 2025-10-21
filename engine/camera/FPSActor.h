@@ -1,5 +1,6 @@
 #pragma once
 #include "Actor.h"
+#include "FPSComponent.h"
 #include "SDL.h"
 
 //  キーマウでの操作ができるFPS視点のActor
@@ -30,4 +31,7 @@ class FPSActor : public Actor {
 
     void SetForwardSpeed(float forwardSpeed) { mForwardSpeed = forwardSpeed; }
     void SetStrafeSpeed(float strafeSpeed) { mStrafeSpeed = strafeSpeed; }
+    void SetPitchAngular(float pitchAngular) {
+        mFPSComp->SetPitch(pitchAngular);
+    }
 };

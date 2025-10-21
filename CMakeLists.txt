@@ -10,7 +10,9 @@ project(prj CXX)
 
 add_subdirectory("engine")
 
-add_subdirectory("test")
+# engineができてない状態でもtestしたいため，一旦コメントアウト
+# todo: ルートからコマンドを叩いて，テストを行いたい．
+# add_subdirectory("test")
 
 set(RELEASE_DIR "${CMAKE_SOURCE_DIR}/Release")
 add_custom_target(Release ALL

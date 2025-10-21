@@ -22,6 +22,7 @@ class FPSComponent : public CameraComponent {
 
     void SetPitchSpeed(float pitchSpeed) { mPitchSpeed = pitchSpeed; }
     void SetMaxPitch(float maxPitch) { mMaxPitch = maxPitch; }
+    void SetPitch(float pitch) { mPitch = pitch; }
 
     TypeID GetType() const { return TypeID::TFPSComponent; }
 };

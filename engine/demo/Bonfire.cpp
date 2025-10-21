@@ -6,7 +6,7 @@
 #include "Mesh.h"
 #include "Renderer.h"
 
-Bonfire::Bonfire(class Game* game) : Actor(game) {
+Bonfire::Bonfire(class Game* game) : Actor(game), mFinished(false) {
     SetPosition(Vector3(100, 50, -50));
     SetScale(50.0);
     RenderConfig config = RenderConfig();
@@ -25,3 +25,5 @@ Bonfire::Bonfire(class Game* game) : Actor(game) {
         e->Restart();
     }
 }
+
+// todo: 時間で消える処理を書く
