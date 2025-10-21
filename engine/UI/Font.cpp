@@ -51,9 +51,25 @@ Texture* Font::RenderText(const std::string& text, const Vector3& color,
         SDL_Surface* surf =
             TTF_RenderText_Blended(font, text.c_str(), sdlColor);
         if (surf != nullptr) {
+            /*
+            SDL_ttfで使われているFreeTypeがSIMD最適化のため，自動で64Bにパディングする．
+            これをそのままOpenGLが読むとformat違いを起こす．
+
+            OpenGLが画像を読み込むときに知っているのは“width, height, format”だけで，
+            SDL_ttfはwidthとheightを変更せずにpitchのみを変えて，64Bにパディングする為
+            行の終わりにpaddingが入ってることを知ることはできない．
+            */
+            SDL_Surface* converted =
+                SDL_ConvertSurfaceFormat(surf, SDL_PIXELFORMAT_ABGR8888, 0);
+            if (!converted) {
+                SDL_Log("Failed to convert surface format: %s", SDL_GetError());
+                return nullptr;
+            }
+
             // surfaceからテクスチャに変換
             texture = new Texture();
-            texture->CreateFromSurface(surf);
+            texture->CreateFromSurface(converted);
+            SDL_FreeSurface(converted);
             SDL_FreeSurface(surf);
         } else
             SDL_Log("point size is unsupported");
