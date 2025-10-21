@@ -5,14 +5,17 @@
 
 #include "Actor.h"
 #include "AudioSystem.h"
+#include "Font.h"
 #include "InputSystem.h"
 #include "LevelLoader.h"
 #include "MeshComponent.h"
 #include "PhysWorld.h"
 #include "Renderer.h"
+#include "SDL_ttf.h"
 #include "Shader.h"
 #include "SpriteComponent.h"
 #include "Texture.h"
+#include "UIScreen.h"
 #include "VertexArray.h"
 #include "api/OpenAL/System.h"
 #include "glew.h"
@@ -54,6 +57,12 @@ bool Game::Initialize() {
     }
 
     mPhysWorld = new PhysWorld(this);
+
+    // Initialize SDL_ttf
+    if (TTF_Init() != 0) {
+        SDL_Log("Failed to initialize SDL_ttf");
+        return false;
+    }
 
     LoadData();
 
@@ -117,6 +126,13 @@ void Game::UpdateGame() {
     mAudioSystem->Update(deltatime);
 
     UpdateActors(deltatime);
+
+    // UIの更新
+    for (auto ui : mUIStack) {
+        if (ui->GetState() == UIScreen::EActive) {
+            ui->Update(deltatime);
+        }
+    }
 }
 
 void Game::GenerateOutput() { mRenderer->Draw(); }
@@ -126,6 +142,7 @@ void Game::Shutdown() {
     if (mRenderer) mRenderer->Shutdown();
     if (mAudioSystem) mAudioSystem->Shutdown();
     if (mInputSystem) mInputSystem->Shutdown();
+    TTF_Quit();
 
     SDL_Quit();
 }
@@ -175,10 +192,28 @@ void Game::UpdateActors(float deltatime) {
     }
 }
 
+Font* Game::GetFont(const std::string& fileName) {
+    auto iter = mFonts.find(fileName);
+    if (iter != mFonts.end()) {
+        return iter->second;
+    } else {
+        Font* font = new Font(this);
+        if (font->Load(fileName)) {
+            mFonts.emplace(fileName, font);
+        } else {
+            font->Unload();
+            delete font;
+            font = nullptr;
+        }
+        return font;
+    }
+}
+
 #include "BackDome.h"
 #include "Bonfire.h"
 #include "FPSActor.h"
 #include "Floor.h"
+#include "HUD.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
@@ -188,6 +223,10 @@ void Game::LoadData() {
     FPSActor* fa = new FPSActor(this);
     fa->SetForwardSpeed(60.0f);
     fa->SetStrafeSpeed(60.0f);
+
+    // UI
+    // new HUD(this);
+
     // 環境光
     GetRenderer()->SetAmbientLight(Vector3(0.1, 0.1, 0.2));
 }

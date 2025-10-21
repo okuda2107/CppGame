@@ -9,6 +9,8 @@ class Texture {
     bool Load(const std::string& fileName);
     void Unload();
 
+    void CreateFromSurface(struct SDL_Surface* surface);
+
     void SetActive(size_t index = 0);
 
     int GetWidth() const { return mWidth; }

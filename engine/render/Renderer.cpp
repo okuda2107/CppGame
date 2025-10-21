@@ -10,6 +10,7 @@
 #include "SkydomeComponent.h"
 #include "SpriteComponent.h"
 #include "Texture.h"
+#include "UIScreen.h"
 #include "VertexArray.h"
 #include "glew.h"
 
@@ -159,6 +160,11 @@ void Renderer::Draw() {
     mSpriteVerts->SetActive();
     for (auto sprite : mSprites) {
         sprite->Draw(mSpriteShader);
+    }
+
+    // Draw UI
+    for (auto ui : mGame->GetUIStack()) {
+        ui->Draw(mSpriteShader);
     }
 
     SDL_GL_SwapWindow(mWindow);
