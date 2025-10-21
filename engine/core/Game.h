@@ -9,10 +9,15 @@
 #include "SDL_image.h"
 
 class Game {
+   public:
+    enum GameState { EGameplay, EPaused, EQuit };
+
+   private:
     void ProcessInput();
     void UpdateGame();
     void GenerateOutput();
 
+    void HandleKeyPress(int key);
     void UpdateActors(float deltatime);
 
     void LoadData();
@@ -23,16 +28,15 @@ class Game {
     class InputSystem* mInputSystem;
     class PhysWorld* mPhysWorld;
 
-    bool mIsRunning;
+    GameState mGameState;
     Uint32 mTicksCount;
 
     std::vector<class Actor*> mActors;
     std::vector<class Actor*> mPendingActors;
+    bool mUpdatingActors;
 
     std::unordered_map<std::string, class Font*> mFonts;
     std::vector<class UIScreen*> mUIStack;
-
-    bool mUpdatingActors;
 
    public:
     Game();
@@ -48,13 +52,8 @@ class Game {
     class InputSystem* GetInputSystem() { return mInputSystem; }
     class PhysWorld* GetPhysWorld() { return mPhysWorld; }
 
-    // enum GameState {
-    //     EGameplay,
-    //     EPaused,
-    //     EQuit
-    // };
-    // GameState GetState() const { retutn mGameState; }
-    // void SetState(GameState state) { mGameState = state; }
+    GameState GetState() const { return mGameState; }
+    void SetState(GameState state) { mGameState = state; }
 
     class Font* GetFont(const std::string& filename);
 

@@ -9,6 +9,7 @@
 #include "InputSystem.h"
 #include "LevelLoader.h"
 #include "MeshComponent.h"
+#include "PauseMenu.h"
 #include "PhysWorld.h"
 #include "Renderer.h"
 #include "SDL_ttf.h"
@@ -21,7 +22,7 @@
 #include "glew.h"
 
 Game::Game()
-    : mIsRunning(true),
+    : mGameState(EGameplay),
       mTicksCount(0),
       mUpdatingActors(false),
       mRenderer(nullptr) {}
@@ -72,7 +73,7 @@ bool Game::Initialize() {
 }
 
 void Game::RunLoop() {
-    while (mIsRunning) {
+    while (mGameState != EQuit) {
         ProcessInput();
         UpdateGame();
         GenerateOutput();
@@ -89,11 +90,29 @@ void Game::ProcessInput() {
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
-                mIsRunning = false;
+                mGameState = EQuit;
+                ;
                 break;
             case SDL_MOUSEWHEEL:
                 // イベントドリブンで入力状態更新
                 mInputSystem->ProcessEvent(event);
+                break;
+            case SDL_KEYDOWN:
+                if (!event.key.repeat) {
+                    if (mGameState == EGameplay)
+                        HandleKeyPress(event.key.keysym.sym);
+                    else if (!mUIStack.empty())
+                        mUIStack.back()->HandleKeyPress(event.key.keysym.sym);
+                }
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                if (mGameState == EGameplay) {
+                    HandleKeyPress(event.button.button);
+                } else if (!mUIStack.empty()) {
+                    mUIStack.back()->HandleKeyPress(event.button.button);
+                }
+                break;
+            default:
                 break;
         }
     }
@@ -104,15 +123,30 @@ void Game::ProcessInput() {
 
     // 入力に対して，Gameクラスを反応させる
     if (state.Keyboard.GetKeyState(SDL_SCANCODE_ESCAPE) == EReleased) {
-        mIsRunning = false;
+        mGameState = EQuit;
     }
 
-    mUpdatingActors = true;
-    for (auto actor : mActors) {
-        // 入力に対して，ゲームオブジェクトを反応させる
-        actor->ProcessInput(state);
+    // 入力に対して，ゲームオブジェクト，UIを反応させる
+    if (mGameState == EGameplay) {
+        mUpdatingActors = true;
+        for (auto actor : mActors) {
+            actor->ProcessInput(state);
+        }
+        mUpdatingActors = false;
+    } else if (!mUIStack.empty()) {
+        mUIStack.back()->ProcessInput(state);
     }
-    mUpdatingActors = false;
+}
+
+void Game::HandleKeyPress(int key) {
+    switch (key) {
+        case 'p':
+            // Create pause menu
+            new PauseMenu(this);
+            break;
+        default:
+            break;
+    }
 }
 
 void Game::UpdateGame() {
@@ -131,6 +165,16 @@ void Game::UpdateGame() {
     for (auto ui : mUIStack) {
         if (ui->GetState() == UIScreen::EActive) {
             ui->Update(deltatime);
+        }
+    }
+    // close状態のUIを削除
+    auto iter = mUIStack.begin();
+    while (iter != mUIStack.end()) {
+        if ((*iter)->GetState() == UIScreen::EClosing) {
+            delete *iter;
+            iter = mUIStack.erase(iter);
+        } else {
+            ++iter;
         }
     }
 }
