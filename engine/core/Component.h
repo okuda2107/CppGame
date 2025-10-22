@@ -16,7 +16,7 @@ class Component {
     };
 
     Component(class Actor* owner, int updateOrder = 100);
-    ~Component();
+    virtual ~Component();
 
     virtual void ProcessInput(const class InputState& keystate) {}
 
