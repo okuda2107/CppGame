@@ -11,7 +11,7 @@ Bonfire::Bonfire(class Game* game)
     : Actor(game),
       mTime(0.0f),
       mLimit(0.0f),
-      cMaxLimit(90.0f),
+      cMaxLimit(10.0f),
       mIsRunning(false),
       mFinished(false),
       mAddWood(false),

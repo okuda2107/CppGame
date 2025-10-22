@@ -13,7 +13,10 @@ GameOverUI::GameOverUI(Game* game) : UIScreen(game), mParent(nullptr) {
     SetTitle("Chillut's Fire", Color::White, 72);
 }
 
-GameOverUI::~GameOverUI() { mGame->SetState(Game::EGameplay); }
+GameOverUI::~GameOverUI() {
+    // この直後Titleがロードされるため，EGamePlayにする必要はない
+    // mGame->SetState(Game::EGameplay);
+}
 
 void GameOverUI::SetTime(float time) {
     std::stringstream ss;

@@ -28,6 +28,8 @@ BonfirePlayer::~BonfirePlayer() {
     delete mCoroutines;
     mGenerator->SetState(Actor::State::EDead);
     if (mWoodUI && mWoodUI->GetState() != UIScreen::EClosing) mWoodUI->Close();
+    if (mBonfireUI && mBonfireUI->GetState() != UIScreen::EClosing)
+        mBonfireUI->Close();
 }
 
 void BonfirePlayer::ActorInput(const InputState& state) {
@@ -55,7 +57,6 @@ void BonfirePlayer::ActorInput(const InputState& state) {
 
     // Bonfireが近くにある時，Eキーを押すと木をくべられる
     auto bonfire = cc->GetActor();
-    if (!bonfire) std::cerr << "debug" << std::endl;
     if (bonfire != nullptr && mHasWood) {
         float dx = bonfire->GetPosition().x - GetPosition().x;
         float dy = bonfire->GetPosition().y - GetPosition().y;
@@ -114,10 +115,9 @@ void BonfirePlayer::UpdateActor(float deltatime) {
         mWoodUI = nullptr;
     }
 
-    std::cerr << mHasWood << std::endl;
     // Bonfireが近くにある時，UIを出す制御
     auto bonfire = cc->GetActor();
-    if (!bonfire) {
+    if (bonfire) {
         float dx = bonfire->GetPosition().x - GetPosition().x;
         float dy = bonfire->GetPosition().y - GetPosition().y;
         float d = Vector2(dx, dy).LengthSquared();

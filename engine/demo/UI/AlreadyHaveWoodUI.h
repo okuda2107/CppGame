@@ -23,7 +23,7 @@ class AlreadyHaveWoodUI : public UIScreen {
     }
 
     void Draw(Shader* shader) {
-        mTitlePos = Vector2(50.0f, 300.0f);
+        mTitlePos = Vector2(0.0f, 200.0f);
         UIScreen::Draw(shader);
     }
 };
