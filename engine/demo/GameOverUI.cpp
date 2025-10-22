@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "Bonfire.h"
+#include "BonfireGameManager.h"
 #include "FPSActor.h"
 #include "Game.h"
 #include "SDL.h"
@@ -24,7 +25,11 @@ void GameOverUI::HandleKeyPress(int key) {
     UIScreen::HandleKeyPress(key);
 
     if (key) {
-        // フラグを立てて，managerの命令を待つ
-        mFinished = true;
+        Close();
+        if (!mParent) {
+            SDL_Log("parent pointer is nullptr");
+            return;
+        }
+        mParent->InitLoad();
     }
 }

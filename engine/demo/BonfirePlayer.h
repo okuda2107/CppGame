@@ -13,6 +13,7 @@ class BonfirePlayer : public FPSActor {
     class Coroutine* mCoroutines;
 
     // 視線を上げる / 下げる アニメーション
+    static float Ease(float t);
     void PitchUp(float lerp);
     void PitchDown(float lerp);
 

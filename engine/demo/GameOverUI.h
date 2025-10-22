@@ -3,6 +3,7 @@
 
 class GameOverUI : public UIScreen {
     bool mFinished;
+    class BonfireGameManager* mParent;
 
    public:
     GameOverUI(class Game* game);
@@ -13,5 +14,5 @@ class GameOverUI : public UIScreen {
     void SetTime(float time);
 
     // 処理が終わったか？
-    bool GetFinished() { return mFinished; }
+    void SetParent(class BonfireGameManager* parent) { mParent = parent; }
 };

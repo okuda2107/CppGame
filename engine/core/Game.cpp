@@ -254,18 +254,15 @@ Font* Game::GetFont(const std::string& fileName) {
 }
 
 #include "BackDome.h"
+#include "BonfireGameManager.h"
 #include "Floor.h"
-// #include "HUD.h"
-#include "Title.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
     new Floor(this);
     new BackDome(this);
 
-    // UI
-    // new HUD(this);
-    new Title(this);
+    new BonfireGameManager(this);
 
     // 環境光
     GetRenderer()->SetAmbientLight(Vector3(0.1, 0.1, 0.2));

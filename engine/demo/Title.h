@@ -3,6 +3,7 @@
 
 class Title : public UIScreen {
     bool mFinished;
+    class BonfireGameManager* mParent;
 
    public:
     Title(class Game* game);
@@ -10,6 +11,6 @@ class Title : public UIScreen {
 
     void HandleKeyPress(int key) override;
 
-    // 処理が終わったか？
-    bool GetFinished() { return mFinished; }
+    // Closingするときに処理を伝えたいため保持
+    void SetParent(class BonfireGameManager* parent) { mParent = parent; }
 };

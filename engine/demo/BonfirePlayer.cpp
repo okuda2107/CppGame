@@ -19,7 +19,6 @@ void BonfirePlayer::ActorInput(const InputState& state) {
 
 void BonfirePlayer::UpdateActor(float deltatime) {
     mCoroutines->Update(deltatime);
-
     if (mIsAnimLookUp) {
         if (mLookUpEndTime < 0)
             mLookUpEndTime = mCoroutines->AddCoroutine(
@@ -41,17 +40,21 @@ void BonfirePlayer::UpdateActor(float deltatime) {
 
     // 位置の制限
     Vector3 pos = GetPosition();
-    pos = Math::Clamp(pos, Vector3(-100.0f, -100.0f, 0.0f),
-                      Vector3(100.0f, 100.0f, 0.0f));
+    pos.x = Math::Clamp(pos.x, -100.0f, 100.0f);
+    pos.y = Math::Clamp(pos.y, -100.0f, 100.0f);
     SetPosition(pos);
 }
 
+float BonfirePlayer::Ease(float t) { return 0.5f * (1 - cosf(Math::Pi * t)); }
+
 // カメラの視線を下げる
 void BonfirePlayer::PitchDown(float lerp) {
-    SetPitchAngular(Math::Lerp(Math::Pi / 4, 0, lerp));
+    float t = Ease(lerp);
+    SetPitchAngular(Math::Lerp(-Math::Pi / 4, 0, t));
 }
 
 // カメラの視線を上げる
 void BonfirePlayer::PitchUp(float lerp) {
-    SetPitchAngular(Math::Lerp(0, Math::Pi / 4, lerp));
+    float t = Ease(lerp);
+    SetPitchAngular(Math::Lerp(0, -Math::Pi / 4, t));
 }

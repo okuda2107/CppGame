@@ -1,11 +1,13 @@
 #include "Title.h"
 
 #include "Bonfire.h"
+#include "BonfireGameManager.h"
+#include "BonfirePlayer.h"
 #include "FPSActor.h"
 #include "Game.h"
 #include "SDL.h"
 
-Title::Title(Game* game) : UIScreen(game), mFinished(false) {
+Title::Title(Game* game) : UIScreen(game), mFinished(false), mParent(nullptr) {
     mGame->SetState(Game::EPaused);
     SetTitle("Chillut's Fire", Color::White, 72);
 }
@@ -16,7 +18,11 @@ void Title::HandleKeyPress(int key) {
     UIScreen::HandleKeyPress(key);
 
     if (key) {
-        // フラグを立てて，managerの命令を待つ
-        mFinished = true;
+        Close();
+        if (!mParent) {
+            SDL_Log("parent pointer is nullptr");
+            return;
+        }
+        mParent->GetPlayer()->SetAnimLookDown();
     }
 }

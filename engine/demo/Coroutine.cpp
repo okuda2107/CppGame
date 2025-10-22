@@ -15,8 +15,8 @@ float Coroutine::AddCoroutine(float duration, std::function<void(float)> func) {
     if (mCoroutines.empty() || mCoroutines.back().end < e.end)
         mCoroutines.push_back(std::move(e));
     else {
-        auto iter = std::lower_bound(mCoroutines.begin(), mCoroutines.end(),
-                                     e.end, isCoroutineCompare);
+        auto iter = std::lower_bound(mCoroutines.begin(), mCoroutines.end(), e,
+                                     CompareEntryEndTime);
         mCoroutines.insert(iter, std::move(e));
     }
     return endTime;
@@ -27,8 +27,9 @@ void Coroutine::Update(float deltatime) {
     mTime += deltatime;
 
     // 処理
-    auto iter = std::upper_bound(mCoroutines.begin(), mCoroutines.end(), mTime,
-                                 isCoroutineCompare);
+    auto iter =
+        std::upper_bound(mCoroutines.begin(), mCoroutines.end(),
+                         Entry{0.0f, mTime, nullptr}, CompareEntryEndTime);
     for (auto finish = mCoroutines.begin(); finish < iter; ++finish) {
         finish->func(1.0f);
     }

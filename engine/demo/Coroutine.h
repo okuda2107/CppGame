@@ -20,8 +20,8 @@ class Coroutine {
     std::vector<Entry> mCoroutines;
 
     // 探索のための補助関数
-    static bool isCoroutineCompare(float value, const Entry& element) {
-        return value < element.end;  // 比較はpair.firstに対して行う
+    static bool CompareEntryEndTime(const Entry& a, const Entry& b) {
+        return a.end < b.end;
     }
 
    public:

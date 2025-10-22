@@ -8,7 +8,7 @@
 
 Bonfire::Bonfire(class Game* game) : Actor(game), mFinished(false) {
     SetPosition(Vector3(100, 50, -50));
-    SetScale(50.0);
+    SetScale(100.0);
     RenderConfig config = RenderConfig();
     config.mBlend = true;
     config.mDepthMask = false;
