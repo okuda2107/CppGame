@@ -12,7 +12,12 @@ BonfireGameManager::BonfireGameManager(class Game* game)
     InitLoad();
 }
 
-BonfireGameManager::~BonfireGameManager() {}
+BonfireGameManager::~BonfireGameManager() {
+    if (mBonfire && mBonfire->GetState() != Actor::State::EDead)
+        mBonfire->SetState(Actor::State::EDead);
+    if (mPlayer && mPlayer->GetState() != Actor::State::EDead)
+        mPlayer->SetState(Actor::State::EDead);
+}
 
 void BonfireGameManager::UpdateActor(float deltatime) {
     switch (mState) {
@@ -21,7 +26,8 @@ void BonfireGameManager::UpdateActor(float deltatime) {
             // titleがトリガー
             if (mIsTitleFinished) {
                 mPlayer->SetAnimLookDown();
-                mBonfire->Initialize();
+                mPlayer->Initialize();
+                mBonfire->SetRunning();
                 mState = EPlaying;
             }
             break;
@@ -58,25 +64,6 @@ void BonfireGameManager::UpdateActor(float deltatime) {
             InitLoad();
             break;
     }
-    // // GameOverUIとの連携のため，mBonfireの状態をポーリング
-    // // finishedしたら発火
-    // if (mState == EPlaying && mBonfire && mBonfire->GetFinished()) {
-    //     mBonfire->SetState(Actor::State::EDead);
-    //     mBonfire = nullptr;
-    //     mTime = mBonfire->GetTime();
-    //     mPlayer->SetAnimLookUp();
-    //     mState = EAnim;
-    // }
-    // // 空見上げモーションが終わるまでポーリング
-    // else if (mState == EAnim && mPlayer && !mPlayer->GetAnimLookUp()) {
-    //     auto gameOverUI = new GameOverUI(GetGame());
-    //     gameOverUI->SetTime(mTime);
-    //     gameOverUI->SetParent(this);
-    // }
-    // // 例外なので，InitLoadして仕切り直し
-    // else {
-    //     InitLoad();
-    // }
 }
 
 void BonfireGameManager::InitLoad() {
@@ -92,6 +79,8 @@ void BonfireGameManager::InitLoad() {
     mPlayer->SetPitchAngular(-Math::Pi / 4);
     mPlayer->SetForwardSpeed(60.0f);
     mPlayer->SetStrafeSpeed(60.0f);
+
+    mBonfire->SetPlayer(mPlayer);
 
     // 変数の初期化
     mTime = 0.0f;

@@ -1,4 +1,6 @@
 #pragma once
+#include "Bonfire.h"
+#include "ContextComponent.h"
 #include "FPSActor.h"
 
 // フィールドによる位置の制限とアニメーション機能を付けたクラス
@@ -8,6 +10,17 @@ class BonfirePlayer : public FPSActor {
     // 0未満なら初期値
     float mLookUpEndTime;
     float mLookDownEndTime;
+
+    // 木生成器
+    class WoodGenerator* mGenerator;
+
+    //UI
+    class UIScreen* mUI;
+
+    // 木を持っているか
+    bool mHasWood;
+
+    class ContextComponent<Bonfire>* cc;
 
     // コルーチンハンドラ
     class Coroutine* mCoroutines;
@@ -19,11 +32,17 @@ class BonfirePlayer : public FPSActor {
 
    public:
     BonfirePlayer(class Game* game);
+    ~BonfirePlayer();
 
     void ActorInput(const InputState& state) override;
     void UpdateActor(float deltatime) override;
 
+    // title押されてからの初期化処理
+    void Initialize();
+
     void SetAnimLookUp() { mIsAnimLookUp = true; }
     void SetAnimLookDown() { mIsAnimLookDown = true; }
     bool GetAnimLookUp() { return mIsAnimLookUp; }
+
+    void SetContext(class Bonfire* actor) { cc->SetActor(actor); }
 };

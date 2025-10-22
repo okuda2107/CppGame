@@ -12,7 +12,7 @@ class Actor {
     enum class State { EActive, EPaused, EDead };
 
     Actor(class Game* game);
-    ~Actor();
+    virtual ~Actor();
 
     void ProcessInput(const class InputState& keystate);
     virtual void ActorInput(const class InputState& keystate) {}

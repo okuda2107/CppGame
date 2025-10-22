@@ -1,21 +1,58 @@
 #include "BonfirePlayer.h"
 
+#include "AlreadyHaveWoodUI.h"
+#include "Bonfire.h"
 #include "Coroutine.h"
+#include "HaveWoodUI.h"
+#include "InputSystem.h"
+#include "Wood.h"
+#include "WoodGenerator.h"
 
 BonfirePlayer::BonfirePlayer(class Game* game)
     : FPSActor(game),
       mIsAnimLookUp(false),
       mIsAnimLookDown(false),
       mLookUpEndTime(-1.0f),
-      mLookDownEndTime(-1.0f) {
+      mLookDownEndTime(-1.0f),
+      mHasWood(false),
+      mUI(nullptr),
+      mGenerator(nullptr) {
     mCoroutines = new Coroutine();
+    mGenerator = new WoodGenerator(GetGame());
+    cc = new ContextComponent<Bonfire>(this);
+}
+
+BonfirePlayer::~BonfirePlayer() {
+    delete mCoroutines;
+    mGenerator->SetState(Actor::State::EDead);
+    if (mUI && mUI->GetState() != UIScreen::EClosing) mUI->Close();
 }
 
 void BonfirePlayer::ActorInput(const InputState& state) {
     // アニメーション中は操作を受け付けない
     if (mIsAnimLookUp || mIsAnimLookDown) return;
     FPSActor::ActorInput(state);
+
+    // 木が近くにあるとき，Eキーを押すと拾う
+    // 既に持っている場合は拾えない
+    for (auto& wood : mGenerator->GetWoods()) {
+        float dx = wood->GetPosition().x - GetPosition().x;
+        float dy = wood->GetPosition().y - GetPosition().y;
+        float d = Vector2(dx, dy).LengthSquared();
+        float near = 5000.0f;
+        if (d < near && state.Keyboard.GetKeyValue(SDL_SCANCODE_E)) {
+            if (!mHasWood) {
+                mHasWood = true;
+                wood->SetState(Actor::State::EDead);
+                break;
+            } else {
+                new AlreadyHaveWoodUI(GetGame());
+            }
+        }
+    }
 }
+
+void BonfirePlayer::Initialize() { mGenerator->SetRunning(); }
 
 void BonfirePlayer::UpdateActor(float deltatime) {
     mCoroutines->Update(deltatime);
@@ -43,6 +80,24 @@ void BonfirePlayer::UpdateActor(float deltatime) {
     pos.x = Math::Clamp(pos.x, -100.0f, 100.0f);
     pos.y = Math::Clamp(pos.y, -100.0f, 100.0f);
     SetPosition(pos);
+
+    // 木が近くにある時，UIを出す制御
+    bool isNear = false;
+    for (auto& wood : mGenerator->GetWoods()) {
+        float dx = wood->GetPosition().x - GetPosition().x;
+        float dy = wood->GetPosition().y - GetPosition().y;
+        float d = Vector2(dx, dy).LengthSquared();
+        float near = 5000.0f;
+        isNear = d < near;
+        if (isNear) break;
+    }
+    if (!mUI && isNear) {
+        mUI = new HaveWoodUI(GetGame());
+    } else if (mUI && !isNear) {
+        mUI->Close();
+    }
+
+    // Bonfireが近くにある時
 }
 
 float BonfirePlayer::Ease(float t) { return 0.5f * (1 - cosf(Math::Pi * t)); }
