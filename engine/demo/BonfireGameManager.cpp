@@ -3,9 +3,9 @@
 #include "Bonfire.h"
 #include "BonfirePlayer.h"
 #include "Game.h"
-#include "GameOverUI.h"
 #include "InputSystem.h"
-#include "Title.h"
+#include "UI/GameOverUI.h"
+#include "UI/Title.h"
 
 BonfireGameManager::BonfireGameManager(class Game* game)
     : Actor(game), mState(ETitle), mBonfire(nullptr), mPlayer(nullptr) {
@@ -81,6 +81,7 @@ void BonfireGameManager::InitLoad() {
     mPlayer->SetStrafeSpeed(60.0f);
 
     mBonfire->SetPlayer(mPlayer);
+    mPlayer->SetContext(mBonfire);
 
     // 変数の初期化
     mTime = 0.0f;

@@ -17,10 +17,11 @@ class ContextComponent : public Component {
         : Component(actor, updateOrder), mListenActor(nullptr) {}
 
     void Update(float deltatime) override {
-        if (mListenActor && mListenActor->GetState() == Actor::State::EDead)
+        if (mListenActor != nullptr &&
+            mListenActor->GetState() == Actor::State::EDead)
             mListenActor = nullptr;
     }
 
     void SetActor(T* actor) { mListenActor = actor; }
-    T GetActor() { return mListenActor; }
+    T* GetActor() { return mListenActor; }
 };

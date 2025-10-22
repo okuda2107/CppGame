@@ -1,7 +1,7 @@
 #pragma once
 #include "Bonfire.h"
-#include "ContextComponent.h"
 #include "FPSActor.h"
+#include "Utility/ContextComponent.h"
 
 // フィールドによる位置の制限とアニメーション機能を付けたクラス
 class BonfirePlayer : public FPSActor {
@@ -15,7 +15,10 @@ class BonfirePlayer : public FPSActor {
     class WoodGenerator* mGenerator;
 
     //UI
-    class UIScreen* mUI;
+    // 木に関するUIを保持
+    class UIScreen* mWoodUI;
+    // たき火に関するUIを保持
+    class UIScreen* mBonfireUI;
 
     // 木を持っているか
     bool mHasWood;

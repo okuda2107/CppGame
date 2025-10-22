@@ -28,7 +28,7 @@ void WoodGenerator::UpdateActor(float deltatime) {
         std::uniform_int_distribution<> distInt(1, 6);
         if (distInt(gen) % 2 == 0) {
             auto wd = new Wood(GetGame(), this);
-            wd->SetPosition(Vector3(100, 100, -50));
+            wd->SetPosition(Vector3(-100, 100, -50));
         }
     }
 }

@@ -1,10 +1,11 @@
 #include "BonfirePlayer.h"
 
-#include "AlreadyHaveWoodUI.h"
 #include "Bonfire.h"
-#include "Coroutine.h"
-#include "HaveWoodUI.h"
 #include "InputSystem.h"
+#include "UI/AddWoodUI.h"
+#include "UI/AlreadyHaveWoodUI.h"
+#include "UI/HaveWoodUI.h"
+#include "Utility/Coroutine.h"
 #include "Wood.h"
 #include "WoodGenerator.h"
 
@@ -15,7 +16,8 @@ BonfirePlayer::BonfirePlayer(class Game* game)
       mLookUpEndTime(-1.0f),
       mLookDownEndTime(-1.0f),
       mHasWood(false),
-      mUI(nullptr),
+      mWoodUI(nullptr),
+      mBonfireUI(nullptr),
       mGenerator(nullptr) {
     mCoroutines = new Coroutine();
     mGenerator = new WoodGenerator(GetGame());
@@ -25,7 +27,7 @@ BonfirePlayer::BonfirePlayer(class Game* game)
 BonfirePlayer::~BonfirePlayer() {
     delete mCoroutines;
     mGenerator->SetState(Actor::State::EDead);
-    if (mUI && mUI->GetState() != UIScreen::EClosing) mUI->Close();
+    if (mWoodUI && mWoodUI->GetState() != UIScreen::EClosing) mWoodUI->Close();
 }
 
 void BonfirePlayer::ActorInput(const InputState& state) {
@@ -40,7 +42,7 @@ void BonfirePlayer::ActorInput(const InputState& state) {
         float dy = wood->GetPosition().y - GetPosition().y;
         float d = Vector2(dx, dy).LengthSquared();
         float near = 5000.0f;
-        if (d < near && state.Keyboard.GetKeyValue(SDL_SCANCODE_E)) {
+        if (d < near && state.Keyboard.GetKeyState(SDL_SCANCODE_E)) {
             if (!mHasWood) {
                 mHasWood = true;
                 wood->SetState(Actor::State::EDead);
@@ -48,6 +50,20 @@ void BonfirePlayer::ActorInput(const InputState& state) {
             } else {
                 new AlreadyHaveWoodUI(GetGame());
             }
+        }
+    }
+
+    // Bonfireが近くにある時，Eキーを押すと木をくべられる
+    auto bonfire = cc->GetActor();
+    if (!bonfire) std::cerr << "debug" << std::endl;
+    if (bonfire != nullptr && mHasWood) {
+        float dx = bonfire->GetPosition().x - GetPosition().x;
+        float dy = bonfire->GetPosition().y - GetPosition().y;
+        float d = Vector2(dx, dy).LengthSquared();
+        float near = 5000.0f;
+        if (d < near && state.Keyboard.GetKeyState(SDL_SCANCODE_E)) {
+            mHasWood = false;
+            bonfire->AddWood();
         }
     }
 }
@@ -91,13 +107,28 @@ void BonfirePlayer::UpdateActor(float deltatime) {
         isNear = d < near;
         if (isNear) break;
     }
-    if (!mUI && isNear) {
-        mUI = new HaveWoodUI(GetGame());
-    } else if (mUI && !isNear) {
-        mUI->Close();
+    if (!mWoodUI && isNear) {
+        mWoodUI = new HaveWoodUI(GetGame());
+    } else if (mWoodUI && !isNear) {
+        mWoodUI->Close();
+        mWoodUI = nullptr;
     }
 
-    // Bonfireが近くにある時
+    std::cerr << mHasWood << std::endl;
+    // Bonfireが近くにある時，UIを出す制御
+    auto bonfire = cc->GetActor();
+    if (!bonfire) {
+        float dx = bonfire->GetPosition().x - GetPosition().x;
+        float dy = bonfire->GetPosition().y - GetPosition().y;
+        float d = Vector2(dx, dy).LengthSquared();
+        float near = 5000.0f;
+        if (!mBonfireUI && d < near && mHasWood) {
+            mBonfireUI = new AddWoodUI(GetGame());
+        } else if (mBonfireUI && (d >= near || !mHasWood)) {
+            mBonfireUI->Close();
+            mBonfireUI = nullptr;
+        }
+    }
 }
 
 float BonfirePlayer::Ease(float t) { return 0.5f * (1 - cosf(Math::Pi * t)); }
