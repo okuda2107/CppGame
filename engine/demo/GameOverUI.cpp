@@ -8,7 +8,7 @@
 #include "Game.h"
 #include "SDL.h"
 
-GameOverUI::GameOverUI(Game* game) : UIScreen(game), mFinished(false) {
+GameOverUI::GameOverUI(Game* game) : UIScreen(game), mParent(nullptr) {
     mGame->SetState(Game::EPaused);
     SetTitle("Chillut's Fire", Color::White, 72);
 }
@@ -30,6 +30,6 @@ void GameOverUI::HandleKeyPress(int key) {
             SDL_Log("parent pointer is nullptr");
             return;
         }
-        mParent->InitLoad();
+        mParent->SetResultFinished();
     }
 }

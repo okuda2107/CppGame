@@ -241,9 +241,12 @@ void Renderer::AddMeshComp(const ConfigID id, MeshComponent* mesh) {
 }
 
 void Renderer::RemoveMeshComp(const ConfigID id, MeshComponent* mesh) {
-    auto iter = mMeshComps.find(id);
-    if (iter != mMeshComps.end()) {
-        mMeshComps.erase(iter);
+    auto vectorIter = mMeshComps.find(id);
+    if (vectorIter != mMeshComps.end()) {
+        auto meshIter = std::find(vectorIter->second.begin(),
+                                  vectorIter->second.end(), mesh);
+        if (meshIter != vectorIter->second.end())
+            vectorIter->second.erase(meshIter);
     }
 }
 

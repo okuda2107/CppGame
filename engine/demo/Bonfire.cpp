@@ -6,7 +6,8 @@
 #include "Mesh.h"
 #include "Renderer.h"
 
-Bonfire::Bonfire(class Game* game) : Actor(game), mFinished(false) {
+Bonfire::Bonfire(class Game* game)
+    : Actor(game), mFinished(false), mTime(0.0f), mLimit(5.0f) {
     SetPosition(Vector3(100, 50, -50));
     SetScale(100.0);
     RenderConfig config = RenderConfig();
@@ -26,4 +27,18 @@ Bonfire::Bonfire(class Game* game) : Actor(game), mFinished(false) {
     }
 }
 
+void Bonfire::Initialize() {
+    mTime = 0.0f;
+    mLimit = 5.0f;
+}
+
 // todo: 時間で消える処理を書く
+void Bonfire::UpdateActor(float deltatime) {
+    // 時間更新
+    mTime += deltatime;
+    mLimit -= deltatime;
+    if (mLimit <= 0) {
+        mFinished = true;
+        return;
+    }
+}

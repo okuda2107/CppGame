@@ -2,7 +2,6 @@
 #include "UIScreen.h"
 
 class GameOverUI : public UIScreen {
-    bool mFinished;
     class BonfireGameManager* mParent;
 
    public:

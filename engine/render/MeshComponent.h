@@ -6,7 +6,7 @@
 class MeshComponent : public Component {
    public:
     MeshComponent(class Actor* owner, struct RenderConfig config);
-    ~MeshComponent();
+    virtual ~MeshComponent();
     // Draw this mesh component
     virtual void Draw(const std::string& shaderName, class Shader* shader);
     // Set the mesh/texture index used by mesh component

@@ -2,7 +2,6 @@
 #include "UIScreen.h"
 
 class Title : public UIScreen {
-    bool mFinished;
     class BonfireGameManager* mParent;
 
    public:

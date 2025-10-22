@@ -20,7 +20,6 @@ Actor::Actor(class Game* game)
 
 Actor::~Actor() {
     mGame->RemoveActor(this);
-
     while (!mComponents.empty()) {
         delete mComponents.back();
     }

@@ -8,32 +8,79 @@
 #include "Title.h"
 
 BonfireGameManager::BonfireGameManager(class Game* game)
-    : Actor(game), mState(EPlaying), mBonfire(nullptr), mPlayer(nullptr) {
+    : Actor(game), mState(ETitle), mBonfire(nullptr), mPlayer(nullptr) {
     InitLoad();
 }
 
 BonfireGameManager::~BonfireGameManager() {}
 
 void BonfireGameManager::UpdateActor(float deltatime) {
-    // このステート処理ではなく，UIとの連携でシーン遷移
-    // GameOverUIとの連携のため，mBonfireの状態をポーリング
-    // finishedしたら発火
-    if (mBonfire && mBonfire->GetFinished()) {
-        mBonfire->SetState(Actor::State::EDead);
-        mTime = mBonfire->GetTime();
-        mPlayer->SetAnimLookUp();
-        mState = EAnim;
+    switch (mState) {
+        case ETitle: {
+            // InitLoadで必ず ETitleが設定される かつ Title画面が生成されるので，ETitleのまま，mIsTtileFinishedがtrueにならないことはない．
+            // titleがトリガー
+            if (mIsTitleFinished) {
+                mPlayer->SetAnimLookDown();
+                mBonfire->Initialize();
+                mState = EPlaying;
+            }
+            break;
+        }
+        case EPlaying: {
+            // Bonfireがトリガー
+            if (mBonfire && mBonfire->GetFinished()) {
+                mBonfire->SetState(Actor::State::EDead);
+                mTime = mBonfire->GetTime();
+                mBonfire = nullptr;
+                mPlayer->SetAnimLookUp();
+                mState = EAnim;
+            }
+            break;
+        }
+        case EAnim: {
+            // 空見上げモーション中
+            if (mPlayer && !mPlayer->GetAnimLookUp()) {
+                auto gameOverUI = new GameOverUI(GetGame());
+                gameOverUI->SetTime(mTime);
+                gameOverUI->SetParent(this);
+                mState = EResult;
+            }
+        }
+        case EResult: {
+            // GameOverUIがトリガー
+            if (mIsResultFinished) {
+                InitLoad();
+            }
+            break;
+        }
+        default:
+            // 例外処理
+            InitLoad();
+            break;
     }
-    // 空見上げモーションが終わるまでポーリング
-    if (mState == EAnim && mPlayer && !mPlayer->GetAnimLookUp()) {
-        auto gameOverUI = new GameOverUI(GetGame());
-        gameOverUI->SetTime(mTime);
-        gameOverUI->SetParent(this);
-    }
+    // // GameOverUIとの連携のため，mBonfireの状態をポーリング
+    // // finishedしたら発火
+    // if (mState == EPlaying && mBonfire && mBonfire->GetFinished()) {
+    //     mBonfire->SetState(Actor::State::EDead);
+    //     mBonfire = nullptr;
+    //     mTime = mBonfire->GetTime();
+    //     mPlayer->SetAnimLookUp();
+    //     mState = EAnim;
+    // }
+    // // 空見上げモーションが終わるまでポーリング
+    // else if (mState == EAnim && mPlayer && !mPlayer->GetAnimLookUp()) {
+    //     auto gameOverUI = new GameOverUI(GetGame());
+    //     gameOverUI->SetTime(mTime);
+    //     gameOverUI->SetParent(this);
+    // }
+    // // 例外なので，InitLoadして仕切り直し
+    // else {
+    //     InitLoad();
+    // }
 }
 
 void BonfireGameManager::InitLoad() {
-    mState = EPlaying;
+    mState = ETitle;
     auto title = new Title(GetGame());
     title->SetParent(this);
     if (mBonfire && mBonfire->GetState() != Actor::State::EDead)
@@ -48,4 +95,6 @@ void BonfireGameManager::InitLoad() {
 
     // 変数の初期化
     mTime = 0.0f;
+    mIsTitleFinished = false;
+    mIsResultFinished = false;
 }

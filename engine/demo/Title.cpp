@@ -7,7 +7,7 @@
 #include "Game.h"
 #include "SDL.h"
 
-Title::Title(Game* game) : UIScreen(game), mFinished(false), mParent(nullptr) {
+Title::Title(Game* game) : UIScreen(game), mParent(nullptr) {
     mGame->SetState(Game::EPaused);
     SetTitle("Chillut's Fire", Color::White, 72);
 }
@@ -23,6 +23,6 @@ void Title::HandleKeyPress(int key) {
             SDL_Log("parent pointer is nullptr");
             return;
         }
-        mParent->GetPlayer()->SetAnimLookDown();
+        mParent->SetTitleFinished();
     }
 }
