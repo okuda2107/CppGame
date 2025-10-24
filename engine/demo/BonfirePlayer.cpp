@@ -97,8 +97,8 @@ void BonfirePlayer::UpdateActor(float deltatime) {
     Vector3 pos = GetPosition();
     auto fieldMin = GetGame()->GetFieldMin();
     auto fieldMax = GetGame()->GetFieldMax();
-    pos.x = Math::Clamp(pos.x, .x, 500.0f);
-    pos.y = Math::Clamp(pos.y, -500.0f, 2500.0f);
+    pos.x = Math::Clamp(pos.x, fieldMin->x, fieldMax->x);
+    pos.y = Math::Clamp(pos.y, fieldMin->x, fieldMax->y);
     SetPosition(pos);
 
     // 木が近くにある時，UIを出す制御

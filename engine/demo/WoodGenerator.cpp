@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "Actor.h"
+#include "Game.h"
 #include "Random.h"
 #include "Wood.h"
 
@@ -23,8 +24,11 @@ void WoodGenerator::UpdateActor(float deltatime) {
         // 50%の確率で木を生成
         if (Random::GetFloat() < 0.5) {
             auto wd = new Wood(GetGame(), this);
-            wd->SetPosition(Vector3(-Random::GetFloatRange(-500, 2500),
-                                    Random::GetFloatRange(-500, 2500), -50));
+            auto fieldMin = GetGame()->GetFieldMin();
+            auto fieldMax = GetGame()->GetFieldMax();
+            wd->SetPosition(
+                Vector3(Random::GetFloatRange(fieldMin->x, fieldMax->x),
+                        Random::GetFloatRange(fieldMin->y, fieldMax->y), -50));
         }
     }
 }
