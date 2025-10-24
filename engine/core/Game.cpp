@@ -25,7 +25,12 @@ Game::Game()
     : mGameState(EGameplay),
       mTicksCount(0),
       mUpdatingActors(false),
-      mRenderer(nullptr) {}
+      mRenderer(nullptr),
+      mFieldMin(nullptr),
+      mFieldMax(nullptr) {
+    mFieldMin = new Vector2(-2500, -500);
+    mFieldMax = new Vector2(500, 2500);
+}
 
 bool Game::Initialize() {
     if (int sdlResult = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
@@ -259,7 +264,12 @@ Font* Game::GetFont(const std::string& fileName) {
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
-    new Floor(this);
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            auto f = new Floor(this);
+            f->SetPosition(Vector3(-1000 * i, 1000 * j, -70));
+        }
+    }
     new BackDome(this);
 
     new BonfireGameManager(this);

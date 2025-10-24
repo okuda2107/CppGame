@@ -1,6 +1,7 @@
 #include "BonfirePlayer.h"
 
 #include "Bonfire.h"
+#include "Game.h"
 #include "InputSystem.h"
 #include "UI/AddWoodUI.h"
 #include "UI/AlreadyHaveWoodUI.h"
@@ -94,8 +95,10 @@ void BonfirePlayer::UpdateActor(float deltatime) {
 
     // 位置の制限
     Vector3 pos = GetPosition();
-    pos.x = Math::Clamp(pos.x, -100.0f, 100.0f);
-    pos.y = Math::Clamp(pos.y, -100.0f, 100.0f);
+    auto fieldMin = GetGame()->GetFieldMin();
+    auto fieldMax = GetGame()->GetFieldMax();
+    pos.x = Math::Clamp(pos.x, .x, 500.0f);
+    pos.y = Math::Clamp(pos.y, -500.0f, 2500.0f);
     SetPosition(pos);
 
     // 木が近くにある時，UIを出す制御

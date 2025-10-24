@@ -1,9 +1,9 @@
 #include "WoodGenerator.h"
 
 #include <algorithm>
-#include <random>
 
 #include "Actor.h"
+#include "Random.h"
 #include "Wood.h"
 
 WoodGenerator::WoodGenerator(class Game* game)
@@ -21,14 +21,10 @@ void WoodGenerator::UpdateActor(float deltatime) {
     if (mTime > 5.0) {
         mTime = 0.0f;
         // 50%の確率で木を生成
-        std::random_device rd;
-        std::mt19937 gen(rd());
-
-        // 3. 整数 or 実数の分布を設定
-        std::uniform_int_distribution<> distInt(1, 6);
-        if (distInt(gen) % 2 == 0) {
+        if (Random::GetFloat() < 0.5) {
             auto wd = new Wood(GetGame(), this);
-            wd->SetPosition(Vector3(-100, 100, -50));
+            wd->SetPosition(Vector3(-Random::GetFloatRange(-500, 2500),
+                                    Random::GetFloatRange(-500, 2500), -50));
         }
     }
 }

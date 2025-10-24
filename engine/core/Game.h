@@ -38,6 +38,11 @@ class Game {
     std::unordered_map<std::string, class Font*> mFonts;
     std::vector<class UIScreen*> mUIStack;
 
+    // フィールドの大きさ
+    // このゲームにおいて，フィールドのサイズは共通なので，Gameクラスで定義する
+    class Vector2* mFieldMin;
+    class Vector2* mFieldMax;
+
    public:
     Game();
     bool Initialize();
@@ -60,4 +65,7 @@ class Game {
     // Manage UI stack
     const std::vector<class UIScreen*>& GetUIStack() { return mUIStack; }
     void PushUI(class UIScreen* screen) { mUIStack.emplace_back(screen); }
+
+    class Vector2* GetFieldMin() { return mFieldMin; }
+    class Vector2* GetFieldMax() { return mFieldMax; }
 };
