@@ -8,7 +8,7 @@
 #include "Wood.h"
 
 WoodGenerator::WoodGenerator(class Game* game)
-    : Actor(game), mTime(0.0f), mIsRunning(false) {}
+    : Actor(game), mTime(0.0f), mClock(0.0f), mIsRunning(false) {}
 
 WoodGenerator::~WoodGenerator() {
     for (auto& wood : mWoods) {
@@ -19,10 +19,14 @@ WoodGenerator::~WoodGenerator() {
 void WoodGenerator::UpdateActor(float deltatime) {
     if (!mIsRunning) return;
     mTime += deltatime;
-    if (mTime > 1.0) {
-        mTime = 0.0f;
-        // 50%の確率で木を生成
-        if (Random::GetFloat() < 0.5) {
+    mClock += deltatime;
+    if (mClock > 1.0) {
+        mClock = 0.0f;
+        // 逆数関数的に確率が減少
+        float T = 30.0f;
+        float n = 2.0f;
+        float prob = 1.0f / powf(1.0f + (mTime / T), n);
+        if (Random::GetFloat() < prob) {
             auto wd = new Wood(GetGame(), this);
             auto fieldMin = GetGame()->GetFieldMin();
             auto fieldMax = GetGame()->GetFieldMax();

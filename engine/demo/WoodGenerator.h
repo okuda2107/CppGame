@@ -4,6 +4,7 @@
 
 class WoodGenerator : public Actor {
     float mTime;
+    float mClock;
     bool mIsRunning;
     std::vector<class Wood*> mWoods;
 
