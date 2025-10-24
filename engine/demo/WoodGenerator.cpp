@@ -19,7 +19,7 @@ WoodGenerator::~WoodGenerator() {
 void WoodGenerator::UpdateActor(float deltatime) {
     if (!mIsRunning) return;
     mTime += deltatime;
-    if (mTime > 5.0) {
+    if (mTime > 1.0) {
         mTime = 0.0f;
         // 50%の確率で木を生成
         if (Random::GetFloat() < 0.5) {
