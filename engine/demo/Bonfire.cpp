@@ -60,5 +60,6 @@ void Bonfire::UpdateActor(float deltatime) {
     if (d < near && mAddWood) {
         mAddWood = false;
         mLimit += 20;
+        if (mLimit > cMaxLimit + 30) mLimit = cMaxLimit + 30;
     }
 }
