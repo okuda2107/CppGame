@@ -179,15 +179,11 @@ void Game::UpdateActors(float deltatime) {
 #include "Bonfire.h"
 #include "FPSActor.h"
 #include "Floor.h"
+#include "PostEffectTestActor.h"
 void Game::LoadData() {
     mAudioSystem->LoadBank("Assets/Master.bank");
     // LevelLoader::LoadLevel(this, "Assets/Level.gplevel");
-    new Bonfire(this);
-    new Floor(this);
-    new BackDome(this);
-    FPSActor* fa = new FPSActor(this);
-    fa->SetForwardSpeed(60.0f);
-    fa->SetStrafeSpeed(60.0f);
+    new PostEffectTestActor(this);
     // 環境光
     GetRenderer()->SetAmbientLight(Vector3(0.1, 0.1, 0.2));
 }
