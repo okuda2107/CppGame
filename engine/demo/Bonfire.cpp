@@ -16,9 +16,9 @@ Bonfire::Bonfire(class Game* game) : Actor(game) {
     rp->AddEffect(game->GetRenderer()->GetShader(effectName));
     RenderConfig config = RenderConfig();
     config.mBlend = true;
-    config.mDepthMask = false;
+    // config.mDepthMask = false;
     config.mSortByCamera = true;
-    // config.effectName = effectName;
+    config.effectName = effectName;
     AnimMeshComponent* mc = new AnimMeshComponent(this, config);
     mc->SetMesh(GetGame()->GetRenderer()->GetMesh("Assets/Bonfire.gpmesh"));
 

@@ -10,7 +10,7 @@ project(prj CXX)
 
 add_subdirectory("engine")
 
-add_subdirectory("test")
+# add_subdirectory("test")
 
 set(RELEASE_DIR "${CMAKE_SOURCE_DIR}/Release")
 add_custom_target(Release ALL

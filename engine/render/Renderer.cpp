@@ -240,6 +240,8 @@ void Renderer::ApplyConfig(const ConfigID id) {
     if (config.effectName != "") {
         auto iter = mRenderPath.find(config.effectName);
         if (iter != mRenderPath.end()) iter->second->SetActive();
+    } else {
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 }
 
