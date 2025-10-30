@@ -4,6 +4,8 @@
 
 #include "glew.h"
 
+// エフェクトを適用できるレンダリングパイプラインを定義
+// 一つのレンダリングバッファを持ち，効果を適用する．
 class RenderPath {
     class Renderer* mRenderer;
 

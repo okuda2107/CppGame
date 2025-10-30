@@ -161,10 +161,12 @@ void Renderer::Draw() {
     }
 
     // 別パスで描画されたオブジェクトに効果を適用
+    for (auto rp : mRenderPath) {
+        rp.second->ApplyEffect(mPostEffectVerts);
+    }
+
+    // 描画を統合
     if (mRenderPath.size() > 0) {
-        for (auto rp : mRenderPath) {
-            rp.second->ApplyEffect(mPostEffectVerts);
-        }
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
@@ -199,6 +201,14 @@ void Renderer::Draw() {
 
 void Renderer::ApplyConfig(const ConfigID id) {
     RenderConfig config = mMeshConfigs.at(id);
+    // 別パスの指定
+    if (config.effectName != "") {
+        auto iter = mRenderPath.find(config.effectName);
+        if (iter != mRenderPath.end()) iter->second->SetActive();
+    } else {
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
     if (config.mBlend)
         glEnable(GL_BLEND);
     else if (!config.mBlend)
@@ -234,14 +244,6 @@ void Renderer::ApplyConfig(const ConfigID id) {
                           (b->GetOwner()->GetPosition() - cameraPos).LengthSq();
                       return distA > distB;  // 遠い順
                   });
-    }
-
-    // 別パスの指定
-    if (config.effectName != "") {
-        auto iter = mRenderPath.find(config.effectName);
-        if (iter != mRenderPath.end()) iter->second->SetActive();
-    } else {
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 }
 
