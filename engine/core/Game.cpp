@@ -283,6 +283,12 @@ void Game::UnloadData() {
         delete mActors.back();
     }
 
+    auto iter = mUIStack.begin();
+    while (iter != mUIStack.end()) {
+        delete *iter;
+        iter = mUIStack.erase(iter);
+    }
+
     if (mRenderer) {
         mRenderer->UnloadData();
     }
