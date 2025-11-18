@@ -10,9 +10,10 @@
 WoodGenerator::WoodGenerator(class Game* game)
     : Actor(game), mTime(0.0f), mClock(0.0f), mIsRunning(false) {}
 
+// デストラクタが働くタイミングはActorの配列ループじゃなくてdeadActorの配列ループ中に必ずなっているから，delete woodしても良い
 WoodGenerator::~WoodGenerator() {
-    for (auto& wood : mWoods) {
-        wood->SetState(Actor::State::EDead);
+    while (!mWoods.empty()) {
+        delete mWoods.back();
     }
 }
 
