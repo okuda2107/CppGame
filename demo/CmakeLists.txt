@@ -1,0 +1,7 @@
+file(GLOB_RECURSE CXX_FILES CONFIGURE_DEPENDS
+    "*.cpp"
+)
+
+add_executable(app ${CXX_FILES})
+
+target_link_libraries(app PRIVATE engine)

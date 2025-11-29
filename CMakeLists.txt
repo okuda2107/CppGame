@@ -12,6 +12,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(prj CXX)
 
 add_subdirectory("engine")
+# add_subdirectory("game_library")
+
+add_subdirectory("demo")
 
 # engineができてない状態でもtestしたいため，一旦コメントアウト
 # todo: ルートからコマンドを叩いて，テストを行いたい．
