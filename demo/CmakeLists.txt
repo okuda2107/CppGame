@@ -4,4 +4,4 @@ file(GLOB_RECURSE CXX_FILES CONFIGURE_DEPENDS
 
 add_executable(app ${CXX_FILES})
 
-target_link_libraries(app PRIVATE engine)
+target_link_libraries(app PRIVATE engine_temp)

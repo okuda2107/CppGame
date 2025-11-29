@@ -2,6 +2,12 @@ file(GLOB_RECURSE CXX_FILES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/*/*.cpp"
 )
 
+file(GLOB ENTRY_POINT
+    "${CMAKE_CURRENT_SOURCE_DIR}/core/Main.cpp"
+)
+
+list(FILTER CXX_FILES EXCLUDE REGEX "${ENTRY_POINT}")
+
 # 再利用性のため，engine部分だけライブラリ化
 add_library(engine ${CXX_FILES})
 
