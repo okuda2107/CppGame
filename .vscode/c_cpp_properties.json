@@ -32,7 +32,8 @@
                 "${workspaceFolder}/exlibs/rapidjson/include/rapidjson",
                 "${workspaceFolder}/exlibs/openal-soft-1.24.3-bin/include",
                 "${workspaceFolder}/exlibs/openal-soft-1.24.3-bin/include/AL",
-                "${workspaceFolder}/exlibs/freealut/include/AL"
+                "${workspaceFolder}/exlibs/freealut/include/AL",
+                "${workspaceFolder}/engine/include"
             ],
             "defines": [],
             "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
