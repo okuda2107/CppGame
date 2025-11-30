@@ -1,18 +1,40 @@
+add_library(engine STATIC)
+
+# find_package()
+
 file(GLOB_RECURSE CXX_FILES CONFIGURE_DEPENDS
     "src/**/*.cpp"
 )
 
-# 再利用性のため，engine部分だけライブラリ化
-add_library(engine ${CXX_FILES})
-
-# エンジンのヘッダファイルを読み込み
-target_include_directories(engine
-    PUBLIC
-        $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+file(GLOB_RECURSE PRIVATE_HEADERS CONFIGURE_DEPENDS
+    "src/**/*.h"
 )
 
-target_include_directories(engine PUBLIC ${CMAKE_INCLUDE_PATH})
+file(GLOB_RECURSE PUBLIC_HEAKERS CONFIGURE_DEPENDS
+    "include/**/*.h"
+)
+
+target_sources(engine
+    PRIVATE
+        ${CXX_FILES}
+
+    PRIVATE
+        FILE_SET privateHeaders
+        TYPE HEADERS
+        BASE_DIRS
+            "src"
+        FILES
+            ${PRIVATE_HEADERS}
+
+    PUBLIC
+        FILE_SET publicHeaders
+        TYPE HEADERS
+        BASE_DIRS
+            "include"
+        FILES
+            ${PUBLIC_HEADERS}
+)
+
 
 target_link_directories(engine PUBLIC ${CMAKE_LIBRARY_PATH})
 
