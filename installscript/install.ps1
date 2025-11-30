@@ -101,6 +101,7 @@ if( -not (Test-Path (Join-Path $ExlibsDir "glew-2.2.0"))) {
     $TmpDir = $(Join-Path $ExlibsDir "glew-2.2.0")
     cmake -S $(Join-Path $TmpDir "build/cmake")-B $(Join-Path $TmpDir "build") -G "MinGW Makefiles" -DCMAKE_POLICY_VERSION_MINIMUM="3.5"
     cmake --build $(Join-Path $TmpDir "build") --config Release
+    cmake --install $(Join-Path $TmpDir "build") --prefix $(Join-Path $TmpDir "install")
 }
 
 if( -not (Test-Path (Join-Path $ExlibsDir "Simple-OpenGL-Image-Library"))) {
@@ -120,4 +121,5 @@ if( -not (Test-Path (Join-Path $ExlibsDir "freealut"))) {
     git clone https://github.com/vancegroup/freealut.git $TmpDir
     cmake -S $TmpDir -B $(Join-Path $TmpDir "build") -G "MinGW Makefiles" -DOPENAL_LIBRARY="$(Join-Path $OpenALDir "libs/Win64/OpenAL32.lib")" -DOPENAL_INCLUDE_DIR="$(Join-Path $OpenALDir "include")" -DCMAKE_POLICY_VERSION_MINIMUM="3.5"
     cmake --build $(Join-Path $TmpDir "build") --config Release
+    cmake --install $(Join-Path $TmpDir "build") --prefix $(Join-Path $TmpDir "install")
 }
