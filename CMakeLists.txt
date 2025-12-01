@@ -25,6 +25,8 @@ add_custom_target(Release ALL
     COMMAND ${CMAKE_COMMAND} -E rm -rf ${RELEASE_DIR}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${RELEASE_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:app> ${RELEASE_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:app> ${RELEASE_DIR}
+    COMMAND_EXPAND_LISTS
     COMMAND ${CMAKE_COMMAND} -E copy_if_different ${DLL_FILES} ${RELEASE_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/Assets" "${RELEASE_DIR}/Assets"
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/Shaders" "${RELEASE_DIR}/Shaders"

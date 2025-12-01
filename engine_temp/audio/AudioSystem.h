@@ -1,8 +1,8 @@
 #pragma once
 #include <unordered_map>
 
+#include "AL/alut.h"
 #include "Math.h"
-#include "alut.h"
 
 class AudioSystem {
    protected:

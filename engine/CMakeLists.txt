@@ -52,102 +52,78 @@ target_link_libraries(engine
         SDL2_image::SDL2_image
 )
 
-
 # OpenAL
-if (OPENAL_INCLUDE_PATH)
+if (OPENAL_INCLUDE_DIR AND OPENAL_LIBRARY AND OPENAL_DLL)
     # find_packageでパス解決しようとすると，alut側のinclude pathの解決ができないので，手動で指定
     target_include_directories(engine
         PUBLIC
-            ${OPENAL_INCLUDE_PATH}
+            ${OPENAL_INCLUDE_DIR}
     )
-else()
-    message(WARNING "not set OPENAL_INCLUDE_PATH")
-endif()
-
-if (OPENAL_LIBRARY_PATH)
-    target_link_directories(engine
-        PUBLIC
-            ${OPENAL_LIBRARY_PATH}
-    )
-else()
-    message(WARNING "not set OPENAL_LIBRARY_PATH")
-endif()
-
-if (OPENAL_LIBRARY)
     target_link_libraries(engine
         PRIVATE
             ${OPENAL_LIBRARY}
     )
+    foreach(dll IN LISTS OPENAL_DLL)
+        get_filename_component(dll_name "${dll}" NAME_WE)
+        add_library(${dll_name} SHARED IMPORTED)
+        set_target_properties(${dll_name} PROPERTIES
+            IMPORTED_LOCATION "${dll}"
+            IMPORTED_IMPLIB ${OPENAL_LIBRARY}
+            INTERFACE_INCLUDE_DIRECTORIES ${OPENAL_INCLUDE_DIR}
+        )
+        target_link_libraries(engine PRIVATE ${dll_name})
+    endforeach()
 else()
-    message(WARNING "not set OPENAL_LIBRARY")
+    message(WARNING "not set OPENAL_INCLUDE_PATH, or _LIBRARY, or _DLL")
 endif()
-
 
 # alut
-if (ALUT_INCLUDE_PATH)
+if (ALUT_INCLUDE_DIR AND ALUT_LIBRARY AND ALUT_DLL)
+    # find_packageでパス解決しようとすると，alut側のinclude pathの解決ができないので，手動で指定
     target_include_directories(engine
         PUBLIC
-            ${ALUT_INCLUDE_PATH}
+            ${ALUT_INCLUDE_DIR}
     )
-else()
-    message(WARNING "not set ALUT_INCLUDE_PATH")
-endif()
-
-if (ALUT_LIBRARY_PATH)
-    target_link_directories(engine
-        PUBLIC
-            ${ALUT_LIBRARY_PATH}
-    )
-else()
-    message(WARNING "not set ALUT_LIBRARY_PATH")
-endif()
-
-if (ALUT_LIBRARY)
     target_link_libraries(engine
         PRIVATE
             ${ALUT_LIBRARY}
     )
+    foreach(dll IN LISTS ALUT_DLL)
+        get_filename_component(dll_name "${dll}" NAME_WE)
+        add_library(${dll_name} SHARED IMPORTED)
+        set_target_properties(${dll_name} PROPERTIES
+            IMPORTED_LOCATION "${dll}"
+            IMPORTED_IMPLIB ${ALUT_LIBRARY}
+            INTERFACE_INCLUDE_DIRECTORIES ${ALUT_INCLUDE_DIR}
+        )
+        target_link_libraries(engine PRIVATE ${dll_name})
+    endforeach()
 else()
-    message(WARNING "not set ALUT_LIBRARY")
+    message(WARNING "not set ALUT_INCLUDE_PATH, or _LIBRARY, or _DLL")
 endif()
 
-
 # rapidjson
-if (RAPIDJSON_INCLUDE_PATH)
+if (RAPIDJSON_INCLUDE_DIR)
     # rapidjsonはbuildがコケるので，とりあえずヘッダファイルのみ
     target_include_directories(engine
         PUBLIC
-            ${RAPIDJSON_INCLUDE_PATH}
+            ${RAPIDJSON_INCLUDE_DIR}
     )
 else()
-    message(WARNING "not set RAPIDJSON_INCLUDE_PATH")
+    message(WARNING "not set RAPIDJSON_INCLUDE_DIR")
 endif()
-
 
 # SOIL
-if (SOIL_INCLUDE_PATH)
+if (SOIL_INCLUDE_DIR AND SOIL_LIBRARY)
+    # find_packageでパス解決しようとすると，alut側のinclude pathの解決ができないので，手動で指定
     target_include_directories(engine
         PUBLIC
-            ${SOIL_INCLUDE_PATH}
+            ${SOIL_INCLUDE_DIR}
     )
-else()
-    message(WARNING "not set SOIL_INCLUDE_PATH")
-endif()
-
-if (SOIL_LIBRARY_PATH)
-    target_link_directories(engine
-        PUBLIC
-            ${SOIL_LIBRARY_PATH}
-    )
-else()
-    message(WARNING "not set SOIL_LIBRARY_PATH")
-endif()
-
-if (SOIL_LIBRARY)
     target_link_libraries(engine
         PRIVATE
             ${SOIL_LIBRARY}
     )
 else()
-    message(WARNING "not set SOIL_LIBRARY")
+    message(WARNING "not set SOIL_INCLUDE_PATH, or _LIBRARY")
 endif()

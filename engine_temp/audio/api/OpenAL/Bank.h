@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "alut.h"
+#include "AL/alut.h"
 #include "document.h"
 
 namespace OpenAL {

@@ -2,11 +2,11 @@
 #include <string>
 #include <unordered_map>
 
+#include "AL/alut.h"
 #include "AudioSystem.h"
 #include "Helper.h"
 #include "Math.h"
 #include "SDL.h"
-#include "alut.h"
 #include "api/OpenAL/Event.h"
 
 namespace OpenAL {

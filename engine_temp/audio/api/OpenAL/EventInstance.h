@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "al.h"
+#include "AL/al.h"
 
 namespace OpenAL {
 // イベントの実体

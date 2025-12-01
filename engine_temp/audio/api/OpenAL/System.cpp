@@ -1,11 +1,11 @@
 #include "System.h"
 
+#include "AL/al.h"
+#include "AL/alut.h"
 #include "Game.h"
 #include "Math.h"
 #include "SDL.h"
 #include "SDL_mixer.h"
-#include "al.h"
-#include "alut.h"
 #include "api/OpenAL/Bank.h"
 #include "api/OpenAL/EventInstance.h"
 #include "api/OpenAL/Handler.h"

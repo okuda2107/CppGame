@@ -13,16 +13,16 @@
                 "SDL2_net_ROOT": "${sourceDir}/exlibs/SDL2_net-2.2.0/x86_64-w64-mingw32",
                 "SDL2_ttf_ROOT": "${sourceDir}/exlibs/SDL2_ttf-2.24.0/x86_64-w64-mingw32",
                 "GLEW_ROOT": "${sourceDir}/exlibs/glew-2.2.0/install",
-                "OPENAL_INCLUDE_PATH": "${sourceDir}/exlibs/openal-soft-1.24.3-bin/include;${sourceDir}/exlibs/openal-soft-1.24.3-bin/include/AL",
-                "OPENAL_LIBRARY_PATH": "${sourceDir}/exlibs/openal-soft-1.24.3-bin/libs/Win64",
-                "OPENAL_LIBRARY": "OpenAL32",
-                "ALUT_INCLUDE_PATH": "${sourceDir}/exlibs/freealut/install/include;${sourceDir}/exlibs/freealut/install/include/AL",
-                "ALUT_LIBRARY_PATH": "${sourceDir}/exlibs/freealut/install/lib",
-                "ALUT_LIBRARY": "alut",
-                "RAPIDJSON_INCLUDE_PATH": "${sourceDir}/exlibs/rapidjson/include/rapidjson;${sourceDir}/exlibs/rapidjson/include",
-                "SOIL_INCLUDE_PATH": "${sourceDir}/exlibs/Simple-OpenGL-Image-Library/install/include/SOIL",
-                "SOIL_LIBRARY_PATH": "${sourceDir}/exlibs/Simple-OpenGL-Image-Library/install/lib",
-                "SOIL_LIBRARY": "SOIL"
+                "OPENAL_INCLUDE_DIR": "${sourceDir}/exlibs/openal-soft-1.24.3-bin/include",
+                "OPENAL_LIBRARY": "${sourceDir}/exlibs/openal-soft-1.24.3-bin/libs/Win64/OpenAL32.lib",
+                "OPENAL_DLL": "${sourceDir}/exlibs/openal-soft-1.24.3-bin/bin/Win64/soft_oal.dll;${sourceDir}/exlibs/openal-soft-1.24.3-bin/router/Win64/OpenAL32.dll",
+                "ALUT_INCLUDE_DIR": "${sourceDir}/exlibs/freealut/install/include",
+                "ALUT_LIBRARY": "${sourceDir}/exlibs/freealut/install/lib/libalut.dll.a",
+                "ALUT_DLL": "${sourceDir}/exlibs/freealut/install/bin/libalut.dll",
+                "RAPIDJSON_INCLUDE_DIR": "${sourceDir}/exlibs/rapidjson/include/rapidjson;${sourceDir}/exlibs/rapidjson/include",
+                "SOIL_INCLUDE_DIR": "${sourceDir}/exlibs/Simple-OpenGL-Image-Library/install/include/SOIL",
+                "SOIL_LIBRARY": "${sourceDir}/exlibs/Simple-OpenGL-Image-Library/install/lib/libSOIL.a",
+                "DLL_FILES": "C:/msys64/mingw64/bin/libwinpthread-1.dll"
             }
         }
     ]
