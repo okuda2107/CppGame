@@ -82,8 +82,7 @@ endif()
 if (ALUT_LIBRARY)
     target_link_libraries(engine_temp
         PRIVATE
-            # ${ALUT_LIBRARY}
-            libalut.dll.a
+            ${ALUT_LIBRARY}
     )
 else()
     message(WARNING "not set ALUT_LIBRARY")

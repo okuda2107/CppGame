@@ -41,7 +41,7 @@ target_sources(engine
 )
 
 target_link_libraries(engine
-    PRIVATE
+    PUBLIC
         SDL2::SDL2
         SDL2::SDL2main
         SDL2_image::SDL2_image
@@ -51,8 +51,11 @@ target_link_libraries(engine
         GLEW::glew_s
 )
 
+
+# OpenAL
 if (OPENAL_INCLUDE_PATH)
-    target_include_directories(engine_temp
+    # find_packageでパス解決しようとすると，alut側のinclude pathの解決ができないので，手動で指定
+    target_include_directories(engine
         PUBLIC
             ${OPENAL_INCLUDE_PATH}
     )
@@ -61,8 +64,8 @@ else()
 endif()
 
 if (OPENAL_LIBRARY_PATH)
-    target_link_directories(engine_temp
-        PRIVATE
+    target_link_directories(engine
+        PUBLIC
             ${OPENAL_LIBRARY_PATH}
     )
 else()
@@ -70,7 +73,7 @@ else()
 endif()
 
 if (OPENAL_LIBRARY)
-    target_link_libraries(engine_temp
+    target_link_libraries(engine
         PRIVATE
             ${OPENAL_LIBRARY}
     )
@@ -78,11 +81,24 @@ else()
     message(WARNING "not set OPENAL_LIBRARY")
 endif()
 
+
+# alut
 if (ALUT_INCLUDE_PATH)
     target_include_directories(engine
         PUBLIC
             ${ALUT_INCLUDE_PATH}
     )
+else()
+    message(WARNING "not set ALUT_INCLUDE_PATH")
+endif()
+
+if (ALUT_LIBRARY_PATH)
+    target_link_directories(engine
+        PUBLIC
+            ${ALUT_LIBRARY_PATH}
+    )
+else()
+    message(WARNING "not set ALUT_LIBRARY_PATH")
 endif()
 
 if (ALUT_LIBRARY)
@@ -90,12 +106,47 @@ if (ALUT_LIBRARY)
         PRIVATE
             ${ALUT_LIBRARY}
     )
+else()
+    message(WARNING "not set ALUT_LIBRARY")
 endif()
 
+
+# rapidjson
 if (RAPIDJSON_INCLUDE_PATH)
     # rapidjsonはbuildがコケるので，とりあえずヘッダファイルのみ
     target_include_directories(engine
         PUBLIC
             ${RAPIDJSON_INCLUDE_PATH}
     )
+else()
+    message(WARNING "not set RAPIDJSON_INCLUDE_PATH")
+endif()
+
+
+# SOIL
+if (SOIL_INCLUDE_PATH)
+    target_include_directories(engine
+        PUBLIC
+            ${SOIL_INCLUDE_PATH}
+    )
+else()
+    message(WARNING "not set SOIL_INCLUDE_PATH")
+endif()
+
+if (SOIL_LIBRARY_PATH)
+    target_link_directories(engine
+        PUBLIC
+            ${SOIL_LIBRARY_PATH}
+    )
+else()
+    message(WARNING "not set SOIL_LIBRARY_PATH")
+endif()
+
+if (SOIL_LIBRARY)
+    target_link_libraries(engine
+        PRIVATE
+            ${SOIL_LIBRARY}
+    )
+else()
+    message(WARNING "not set SOIL_LIBRARY")
 endif()
