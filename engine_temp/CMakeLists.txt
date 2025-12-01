@@ -21,14 +21,15 @@ list(FILTER INCLUDE_ROOT EXCLUDE REGEX "CMakeLists.txt")
 target_include_directories(engine_temp PUBLIC ${INCLUDE_ROOT})
 
 target_link_libraries(engine_temp
-    PUBLIC
-        SDL2::SDL2
+    PRIVATE
         SDL2::SDL2main
-        SDL2_image::SDL2_image
         SDL2_mixer::SDL2_mixer
         SDL2_net::SDL2_net
         SDL2_ttf::SDL2_ttf
         GLEW::glew_s
+    PUBLIC
+        SDL2::SDL2
+        SDL2_image::SDL2_image
 )
 
 # OpenAL

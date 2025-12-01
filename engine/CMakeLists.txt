@@ -41,14 +41,15 @@ target_sources(engine
 )
 
 target_link_libraries(engine
-    PUBLIC
-        SDL2::SDL2
+    PRIVATE
         SDL2::SDL2main
-        SDL2_image::SDL2_image
         SDL2_mixer::SDL2_mixer
         SDL2_net::SDL2_net
         SDL2_ttf::SDL2_ttf
         GLEW::glew_s
+    PUBLIC
+        SDL2::SDL2
+        SDL2_image::SDL2_image
 )
 
 
