@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "Actor.h"
+#include "GL/glew.h"
 #include "Game.h"
 #include "Mesh.h"
 #include "MeshComponent.h"
@@ -12,7 +13,6 @@
 #include "Texture.h"
 #include "UIScreen.h"
 #include "VertexArray.h"
-#include "glew.h"
 
 Renderer::Renderer(class Game* game)
     : mGame(game),

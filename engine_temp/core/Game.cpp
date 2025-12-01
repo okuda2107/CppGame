@@ -6,6 +6,7 @@
 #include "Actor.h"
 #include "AudioSystem.h"
 #include "Font.h"
+#include "GL/glew.h"
 #include "InputSystem.h"
 #include "LevelLoader.h"
 #include "MeshComponent.h"
@@ -19,7 +20,6 @@
 #include "UIScreen.h"
 #include "VertexArray.h"
 #include "api/OpenAL/System.h"
-#include "glew.h"
 
 Game::Game()
     : mGameState(EGameplay),

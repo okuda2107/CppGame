@@ -109,6 +109,7 @@ if( -not (Test-Path (Join-Path $ExlibsDir "Simple-OpenGL-Image-Library"))) {
     git clone https://github.com/kbranigan/Simple-OpenGL-Image-Library.git $TmpDir
     cmake -S $TmpDir -B $(Join-Path $TmpDir "build") -G "MinGW Makefiles" -DCMAKE_POLICY_VERSION_MINIMUM="3.5"
     cmake --build $(Join-Path $TmpDir "build") --config Release
+    cmake --install $(Join-Path $TmpDir "build") --prefix $(Join-Path $TmpDir "install")
 }
 
 if( -not (Test-Path (Join-Path $ExlibsDir "openal-soft-1.24.3-bin"))) {

@@ -1,10 +1,10 @@
 #include "UIScreen.h"
 
 #include "Font.h"
+#include "GL/glew.h"
 #include "Game.h"
 #include "Shader.h"
 #include "Texture.h"
-#include "glew.h"
 
 UIScreen::UIScreen(Game* game)
     : mGame(game), mTitle(nullptr), mTitlePos(0.0f, 300.0f), mState(EActive) {
