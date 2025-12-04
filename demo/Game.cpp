@@ -38,6 +38,14 @@ bool Game::Initialize() {
         return false;
     }
 
+    mInputSystem = new InputSystem(this);
+    if (!mInputSystem->Initialize()) {
+        SDL_Log("Failed to initialize input system");
+        delete mInputSystem;
+        mInputSystem = nullptr;
+        return false;
+    }
+
     mRenderer = new Renderer(this);
     if (!mRenderer->Initialize(1024.0f, 768.0f)) {
         SDL_Log("Failed to initialize renderer");
@@ -51,14 +59,6 @@ bool Game::Initialize() {
         SDL_Log("Failed to initialize audio system");
         delete mAudioSystem;
         mAudioSystem = nullptr;
-        return false;
-    }
-
-    mInputSystem = new InputSystem(this);
-    if (!mInputSystem->Initialize()) {
-        SDL_Log("Failed to initialize input system");
-        delete mInputSystem;
-        mInputSystem = nullptr;
         return false;
     }
 
