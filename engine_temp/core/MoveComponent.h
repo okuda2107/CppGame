@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "Math.h"
+#include "core/Math.h"
 #include "document.h"
 
 // 相対空間，絶対空間のどちらにも対応しているが，処理を簡略化するためのお互いの整合性は取っていない

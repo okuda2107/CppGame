@@ -1,8 +1,8 @@
 #include "Handler.h"
 
-#include "Math.h"
 #include "System.h"
 #include "api/OpenAL/EventInstance.h"
+#include "core/Math.h"
 
 OpenAL::Handler::Handler(OpenAL::System* system, unsigned int id)
     : mSystem(system), mID(id) {}

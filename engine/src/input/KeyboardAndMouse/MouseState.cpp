@@ -1,4 +1,4 @@
-#include "MouseState.h"
+#include "input/KeyboardAndMouse/MouseState.h"
 
 bool MouseState::GetButtonValue(int button) const {
     return (mCurrButtons & SDL_BUTTON(button));

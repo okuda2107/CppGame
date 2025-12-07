@@ -2,8 +2,8 @@
 #include <string>
 
 #include "AL/al.h"
-#include "Math.h"
 #include "SoundHandler.h"
+#include "core/Math.h"
 
 namespace OpenAL {
 class Handler : public SoundHandler {

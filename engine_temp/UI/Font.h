@@ -2,8 +2,8 @@
 #include <string>
 #include <unordered_map>
 
-#include "Math.h"
 #include "SDL_ttf.h"
+#include "core/Math.h"
 
 class Font {
     std::unordered_map<int, TTF_Font*> mFontData;

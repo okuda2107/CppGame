@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "Component.h"
-#include "Math.h"
+#include "core/Math.h"
 
 class Actor {
    public:

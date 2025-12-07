@@ -3,9 +3,9 @@
 #include "AudioComponent.h"
 #include "FPSComponent.h"
 #include "Game.h"
-#include "InputSystem.h"
 #include "MoveComponent.h"
 #include "SoundHandler.h"
+#include "input/InputState.h"
 
 FPSActor::FPSActor(Game* game)
     : Actor(game), mForwardSpeed(0.0f), mStrafeSpeed(0.0f) {
@@ -21,16 +21,16 @@ FPSActor::FPSActor(Game* game)
 
 void FPSActor::ActorInput(const InputState& state) {
     float fowardSpeed = 0.0f;
-    if (state.Keyboard.GetKeyValue(mForwardKey)) fowardSpeed += mForwardSpeed;
-    if (state.Keyboard.GetKeyValue(mBackKey)) fowardSpeed -= mForwardSpeed;
+    if (state.Keyboard->GetKeyValue(mForwardKey)) fowardSpeed += mForwardSpeed;
+    if (state.Keyboard->GetKeyValue(mBackKey)) fowardSpeed -= mForwardSpeed;
     mMoveComp->SetForwardSpeed(fowardSpeed);
 
     float rightSpeed = 0.0f;
-    if (state.Keyboard.GetKeyValue(mRightKey)) rightSpeed += mStrafeSpeed;
-    if (state.Keyboard.GetKeyValue(mLeftKey)) rightSpeed -= mStrafeSpeed;
+    if (state.Keyboard->GetKeyValue(mRightKey)) rightSpeed += mStrafeSpeed;
+    if (state.Keyboard->GetKeyValue(mLeftKey)) rightSpeed -= mStrafeSpeed;
     mMoveComp->SetRightSpeed(rightSpeed);
 
-    Vector2 mousePos = state.Mouse.GetPostion();
+    Vector2 mousePos = state.Mouse->GetPostion();
 
     float yawSpeed = 0;
     if (!Math::NearZero(mousePos.x)) {

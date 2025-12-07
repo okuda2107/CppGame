@@ -1,10 +1,11 @@
 #pragma once
-#include "ButtonState.h"
-#include "Math.h"
+#include "InputSystem.h"
 #include "SDL.h"
+#include "core/Math.h"
+#include "input/Button/ButtonState.h"
 
 class MouseState {
-    friend class InputSystem;
+    friend class KeyboardAndMouse::InputSystem;
 
     // マウスの位置を格納
     Vector2 mMousePos;

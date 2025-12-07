@@ -2,7 +2,7 @@
 #include <sstream>
 #include <string>
 
-#include "Math.h"
+#include "core/Math.h"
 
 std::string to_string(Vector3 vec) {
     std::ostringstream oss;

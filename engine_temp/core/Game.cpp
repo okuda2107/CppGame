@@ -7,7 +7,6 @@
 #include "AudioSystem.h"
 #include "Font.h"
 #include "GL/glew.h"
-#include "InputSystem.h"
 #include "LevelLoader.h"
 #include "MeshComponent.h"
 #include "PhysWorld.h"
@@ -20,6 +19,7 @@
 #include "UIScreen.h"
 #include "VertexArray.h"
 #include "api/OpenAL/System.h"
+#include "input/KeyboardAndMouse/InputSystem.h"
 
 Game::Game()
     : mGameState(EGameplay),
@@ -38,7 +38,7 @@ bool Game::Initialize() {
         return false;
     }
 
-    mInputSystem = new InputSystem(this);
+    mInputSystem = new InputSystem();
     if (!mInputSystem->Initialize()) {
         SDL_Log("Failed to initialize input system");
         delete mInputSystem;
@@ -127,7 +127,7 @@ void Game::ProcessInput() {
     const InputState& state = mInputSystem->GetState();
 
     // 入力に対して，Gameクラスを反応させる
-    if (state.Keyboard.GetKeyState(SDL_SCANCODE_ESCAPE) == EReleased) {
+    if (state.Keyboard->GetKeyState(SDL_SCANCODE_ESCAPE) == EReleased) {
         mGameState = EQuit;
     }
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "Math.h"
+#include "core/Math.h"
 
 class SkydomeComponent : public Component {
     class Mesh* mMesh;

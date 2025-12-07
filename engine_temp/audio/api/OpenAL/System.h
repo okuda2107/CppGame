@@ -5,9 +5,9 @@
 #include "AL/alut.h"
 #include "AudioSystem.h"
 #include "Helper.h"
-#include "Math.h"
 #include "SDL.h"
 #include "api/OpenAL/Event.h"
+#include "core/Math.h"
 
 namespace OpenAL {
 // サウンドイベントの管理

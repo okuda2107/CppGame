@@ -2,7 +2,7 @@
 #include <string>
 
 #include "GL/glew.h"
-#include "Math.h"
+#include "core/Math.h"
 
 class Shader {
    public:

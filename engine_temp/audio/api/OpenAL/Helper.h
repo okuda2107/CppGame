@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "Math.h"
+#include "core/Math.h"
 
 namespace OpenAL {
 inline const char* alGetErrorString(ALenum error) {

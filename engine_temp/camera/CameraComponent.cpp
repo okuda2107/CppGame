@@ -3,8 +3,8 @@
 #include "Actor.h"
 #include "AudioSystem.h"
 #include "Game.h"
-#include "Math.h"
 #include "Renderer.h"
+#include "core/Math.h"
 
 CameraComponent::CameraComponent(class Actor* owner, int updateOrder)
     : Component(owner, updateOrder) {}

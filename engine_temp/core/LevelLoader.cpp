@@ -8,12 +8,12 @@
 #include "Actor.h"
 #include "Game.h"
 #include "Input2DComponent.h"
-#include "Math.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
 #include "Renderer.h"
 #include "SDL.h"
 #include "SpriteComponent.h"
+#include "core/Math.h"
 
 std::unordered_map<std::string, ActorFunc> LevelLoader::sActorFactoryMap = {
     {"Actor", &Actor::Create<Actor>},

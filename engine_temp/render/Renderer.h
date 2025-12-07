@@ -4,8 +4,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "Math.h"
 #include "SDL.h"
+#include "core/Math.h"
 
 struct DirectionalLight {
     // 光の方向

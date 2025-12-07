@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Collision.h"
-#include "Math.h"
+#include "core/Math.h"
 
 class PhysWorld {
    public:

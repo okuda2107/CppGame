@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "Math.h"
+#include "core/Math.h"
 
 // 線分
 struct LineSegment {

@@ -2,7 +2,7 @@
 #include <unordered_map>
 
 #include "AL/alut.h"
-#include "Math.h"
+#include "core/Math.h"
 
 class AudioSystem {
    protected:

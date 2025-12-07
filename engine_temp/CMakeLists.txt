@@ -22,6 +22,7 @@ target_include_directories(engine_temp PUBLIC ${INCLUDE_ROOT})
 
 target_link_libraries(engine_temp
     PRIVATE
+        engine
         SDL2::SDL2main
         SDL2_mixer::SDL2_mixer
         SDL2_net::SDL2_net
