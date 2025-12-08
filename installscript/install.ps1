@@ -21,47 +21,10 @@ function Install-Command {
 }
 
 function Download-Lib ($Uri, $OutputPath) {
-    $TmpZip = [System.IO.Path]::GetTempFileName()
+    $TmpZip = Join-Path $env:TEMP ("download_" + [guid]::NewGuid().Guid + ".zip")
     Invoke-WebRequest -Uri $Uri -OutFile $TmpZip
-    Expand-Archive -Path $TmpZip -DestinationPath $OutputPath
+    Expand-Archive -Path $TmpZip -DestinationPath $OutputPath -Force
     Remove-Item $TmpZip
-}
-
-Install-Command -MapCommandsPackages @{
-    git = "Git.Git"
-    cmake = "cmake"
-}
-
-# C++コンパイラのinstall
-# MSYS2のインストール
-$msys64Path = "C:\msys64"
-if ( -not (Test-Path $msys64Path)) {
-    # wingetパッケージIDの確認（MSYS2版 mingw-w64 toolchain）
-    $packageId = "MSYS2.MSYS2"
-
-    Write-Host "=== MSYS2 (mingw-w64) をインストールします ==="
-    winget install --id $packageId --exact --accept-package-agreements --accept-source-agreements
-
-    Write-Host "=== MSYS2 の初期化と mingw-w64 インストール ==="
-    $msys2Path = "C:\msys64\usr\bin\bash.exe"
-    if (-not (Test-Path $msys2Path)) {
-        Write-Error "MSYS2 のインストールが見つかりません。"
-        exit 1
-    }
-
-    # msys2 を更新して mingw-w64 toolchain を入れる
-    & $msys2Path -lc "pacman -Sy --noconfirm"
-    & $msys2Path -lc "pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-make mingw-w64-x86_64-gdb"
-
-    # 環境変数設定
-    $mingwBin = Join-Path $mingwBin "bin"
-    $currentPath = [System.Environment]::GetEnvironmentVariable("Path", "User")
-    if ($currentPath -notmatch [Regex]::Escape($mingwBin)) {
-        Write-Host "PATH に $mingwBin を追加します..."
-        $newPath = "$currentPath;$mingwBin"
-        [System.Environment]::SetEnvironmentVariable("Path", $newPath, "User")
-    }
-    $env:Path += ";$mingwBin"
 }
 
 if( -not (Test-Path (Join-Path $ExlibsDir "googletest-1.17.0"))) {
