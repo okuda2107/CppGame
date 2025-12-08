@@ -38,7 +38,7 @@ bool Game::Initialize() {
         return false;
     }
 
-    mInputSystem = new InputSystem();
+    mInputSystem = new KeyboardAndMouse::InputSystem();
     if (!mInputSystem->Initialize()) {
         SDL_Log("Failed to initialize input system");
         delete mInputSystem;

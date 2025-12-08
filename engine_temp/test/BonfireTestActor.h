@@ -3,12 +3,12 @@
 #include "AudioComponent.h"
 #include "FPSComponent.h"
 #include "Game.h"
-#include "InputSystem.h"
 #include "Mesh.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
 #include "Renderer.h"
 #include "SkydomeTestActor.h"
+#include "input/KeyboardAndMouse/InputSystem.h"
 
 class BonfireTestActor : Actor {
     MoveComponent* mc;

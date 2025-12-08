@@ -1,10 +1,13 @@
 #pragma once
-#include "InputSystem.h"
 #include "SDL.h"
 #include "input/Button/ButtonState.h"
 
+namespace KeyboardAndMouse {
+class InputSystem;
+}
+
 class KeyboardState {
-    friend class KeyboardAndMouse::InputSystem;
+    friend KeyboardAndMouse::InputSystem;
 
     // 現在の状態
     const Uint8* mCurrState;

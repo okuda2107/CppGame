@@ -6,8 +6,8 @@
 
 #include "Component.h"
 #include "Game.h"
-#include "InputSystem.h"
 #include "LevelLoader.h"
+#include "input/KeyboardAndMouse/InputSystem.h"
 
 Actor::Actor(class Game* game)
     : mGame(game),

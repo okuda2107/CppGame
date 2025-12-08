@@ -2,10 +2,10 @@
 #include "Actor.h"
 #include "FPSComponent.h"
 #include "Game.h"
-#include "InputSystem.h"
 #include "Mesh.h"
 #include "MoveComponent.h"
 #include "Renderer.h"
+#include "input/KeyboardAndMouse/InputSystem.h"
 
 class KeyboardTestActor : Actor {
     MoveComponent* mc;

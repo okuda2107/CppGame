@@ -2,13 +2,13 @@
 
 #include "Bonfire.h"
 #include "Game.h"
-#include "InputSystem.h"
 #include "UI/AddWoodUI.h"
 #include "UI/AlreadyHaveWoodUI.h"
 #include "UI/HaveWoodUI.h"
 #include "Utility/Coroutine.h"
 #include "Wood.h"
 #include "WoodGenerator.h"
+#include "input/KeyboardAndMouse/InputSystem.h"
 
 BonfirePlayer::BonfirePlayer(class Game* game)
     : FPSActor(game),
@@ -45,7 +45,7 @@ void BonfirePlayer::ActorInput(const InputState& state) {
         float dy = wood->GetPosition().y - GetPosition().y;
         float d = Vector2(dx, dy).LengthSquared();
         float near = 5000.0f;
-        if (d < near && state.Keyboard.GetKeyState(SDL_SCANCODE_E)) {
+        if (d < near && state.Keyboard->GetKeyState(SDL_SCANCODE_E)) {
             if (!mHasWood) {
                 mHasWood = true;
                 wood->SetState(Actor::State::EDead);
@@ -63,7 +63,7 @@ void BonfirePlayer::ActorInput(const InputState& state) {
         float dy = bonfire->GetPosition().y - GetPosition().y;
         float d = Vector2(dx, dy).LengthSquared();
         float near = 5000.0f;
-        if (d < near && state.Keyboard.GetKeyState(SDL_SCANCODE_E)) {
+        if (d < near && state.Keyboard->GetKeyState(SDL_SCANCODE_E)) {
             mHasWood = false;
             bonfire->AddWood();
         }

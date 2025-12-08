@@ -3,9 +3,9 @@
 #include "Actor.h"
 #include "AudioSystem.h"
 #include "Game.h"
-#include "InputSystem.h"
 #include "Renderer.h"
 #include "core/Math.h"
+#include "input/KeyboardAndMouse/InputSystem.h"
 
 FPSComponent::FPSComponent(class Actor* owner, int updateOrder)
     : CameraComponent(owner, updateOrder),

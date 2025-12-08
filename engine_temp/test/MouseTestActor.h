@@ -1,7 +1,7 @@
 #pragma once
 #include "Actor.h"
 #include "Game.h"
-#include "InputSystem.h"
+#include "input/KeyboardAndMouse/InputSystem.h"
 
 class MouseTestActor : Actor {
    public:

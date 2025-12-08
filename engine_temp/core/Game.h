@@ -8,6 +8,10 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
+namespace KeyboardAndMouse {
+class InputSystem;
+}
+
 class Game {
    public:
     enum GameState { EGameplay, EPaused, EQuit };
@@ -25,7 +29,7 @@ class Game {
 
     class Renderer* mRenderer;
     class AudioSystem* mAudioSystem;
-    class InputSystem* mInputSystem;
+    KeyboardAndMouse::InputSystem* mInputSystem;
     class PhysWorld* mPhysWorld;
 
     GameState mGameState;
@@ -54,7 +58,7 @@ class Game {
 
     class Renderer* GetRenderer() { return mRenderer; }
     class AudioSystem* GetAudioSystem() { return mAudioSystem; }
-    class InputSystem* GetInputSystem() { return mInputSystem; }
+    KeyboardAndMouse::InputSystem* GetInputSystem() { return mInputSystem; }
     class PhysWorld* GetPhysWorld() { return mPhysWorld; }
 
     GameState GetState() const { return mGameState; }

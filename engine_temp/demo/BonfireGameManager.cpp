@@ -3,9 +3,9 @@
 #include "Bonfire.h"
 #include "BonfirePlayer.h"
 #include "Game.h"
-#include "InputSystem.h"
 #include "UI/GameOverUI.h"
 #include "UI/Title.h"
+#include "input/KeyboardAndMouse/InputSystem.h"
 
 BonfireGameManager::BonfireGameManager(class Game* game)
     : Actor(game), mState(ETitle), mBonfire(nullptr), mPlayer(nullptr) {
