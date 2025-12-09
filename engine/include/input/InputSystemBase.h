@@ -9,7 +9,6 @@ class InputSystemBase {
 
    public:
     InputSystemBase() { mState = InputState(); }
-    virtual ~InputSystemBase() {};
 
     virtual bool Initialize() = 0;
     virtual void Shutdown() = 0;
