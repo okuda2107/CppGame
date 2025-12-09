@@ -2,13 +2,6 @@ file(GLOB_RECURSE CXX_FILES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/*/*.cpp"
 )
 
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(SDL2_mixer REQUIRED)
-find_package(SDL2_net REQUIRED)
-find_package(SDL2_ttf REQUIRED)
-find_package(GLEW REQUIRED)
-
 # 再利用性のため，engine部分だけライブラリ化
 add_library(engine_temp ${CXX_FILES})
 
@@ -20,6 +13,14 @@ file(GLOB INCLUDE_ROOT
 list(FILTER INCLUDE_ROOT EXCLUDE REGEX "CMakeLists.txt")
 target_include_directories(engine_temp PUBLIC ${INCLUDE_ROOT})
 
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_net REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(OpenGL REQUIRED)
+
 target_link_libraries(engine_temp
     PRIVATE
         engine
@@ -27,7 +28,7 @@ target_link_libraries(engine_temp
         SDL2_mixer::SDL2_mixer
         SDL2_net::SDL2_net
         SDL2_ttf::SDL2_ttf
-        GLEW::glew_s
+        GLEW::glew
     PUBLIC
         SDL2::SDL2
         SDL2_image::SDL2_image
@@ -104,6 +105,7 @@ if (SOIL_INCLUDE_DIR AND SOIL_LIBRARY)
     target_link_libraries(engine_temp
         PRIVATE
             ${SOIL_LIBRARY}
+            OpenGL::GL
     )
 else()
     message(WARNING "not set SOIL_INCLUDE_PATH, or _LIBRARY")
