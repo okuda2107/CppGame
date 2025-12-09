@@ -4,13 +4,10 @@
 #include "AL/alut.h"
 #include "core/Math.h"
 
-class AudioSystem {
-   protected:
-    class Game* mGame;
-
+class AudioSystemBase {
    public:
-    AudioSystem(class Game* game) {};
-    virtual ~AudioSystem() {};
+    AudioSystemBase() {};
+    virtual ~AudioSystemBase() {};
 
     virtual bool Initialize() = 0;
     virtual void Shutdown() = 0;
