@@ -1,5 +1,12 @@
 add_library(engine STATIC)
 
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_net REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+find_package(GLEW REQUIRED)
+
 file(GLOB_RECURSE CXX_FILES CONFIGURE_DEPENDS
     "src/**/*.cpp"
 )
@@ -11,14 +18,6 @@ file(GLOB_RECURSE PRIVATE_HEADERS CONFIGURE_DEPENDS
 file(GLOB_RECURSE PUBLIC_HEAKERS CONFIGURE_DEPENDS
     "include/**/*.h"
 )
-
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(SDL2_mixer REQUIRED)
-find_package(SDL2_net REQUIRED)
-find_package(SDL2_ttf REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(OpenGL REQUIRED)
 
 target_sources(engine
     PRIVATE
@@ -47,7 +46,7 @@ target_link_libraries(engine
         SDL2_mixer::SDL2_mixer
         SDL2_net::SDL2_net
         SDL2_ttf::SDL2_ttf
-        GLEW::glew
+        GLEW::glew_s
     PUBLIC
         SDL2::SDL2
         SDL2_image::SDL2_image
@@ -124,7 +123,6 @@ if (SOIL_INCLUDE_DIR AND SOIL_LIBRARY)
     target_link_libraries(engine
         PRIVATE
             ${SOIL_LIBRARY}
-            OpenGL::GL
     )
 else()
     message(WARNING "not set SOIL_INCLUDE_PATH, or _LIBRARY")
