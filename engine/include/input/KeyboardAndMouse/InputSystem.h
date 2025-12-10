@@ -4,7 +4,7 @@
 
 namespace KeyboardAndMouse {
 // 入力の状態を管理
-class InputSystem : public InputSystemBase {
+class InputSystem : public InputSystemBase<class InputComponent> {
    public:
     InputSystem();
 

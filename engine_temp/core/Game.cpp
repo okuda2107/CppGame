@@ -19,6 +19,7 @@
 #include "UIScreen.h"
 #include "VertexArray.h"
 #include "api/OpenAL/System.h"
+#include "input/KeyboardAndMouse/InputComponent.h"
 #include "input/KeyboardAndMouse/InputSystem.h"
 
 Game::Game()
@@ -39,6 +40,9 @@ bool Game::Initialize() {
     }
 
     mInputSystem = new KeyboardAndMouse::InputSystem();
+    Actor* a = new Actor(this);
+    KeyboardAndMouse::InputComponent* ic =
+        new KeyboardAndMouse::InputComponent(a, mInputSystem);
     if (!mInputSystem->Initialize()) {
         SDL_Log("Failed to initialize input system");
         delete mInputSystem;

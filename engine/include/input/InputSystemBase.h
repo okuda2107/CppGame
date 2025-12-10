@@ -1,11 +1,15 @@
 #pragma once
+#include <vector>
+
 #include "InputState.h"
 #include "SDL.h"
 
 // 入力の状態を管理
+template <typename InputComponent>
 class InputSystemBase {
    protected:
     InputState mState;
+    std::vector<InputComponent*> mComponents;
 
    public:
     InputSystemBase() { mState = InputState(); }
