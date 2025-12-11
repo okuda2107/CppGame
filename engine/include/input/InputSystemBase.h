@@ -8,15 +8,14 @@
     InputComponent: Actorに入力情報を伝えるためのComponent
     InputState: 入力情報を格納
 */
-template <typename InputComponent, typename InputState>
+template <typename InputState>
 class InputSystemBase {
    protected:
     InputState mState;
-    // InputSystemがActorの情報を知りたくなるタイミングは無いので，この配列は必要ない
-    // std::vector<InputComponent*> mComponents;
 
    public:
     InputSystemBase() {}
+    virtual ~InputSystemBase() {}
 
     virtual bool Initialize() = 0;
     virtual void Shutdown() = 0;

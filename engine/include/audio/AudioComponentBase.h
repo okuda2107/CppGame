@@ -10,4 +10,6 @@ class AudioComponentBase : public Component {
     AudioComponentBase(class Actor* owner, AudioSystem* system,
                        int updateOrder = 200)
         : Component(owner, updateOrder), mSystem(system) {}
+
+    AudioSystem* GetSystem() { return mSystem; }
 };

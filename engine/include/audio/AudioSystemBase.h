@@ -7,12 +7,8 @@
     AudioComponent: Actorで音声情報を扱うためのComponent
     SoundHandler: 音声を操作するためのhandler
 */
-template <typename AudioComponent, typename SoundHandler>
+template <typename SoundHandler>
 class AudioSystemBase {
-   protected:
-    // AudioSystemがActorの情報を知りたくなるタイミングは無いので，この配列は必要ない
-    // std::vector<AudioComponent*> mComponents;
-
    public:
     AudioSystemBase() {};
     virtual ~AudioSystemBase() {};

@@ -9,4 +9,6 @@ class InputComponentBase : public Component {
    public:
     InputComponentBase(class Actor* owner, InputSystem* system)
         : Component(owner), mSystem(system) {}
+
+    InputSystem* GetSystem() { return mSystem; }
 };
