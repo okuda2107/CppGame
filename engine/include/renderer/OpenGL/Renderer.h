@@ -44,8 +44,7 @@ enum ConfigID {
 };
 
 class Renderer
-    : public RendererBase<class Texture, class Mesh, class Shader,
-                          class SpriteComponent, class MeshComponent> {
+    : public RendererBase<class SpriteComponent, class MeshComponent> {
    public:
     Renderer();
     ~Renderer();
