@@ -6,6 +6,7 @@
 
 #include "SDL.h"
 #include "core/Math.h"
+#include "renderer/RendererBase.h"
 
 struct DirectionalLight {
     // 光の方向
@@ -42,9 +43,11 @@ enum ConfigID {
     NUM_CONFIG_ID,
 };
 
-class Renderer {
+class Renderer
+    : public RendererBase<class Texture, class Mesh, class Shader,
+                          class SpriteComponent, class MeshComponent> {
    public:
-    Renderer(class Game* game);
+    Renderer();
     ~Renderer();
     // レンダラーの初期化処理と終了処理
     bool Initialize(float screenWidth, float screenHeight);
