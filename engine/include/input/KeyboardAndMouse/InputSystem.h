@@ -1,10 +1,11 @@
 #pragma once
+#include "InputState.h"
 #include "SDL.h"
 #include "input/InputSystemBase.h"
 
 namespace KeyboardAndMouse {
 // 入力の状態を管理
-class InputSystem : public InputSystemBase<class InputComponent> {
+class InputSystem : public InputSystemBase<class InputComponent, InputState> {
    public:
     InputSystem();
 

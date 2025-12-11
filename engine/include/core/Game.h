@@ -3,19 +3,7 @@
 
 #include "SDL.h"
 
-struct GameConfig {
-    class InputSysytemBase* inputSystem;
-    class AudioSystemBase* audioSystem;
-    class RendererBase* renderer;
-    class PhysicsSystemBase* physSystem;
-};
-
 class Game {
-    class InputSysytemBase* mInputSystem;
-    class AudioSystemBase* mAudioSystem;
-    class RendererBase* mRenderer;
-    class PhysicsSystemBase* mPhysSystem;
-
     Uint32 mTicksCount;
     float mDeltatime;
 
@@ -26,11 +14,13 @@ class Game {
     bool Initialize();
     void Shutdown();
 
-    bool isGameLoop();
+    // ゲームループのフラグ
+    bool IsGameLoop();
 
-    void ProcessInput(class InputState& inputState);
-    void Update();
-    void GenerateOutput();
+    void UpdateActors();
 
     float GetDeltatime() { return mDeltatime; }
+
+    void AddActor(class Actor* actor);
+    void RemoveActor(class Actor* actor);
 };

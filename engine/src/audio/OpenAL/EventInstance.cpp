@@ -1,8 +1,8 @@
-#include "EventInstance.h"
+#include "audio/OpenAL/EventInstance.h"
 
-#include "Event.h"
-#include "Helper.h"
 #include "SDL.h"
+#include "audio/OpenAL/Event.h"
+#include "audio/OpenAL/Helper.h"
 
 OpenAL::EventInstance::EventInstance(class Event* event) : mEvent(event) {
     event->AddInstance(this);

@@ -1,13 +1,13 @@
-#include "Bank.h"
+#include "audio/OpenAL/Bank.h"
 
 #include <fstream>
 #include <sstream>
 
-#include "Helper.h"
 #include "SDL_log.h"
 #include "SDL_mixer.h"
-#include "api/OpenAL/Event.h"
-#include "api/OpenAL/System.h"
+#include "audio/OpenAL/Event.h"
+#include "audio/OpenAL/Helper.h"
+#include "audio/OpenAL/System.h"
 #include "document.h"
 #include "rapidjson/istreamwrapper.h"
 #include "rapidjson/schema.h"

@@ -1,17 +1,19 @@
-#include "Handler.h"
+#include "audio/OpenAL/SoundHandler.h"
 
-#include "System.h"
-#include "api/OpenAL/EventInstance.h"
+#include "audio/OpenAL/EventInstance.h"
+#include "audio/OpenAL/System.h"
 #include "core/Math.h"
 
-OpenAL::Handler::Handler(OpenAL::System* system, unsigned int id)
+OpenAL::SoundHandler::SoundHandler(OpenAL::System* system, unsigned int id)
     : mSystem(system), mID(id) {}
-OpenAL::Handler::~Handler() {}
+OpenAL::SoundHandler::~SoundHandler() {}
 
 // イベントの実体とは外れて存在するapiのため，実体がまだあるかのチェック
-bool OpenAL::Handler::IsValid() { return mSystem && mSystem->GetInstance(mID); }
+bool OpenAL::SoundHandler::IsValid() {
+    return mSystem && mSystem->GetInstance(mID);
+}
 
-void OpenAL::Handler::Restart() {
+void OpenAL::SoundHandler::Restart() {
     EventInstance* e = mSystem->mInstances.at(mID);
     ALuint source = e->GetSource();
     ALint state = e->GetState();
@@ -28,12 +30,12 @@ void OpenAL::Handler::Restart() {
 }
 
 // todo: フェードアウトはサポートしない．時間があったらする．
-void OpenAL::Handler::Stop(bool allowedFadeOut) {
+void OpenAL::SoundHandler::Stop(bool allowedFadeOut) {
     ALuint source = mSystem->mInstances.at(mID)->GetSource();
     alSourceStop(source);
 }
 
-void OpenAL::Handler::SetPaused(bool pause) {
+void OpenAL::SoundHandler::SetPaused(bool pause) {
     EventInstance* e = mSystem->mInstances.at(mID);
     ALuint source = e->GetSource();
     ALint state = e->GetState();
@@ -45,34 +47,35 @@ void OpenAL::Handler::SetPaused(bool pause) {
     }
 }
 
-void OpenAL::Handler::SetVolume(float volume) {
+void OpenAL::SoundHandler::SetVolume(float volume) {
     ALuint source = mSystem->mInstances.at(mID)->GetSource();
     alSourcef(source, AL_GAIN, volume);
 }
 
-void OpenAL::Handler::SetPitch(float value) {
+void OpenAL::SoundHandler::SetPitch(float value) {
     ALuint source = mSystem->mInstances.at(mID)->GetSource();
     alSourcef(source, AL_PITCH, value);
 }
 
 // todo: 他のパラメータ用？
-void OpenAL::Handler::SetParameter(const std::string& name, float value) {};
+void OpenAL::SoundHandler::SetParameter(const std::string& name, float value) {
+};
 
-bool OpenAL::Handler::GetPaused() const {
+bool OpenAL::SoundHandler::GetPaused() const {
     ALuint source = mSystem->mInstances.at(mID)->GetSource();
     ALint state;
     alGetSourcei(source, AL_SOURCE_STATE, &state);
     return state == AL_PAUSED;
 }
 
-float OpenAL::Handler::GetVolume() const {
+float OpenAL::SoundHandler::GetVolume() const {
     ALuint source = mSystem->mInstances.at(mID)->GetSource();
     ALfloat volume;
     alGetSourcef(source, AL_GAIN, &volume);
     return volume;
 }
 
-float OpenAL::Handler::GetPitch() const {
+float OpenAL::SoundHandler::GetPitch() const {
     ALuint source = mSystem->mInstances.at(mID)->GetSource();
     ALfloat pitch;
     alGetSourcef(source, AL_PITCH, &pitch);
@@ -80,17 +83,19 @@ float OpenAL::Handler::GetPitch() const {
 }
 
 // todo: 他のパラメータ用？
-float OpenAL::Handler::GetParameter(const std::string& name) { return 0.0; }
+float OpenAL::SoundHandler::GetParameter(const std::string& name) {
+    return 0.0;
+}
 
 // イベントが3Dオーディオか？
-bool OpenAL::Handler::Is3D() const {
+bool OpenAL::SoundHandler::Is3D() const {
     // イベントの取得
     Event* event = mSystem->mInstances.at(mID)->GetEvent();
     return event->mIs3D;
 }
 
 // ワールド行列を受け取って，音声が再生される座標を設定
-void OpenAL::Handler::Set3DAttributes(const Matrix4& worldTrans) {
+void OpenAL::SoundHandler::Set3DAttributes(const Matrix4& worldTrans) {
     ALuint source = mSystem->mInstances.at(mID)->GetSource();
 
     // イベントが3Dオーディオか？

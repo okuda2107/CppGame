@@ -1,9 +1,9 @@
 #include "CameraComponent.h"
 
 #include "Actor.h"
-#include "AudioSystem.h"
 #include "Game.h"
 #include "Renderer.h"
+#include "audio/AudioSystemBase.h"
 #include "core/Math.h"
 
 CameraComponent::CameraComponent(class Actor* owner, int updateOrder)

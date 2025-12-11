@@ -2,18 +2,17 @@
 #include <string>
 
 #include "AL/al.h"
-#include "SoundHandler.h"
 #include "core/Math.h"
 
 namespace OpenAL {
-class Handler : public SoundHandler {
+class SoundHandler {
     friend class System;
 
    public:
     class System* mSystem;
     unsigned int mID;
-    Handler(class System* system, unsigned int id);
-    ~Handler();
+    SoundHandler(class System* system, unsigned int id);
+    ~SoundHandler();
 
     bool IsValid();
     void Restart();

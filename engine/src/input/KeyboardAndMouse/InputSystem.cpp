@@ -1,7 +1,6 @@
 #include "input/KeyboardAndMouse/InputSystem.h"
 
-#include "input/KeyboardAndMouse/KeyboardState.h"
-#include "input/KeyboardAndMouse/MouseState.h"
+#include "input/KeyboardAndMouse/InputState.h"
 
 KeyboardAndMouse::InputSystem::InputSystem() {}
 

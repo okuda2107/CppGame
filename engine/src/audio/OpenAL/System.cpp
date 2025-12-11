@@ -1,17 +1,16 @@
-#include "System.h"
+#include "audio/OpenAL/System.h"
 
 #include "AL/al.h"
 #include "AL/alut.h"
-#include "Game.h"
 #include "SDL.h"
 #include "SDL_mixer.h"
-#include "api/OpenAL/Bank.h"
-#include "api/OpenAL/EventInstance.h"
-#include "api/OpenAL/Handler.h"
-#include "api/OpenAL/Helper.h"
+#include "audio/OpenAL/Bank.h"
+#include "audio/OpenAL/EventInstance.h"
+#include "audio/OpenAL/Helper.h"
+#include "audio/OpenAL/SoundHandler.h"
 #include "core/Math.h"
 
-OpenAL::System::System(class Game* game) : AudioSystem(game) {}
+OpenAL::System::System() {}
 OpenAL::System::~System() {}
 
 bool OpenAL::System::Initialize() {
@@ -160,8 +159,8 @@ void OpenAL::System::SetListener(const Matrix4& viewMatrix) {
     alListenerfv(AL_VELOCITY, vel);
 }
 
-// OpenALのSourceを作成．失敗するとnullptrを返す．
-SoundHandler* OpenAL::System::PlayEvent(const std::string& name) {
+// OpenALのSourceを作成．
+OpenAL::SoundHandler OpenAL::System::PlayEvent(const std::string& name) {
     auto iter = mEvents.find(name);
     if (iter != mEvents.end()) {
         // イベントインスタンスを作成，登録
@@ -170,8 +169,7 @@ SoundHandler* OpenAL::System::PlayEvent(const std::string& name) {
         unsigned int id = instance->GetSource();
         mInstances.emplace(id, instance);
         // サウンドハンドラを作成
-        OpenAL::Handler* handler = new OpenAL::Handler(this, id);
-        return handler;
+        return OpenAL::SoundHandler(this, id);
     } else
-        return nullptr;
+        return OpenAL::SoundHandler(this, 0);
 }

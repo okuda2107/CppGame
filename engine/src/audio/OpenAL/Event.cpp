@@ -1,6 +1,6 @@
-#include "Event.h"
+#include "audio/OpenAL/Event.h"
 
-#include "EventInstance.h"
+#include "audio/OpenAL/EventInstance.h"
 
 OpenAL::Event::Event(class Bank* bank) : mBank(bank) {};
 OpenAL::Event::~Event() {

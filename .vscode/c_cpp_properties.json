@@ -33,7 +33,8 @@
                 "${workspaceFolder}/exlibs/freealut/install/include",
                 "${workspaceFolder}/engine/include",
                 "${workspaceFolder}/exlibs/glew-2.2.0/install/include",
-                "${workspaceFolder}/demo"
+                "${workspaceFolder}/demo",
+                "${workspaceFolder}/exlibs/openal-soft-1.24.3-bin/include/AL"
             ],
             "defines": [],
             "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
