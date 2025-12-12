@@ -7,8 +7,11 @@ class InputComponentBase : public Component {
     InputSystem* mSystem;
 
    public:
-    InputComponentBase(class Actor* owner, InputSystem* system)
-        : Component(owner), mSystem(system) {}
+    InputComponentBase(class Actor* owner, InputSystem* system,
+                       int updateOrder = 100)
+        : Component(owner, updateOrder), mSystem(system) {}
+
+    virtual ~InputComponentBase() {}
 
     InputSystem* GetSystem() { return mSystem; }
 };

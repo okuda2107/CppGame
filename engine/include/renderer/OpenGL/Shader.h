@@ -4,6 +4,7 @@
 #include "GL/glew.h"
 #include "core/Math.h"
 
+namespace OpenGL {
 class Shader {
    public:
     Shader();
@@ -29,3 +30,4 @@ class Shader {
     GLuint mFragShader;
     GLuint mShaderProgram;
 };
+}

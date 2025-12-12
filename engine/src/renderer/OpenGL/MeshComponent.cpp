@@ -10,18 +10,20 @@
 #include "Texture.h"
 #include "VertexArray.h"
 
-MeshComponent::MeshComponent(Actor* owner, RenderConfig config)
-    : Component(owner), mMesh(nullptr) {
-    ConfigID id = mOwner->GetGame()->GetRenderer()->GetConfigID(config);
+OpenGL::MeshComponent::MeshComponent(Actor* owner, Renderer* system,
+                                     RenderConfig config)
+    : DrawComponentBase(owner, system), mMesh(nullptr) {
+    ConfigID id = mSystem->GetConfigID(config);
     mConfigID = id;
-    mOwner->GetGame()->GetRenderer()->AddMeshComp(id, this);
+    mSystem->AddMeshComp(id, this);
 }
 
-MeshComponent::~MeshComponent() {
-    mOwner->GetGame()->GetRenderer()->RemoveMeshComp(mConfigID, this);
+OpenGL::MeshComponent::~MeshComponent() {
+    mSystem->RemoveMeshComp(mConfigID, this);
 }
 
-void MeshComponent::Draw(const std::string& shaderName, Shader* shader) {
+void OpenGL::MeshComponent::Draw(const std::string& shaderName,
+                                 Shader* shader) {
     if (mMesh) {
         if (mMesh->GetShaderName() != shaderName) return;
         // Set the world transform
@@ -45,7 +47,7 @@ void MeshComponent::Draw(const std::string& shaderName, Shader* shader) {
     }
 }
 
-// void MeshComponent::LoadProperties(const rapidjson::Value& inObj) {
+// void OpenGL::MeshComponent::LoadProperties(const rapidjson::Value& inObj) {
 //     Component::LoadProperties(inObj);
 
 //     std::string meshFile;
@@ -59,11 +61,11 @@ void MeshComponent::Draw(const std::string& shaderName, Shader* shader) {
 //     }
 // }
 
-void MeshComponent::AddTextureIndex(size_t index) {
+void OpenGL::MeshComponent::AddTextureIndex(size_t index) {
     mTextureIndices.push_back(index);
 }
 
-void MeshComponent::RemoveTextureIndex(size_t index) {
+void OpenGL::MeshComponent::RemoveTextureIndex(size_t index) {
     auto iter =
         std::find(mTextureIndices.begin(), mTextureIndices.end(), index);
     if (iter != mTextureIndices.end()) {

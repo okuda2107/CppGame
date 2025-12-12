@@ -1,7 +1,8 @@
 #include "VertexArray.h"
 
-VertexArray::VertexArray(const float* verts, unsigned int numVerts,
-                         const unsigned int* indices, unsigned int numIndices)
+OpenGL::VertexArray::VertexArray(const float* verts, unsigned int numVerts,
+                                 const unsigned int* indices,
+                                 unsigned int numIndices)
     : mNumVerts(numVerts), mNumIndices(numIndices) {
     // 頂点配列オブジェクトを作成
     glGenVertexArrays(1, &mVertexArray);
@@ -41,13 +42,13 @@ VertexArray::VertexArray(const float* verts, unsigned int numVerts,
                           reinterpret_cast<void*>(sizeof(float) * 6));
 }
 
-VertexArray::~VertexArray() {
+OpenGL::VertexArray::~VertexArray() {
     glDeleteBuffers(1, &mVertexBuffer);
     glDeleteBuffers(1, &mIndexBuffer);
     glDeleteBuffers(1, &mVertexArray);
 }
 
-void VertexArray::SetActive() { glBindVertexArray(mVertexArray); }
+void OpenGL::VertexArray::SetActive() { glBindVertexArray(mVertexArray); }
 
 /*
 *同じ頂点配列オブジェクトに頂点属性を複数指定可能

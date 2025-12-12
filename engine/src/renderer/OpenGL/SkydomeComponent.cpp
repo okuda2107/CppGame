@@ -8,16 +8,17 @@
 #include "Texture.h"
 #include "VertexArray.h"
 
-SkydomeComponent::SkydomeComponent(class Actor* owner)
-    : Component(owner), mMesh(nullptr), mShader(nullptr), mTextureIndex(0) {
-    mOwner->GetGame()->GetRenderer()->AddSkydome(this);
+OpenGL::SkydomeComponent::SkydomeComponent(class Actor* owner, Renderer* system)
+    : DrawComponentBase(owner, system),
+      mMesh(nullptr),
+      mShader(nullptr),
+      mTextureIndex(0) {
+    mSystem->AddSkydome(this);
 }
 
-SkydomeComponent::~SkydomeComponent() {
-    mOwner->GetGame()->GetRenderer()->RemoveSkydome();
-}
+OpenGL::SkydomeComponent::~SkydomeComponent() { mSystem->RemoveSkydome(); }
 
-void SkydomeComponent::Draw(Matrix4 viewProj) {
+void OpenGL::SkydomeComponent::Draw(Matrix4 viewProj) {
     if (!mMesh || !mShader) return;
     mShader->SetActive();
     mShader->SetMatrixUniform("uViewProj", viewProj);

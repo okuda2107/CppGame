@@ -8,6 +8,8 @@
 #include "core/Math.h"
 #include "renderer/RendererBase.h"
 
+namespace OpenGL {
+
 struct DirectionalLight {
     // 光の方向
     Vector3 mDirection;
@@ -43,8 +45,7 @@ enum ConfigID {
     NUM_CONFIG_ID,
 };
 
-class Renderer
-    : public RendererBase<class SpriteComponent, class MeshComponent> {
+class Renderer : public RendererBase {
    public:
     Renderer();
     ~Renderer();
@@ -123,3 +124,4 @@ class Renderer
     SDL_Window* mWindow;
     SDL_GLContext mContext;
 };
+}  // namespace OpenGL

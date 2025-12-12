@@ -1,4 +1,4 @@
-#include "Mesh.h"
+#include "renderer/OpenGL/Mesh.h"
 
 #include <SDL_log.h>
 #include <document.h>
@@ -6,16 +6,17 @@
 #include <fstream>
 #include <sstream>
 
-#include "Renderer.h"
-#include "Texture.h"
-#include "VertexArray.h"
 #include "core/Math.h"
+#include "renderer/OpenGL/Renderer.h"
+#include "renderer/OpenGL/Texture.h"
+#include "renderer/OpenGL/VertexArray.h"
 
-Mesh::Mesh() : mVertexArray(nullptr), mRadius(0.0f), mSpecPower(100.0f) {}
+OpenGL::Mesh::Mesh()
+    : mVertexArray(nullptr), mRadius(0.0f), mSpecPower(100.0f) {}
 
-Mesh::~Mesh() {}
+OpenGL::Mesh::~Mesh() {}
 
-bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
+bool OpenGL::Mesh::Load(const std::string& fileName, Renderer* renderer) {
     std::ifstream file(fileName);
     if (!file.is_open()) {
         SDL_Log("File not found: Mesh %s", fileName.c_str());
@@ -132,12 +133,12 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
     return true;
 }
 
-void Mesh::Unload() {
+void OpenGL::Mesh::Unload() {
     delete mVertexArray;
     mVertexArray = nullptr;
 }
 
-Texture* Mesh::GetTexture(size_t index) {
+OpenGL::Texture* OpenGL::Mesh::GetTexture(size_t index) {
     if (index < mTextures.size()) {
         return mTextures[index];
     } else {

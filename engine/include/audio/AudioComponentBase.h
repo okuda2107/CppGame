@@ -11,5 +11,7 @@ class AudioComponentBase : public Component {
                        int updateOrder = 200)
         : Component(owner, updateOrder), mSystem(system) {}
 
+    virtual ~AudioComponentBase() {}
+
     AudioSystem* GetSystem() { return mSystem; }
 };

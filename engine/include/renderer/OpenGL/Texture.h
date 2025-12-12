@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 
+namespace OpenGL {
 class Texture {
    public:
     Texture();
@@ -23,3 +24,4 @@ class Texture {
     int mWidth;
     int mHeight;
 };
+}  // namespace OpenGL

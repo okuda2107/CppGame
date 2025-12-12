@@ -11,8 +11,7 @@
 
 namespace OpenAL {
 // サウンドイベントの管理
-class System
-    : public AudioSystemBase<class AudioComponent, class SoundHandler> {
+class System : public AudioSystemBase<class SoundHandler> {
     friend class SoundHandler;
 
     // バンク: 複数のイベントを編集，ロード単位で管理

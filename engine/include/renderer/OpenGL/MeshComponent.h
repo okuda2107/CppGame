@@ -1,11 +1,13 @@
 #pragma once
-#include "Component.h"
-#include "LevelLoader.h"
 #include "Renderer.h"
+#include "core/LevelLoader.h"
+#include "renderer/DrawComponentBase.h"
 
-class MeshComponent : public Component {
+namespace OpenGL {
+class MeshComponent : public DrawComponentBase<class Renderer> {
    public:
-    MeshComponent(class Actor* owner, struct RenderConfig config);
+    MeshComponent(class Actor* owner, Renderer* system,
+                  struct RenderConfig config);
     virtual ~MeshComponent();
     // Draw this mesh component
     virtual void Draw(const std::string& shaderName, class Shader* shader);
@@ -22,3 +24,4 @@ class MeshComponent : public Component {
     // このmeshで用いるテクスチャ群
     std::vector<size_t> mTextureIndices;
 };
+}  // namespace OpenGL
