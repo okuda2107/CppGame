@@ -5,12 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "Input2DComponent.h"
-#include "MeshComponent.h"
-#include "MoveComponent.h"
-#include "Renderer.h"
 #include "SDL.h"
-#include "SpriteComponent.h"
 #include "core/Actor.h"
 #include "core/Game.h"
 #include "core/Math.h"
@@ -23,18 +18,10 @@ std::unordered_map<std::string, ActorFunc> LevelLoader::sActorFactoryMap = {
 todo:
 MeshComponentのコンストラクタの引数を変えたことにより，Create関数の整合性が保てなくなった．
 そのため，jsonから指定する際の生成ロジックを改める必要がある．
+<- actorのみを引数に取るコンストラクタをオーバーロードして，mSystemなどの指定はjsonで行ってもいいかもしれない？
 */
 std::unordered_map<std::string, std::pair<int, ComponentFunc>>
-    LevelLoader::sComponentFactoryMap = {
-        {"MoveComponent",
-         {Component::TypeID::TMoveComponent,
-          &Component::Create<MoveComponent>}},
-        {"SpriteComponent",
-         {Component::TypeID::TSpriteComponent,
-          &Component::Create<SpriteComponent>}},
-        {"InputComponent",
-         {Component::TypeID::TInputComponent,
-          &Component::Create<Input2DComponent>}}};
+    LevelLoader::sComponentFactoryMap = {};
 
 const int LevelVersion = 1;
 
@@ -95,25 +82,6 @@ bool LevelLoader::LoadJSON(const std::string& fileName,
     }
 
     return true;
-}
-
-void LevelLoader::LoadGlobalProperties(Game* game,
-                                       const rapidjson::Value& inObject) {
-    // Get ambient light
-    Vector3 ambient;
-    if (JsonHelper::GetVector3(inObject, "ambientLight", ambient)) {
-        game->GetRenderer()->SetAmbientLight(ambient);
-    }
-
-    // Get directional light
-    const rapidjson::Value& dirObj = inObject["directionalLight"];
-    if (dirObj.IsObject()) {
-        DirectionalLight& light = game->GetRenderer()->GetDirectionalLight();
-
-        // Set direction/color, if they exist
-        JsonHelper::GetVector3(dirObj, "direction", light.mDirection);
-        JsonHelper::GetVector3(dirObj, "color", light.mDiffuseColor);
-    }
 }
 
 void LevelLoader::LoadActors(Game* game, const rapidjson::Value& inArray) {
