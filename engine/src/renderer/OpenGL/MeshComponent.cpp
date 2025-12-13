@@ -1,14 +1,13 @@
-#include "MeshComponent.h"
+#include "renderer/OpenGL/MeshComponent.h"
 
 #include <algorithm>
 
-#include "Actor.h"
-#include "Game.h"
-#include "Mesh.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "VertexArray.h"
+#include "core/Actor.h"
+#include "renderer/OpenGL/Mesh.h"
+#include "renderer/OpenGL/Renderer.h"
+#include "renderer/OpenGL/Shader.h"
+#include "renderer/OpenGL/Texture.h"
+#include "renderer/OpenGL/VertexArray.h"
 
 OpenGL::MeshComponent::MeshComponent(Actor* owner, Renderer* system,
                                      RenderConfig config)

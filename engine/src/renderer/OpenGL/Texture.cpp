@@ -1,4 +1,4 @@
-#include "Texture.h"
+#include "renderer/OpenGL/Texture.h"
 
 #include <GL/glew.h>
 #include <SDL.h>

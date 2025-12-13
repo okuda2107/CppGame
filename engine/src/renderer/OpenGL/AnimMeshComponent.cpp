@@ -1,6 +1,6 @@
 #include "renderer/OpenGL/AnimMeshComponent.h"
 
-#include "Mesh.h"
+#include "renderer/OpenGL/Mesh.h"
 
 OpenGL::AnimMeshComponent::AnimMeshComponent(class Actor* owner,
                                              Renderer* system,

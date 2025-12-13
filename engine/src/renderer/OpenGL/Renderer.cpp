@@ -1,18 +1,18 @@
-#include "Renderer.h"
+#include "renderer/OpenGL/Renderer.h"
 
 #include <algorithm>
 
-#include "Actor.h"
 #include "GL/glew.h"
-#include "Game.h"
-#include "Mesh.h"
-#include "MeshComponent.h"
-#include "Shader.h"
-#include "SkydomeComponent.h"
-#include "SpriteComponent.h"
-#include "Texture.h"
-#include "UIScreen.h"
-#include "VertexArray.h"
+// #include "UI/UIScreen.h"
+#include "core/Actor.h"
+#include "core/Game.h"
+#include "renderer/OpenGL/Mesh.h"
+#include "renderer/OpenGL/MeshComponent.h"
+#include "renderer/OpenGL/Shader.h"
+#include "renderer/OpenGL/SkydomeComponent.h"
+#include "renderer/OpenGL/SpriteComponent.h"
+#include "renderer/OpenGL/Texture.h"
+#include "renderer/OpenGL/VertexArray.h"
 
 OpenGL::Renderer::Renderer()
     : mContext(nullptr),
@@ -163,9 +163,9 @@ void OpenGL::Renderer::Draw() {
     }
 
     // Draw UI
-    for (auto ui : mGame->GetUIStack()) {
-        ui->Draw(mSpriteShader);
-    }
+    // for (auto ui : mGame->GetUIStack()) {
+    //     ui->Draw(mSpriteShader);
+    // }
 
     SDL_GL_SwapWindow(mWindow);
 }
@@ -250,7 +250,7 @@ void OpenGL::Renderer::RemoveMeshComp(const ConfigID id, MeshComponent* mesh) {
     }
 }
 
-Texture* OpenGL::Renderer::GetTexture(const std::string& filename) {
+OpenGL::Texture* OpenGL::Renderer::GetTexture(const std::string& filename) {
     Texture* tex = nullptr;
     auto iter = mTextures.find(filename);
     if (iter != mTextures.end()) {
@@ -267,7 +267,7 @@ Texture* OpenGL::Renderer::GetTexture(const std::string& filename) {
     return tex;
 }
 
-Mesh* OpenGL::Renderer::GetMesh(const std::string& fileName) {
+OpenGL::Mesh* OpenGL::Renderer::GetMesh(const std::string& fileName) {
     Mesh* m = nullptr;
     auto iter = mMeshes.find(fileName);
     if (iter != mMeshes.end()) {
@@ -284,7 +284,7 @@ Mesh* OpenGL::Renderer::GetMesh(const std::string& fileName) {
     return m;
 }
 
-Shader* OpenGL::Renderer::GetShader(const std::string& shaderName) {
+OpenGL::Shader* OpenGL::Renderer::GetShader(const std::string& shaderName) {
     Shader* m = nullptr;
     auto iter = mShaders.find(shaderName);
     if (iter != mShaders.end()) {
@@ -361,7 +361,7 @@ void OpenGL::Renderer::SetLightUniforms(Shader* shader) {
 デメリット: ハッシュ値に変換すると，元の設定内容が分からないため，デバッグに工夫が必要．
 ハッシュ値を出力するようにする場合，描画順序を考慮させることが難しい．そのため上位ピットのいくつかは描画順序を表す数字にして，mapの描画順序を表す
 */
-ConfigID OpenGL::Renderer::GetConfigID(const RenderConfig& config) {
+OpenGL::ConfigID OpenGL::Renderer::GetConfigID(const RenderConfig& config) {
     ConfigID id;
     if (config.mCullFaceBack) {
         id = ConfigID::Dome;

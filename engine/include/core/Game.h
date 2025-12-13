@@ -1,26 +1,32 @@
 #pragma once
-#include <vector>
 
 #include "SDL.h"
 
+// Gameのグローバルな設定や状態変数を持つ
 class Game {
+   public:
+    enum GameState {
+        EGameplay,
+        EPaused,
+        EQuit,
+    };
+
+   private:
     Uint32 mTicksCount;
     float mDeltatime;
 
-    std::vector<class Actor*> mActors;
-    std::vector<class Actor*> mPendingActors;
+    GameState mState;
 
    public:
+    Game();
+
     bool Initialize();
     void Shutdown();
 
-    // ゲームループのフラグ
     bool IsGameLoop();
-
-    void UpdateActors();
 
     float GetDeltatime() { return mDeltatime; }
 
-    void AddActor(class Actor* actor);
-    void RemoveActor(class Actor* actor);
+    GameState GetState() { return mState; }
+    void SetState(GameState state) { mState = state; }
 };

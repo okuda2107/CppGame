@@ -1,4 +1,5 @@
 #pragma once
+#include "core/Math.h"
 #include "renderer/DrawComponentBase.h"
 
 namespace OpenGL {

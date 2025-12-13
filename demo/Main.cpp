@@ -1,7 +1,7 @@
-#include "Game.h"
+#include "BonfireGame.h"
 
 int main(int argc, char** argv) {
-    Game game;
+    BonfireGame game;
     bool success = game.Initialize();
     if (success) {
         game.RunLoop();

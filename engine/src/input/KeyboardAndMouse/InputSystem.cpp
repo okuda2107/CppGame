@@ -2,6 +2,22 @@
 
 #include "input/KeyboardAndMouse/InputState.h"
 
+enum class EventType : Uint32 {
+    QUIT = SDL_QUIT,
+
+    KEYDOWN = SDL_KEYDOWN,
+    KEYUP = SDL_KEYUP,
+    TEXTEDITING = SDL_TEXTEDITING,
+    TEXTINPUT = SDL_TEXTINPUT,
+    KEYMAPCHANGED = SDL_KEYMAPCHANGED,
+    TEXTEDITING_EXT = SDL_TEXTEDITING_EXT,
+
+    MOUSEMOTION = SDL_MOUSEMOTION,
+    MOUSEBUTTONDOWN = SDL_MOUSEBUTTONDOWN,
+    MOUSEBUTTONUP = SDL_MOUSEBUTTONUP,
+    MOUSEWHEEL = SDL_MOUSEWHEEL,
+};
+
 KeyboardAndMouse::InputSystem::InputSystem() {}
 
 bool KeyboardAndMouse::InputSystem::Initialize() {
@@ -26,7 +42,7 @@ void KeyboardAndMouse::InputSystem::Shutdown() {
     delete mState.Mouse;
 }
 
-void KeyboardAndMouse::InputSystem::ProcessEvent(SDL_Event& event) {
+void KeyboardAndMouse::InputSystem::ProcessEvent(Event& event) {
     switch (event.type) {
         case SDL_MOUSEWHEEL:
             mState.Mouse->mScrollWheel =
@@ -63,3 +79,5 @@ void KeyboardAndMouse::InputSystem::SetRelativeMouseMode(bool value) {
     SDL_SetRelativeMouseMode(set);
     mState.Mouse->mIsRelative = value;
 }
+
+int KeyboardAndMouse::PollEvent(Event* event) { return SDL_PollEvent(event); }

@@ -1,8 +1,6 @@
 #pragma once
 #include <vector>
 
-#include "SDL.h"
-
 // 入力の状態を管理
 /*
     InputComponent: Actorに入力情報を伝えるためのComponent

@@ -1,11 +1,10 @@
-#include "SpriteComponent.h"
+#include "renderer/OpenGL/SpriteComponent.h"
 
-#include "Actor.h"
-#include "Game.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "Texture.h"
+#include "core/Actor.h"
 #include "core/Math.h"
+#include "renderer/OpenGL/Renderer.h"
+#include "renderer/OpenGL/Shader.h"
+#include "renderer/OpenGL/Texture.h"
 
 OpenGL::SpriteComponent::SpriteComponent(class Actor* owner, Renderer* system,
                                          int drawOrder)
