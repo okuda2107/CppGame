@@ -19,6 +19,9 @@ class BonfireGame {
     OpenGL::Renderer* mRenderer;
     OpenAL::System* mAudioSystem;
 
+    class Vector2* mFieldMin;
+    class Vector2* mFieldMax;
+
     void ProcessInput();
     void UpdateGame();
     void GenerateOutput();

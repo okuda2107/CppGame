@@ -12,6 +12,8 @@ BonfireGame::BonfireGame() {
     mInputSystem = new KeyboardAndMouse::InputSystem();
     mRenderer = new OpenGL::Renderer();
     mAudioSystem = new OpenAL::System();
+    mFieldMin = new Vector2(-1500, -500);
+    mFieldMax = new Vector2(500, 1500);
 }
 
 bool BonfireGame::Initialize() {
@@ -52,15 +54,44 @@ void BonfireGame::RunLoop() {
 }
 
 void BonfireGame::ProcessInput() {
+    // 入力状態の保存
     mInputSystem->PrepareForUpdate();
+
+    // ユーザからの入力イベント or 入力機器の状態をポーリング (定期問い合わせ)
+    // イベントが入力されてたら，イベントを処理．
     KeyboardAndMouse::Event event;
     while (KeyboardAndMouse::PollEvent(&event)) {
         switch (event.type) {
             case KeyboardAndMouse::QUIT:
                 mGame->SetState(Game::EQuit);
+                break;
+            case KeyboardAndMouse::MOUSEWHEEL:
+                mInputSystem->ProcessEvent(event);
+                break;
+            default:
+                break;
         }
     }
+
+    // ポーリングで入力状態更新
+    mInputSystem->Update();
+
+    // 入力に対してGameを反応させる
+    if (mInputSystem->GetState().Keyboard->GetKeyState(SDL_SCANCODE_ESCAPE) ==
+        EReleased) {
+        mGame->SetState(Game::EQuit);
+    }
 }
+
+void BonfireGame::UpdateGame() {
+    mAudioSystem->Update(mGame->GetDeltatime());
+
+    mActorsSystem->UpdateActors(mGame->GetDeltatime());
+
+    //UIの処理
+}
+
+void BonfireGame::GenerateOutput() { mRenderer->Draw(); }
 
 void BonfireGame::Shutdown() {
     if (mActorsSystem) mActorsSystem->UnloadActors();
