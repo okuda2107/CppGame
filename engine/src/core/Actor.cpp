@@ -1,37 +1,23 @@
-#include "Actor.h"
-
-#include <document.h>
+#include "core/Actor.h"
 
 #include <algorithm>
 
-#include "Component.h"
-#include "Game.h"
-#include "LevelLoader.h"
-#include "input/KeyboardAndMouse/InputSystem.h"
+#include "core/ActorsSystem.h"
+#include "core/Component.h"
+// #include "core/LevelLoader.h"
 
-Actor::Actor(class Game* game)
-    : mGame(game),
+Actor::Actor(ActorsSystem* system)
+    : mSystem(system),
       mScale(1.0f),
       mRotation(Quaternion::Identity),
       mState(State::EActive),
       mRecomputeWorldTransform(true) {
-    mGame->AddActor(this);
+    mSystem->AddActor(this);
 }
 
 Actor::~Actor() {
-    mGame->RemoveActor(this);
-    while (!mComponents.empty()) {
-        delete mComponents.back();
-    }
-}
-
-void Actor::ProcessInput(const InputState& keystate) {
-    if (mState == State::EActive) {
-        for (auto comp : mComponents) {
-            comp->ProcessInput(keystate);
-        }
-        ActorInput(keystate);
-    }
+    mSystem->RemoveActor(this);
+    while (!mComponents.empty()) delete mComponents.back();
 }
 
 void Actor::Update(float deltatime) {
@@ -49,9 +35,7 @@ void Actor::UpdateComponent(float deltatime) {
     }
 }
 
-void Actor::UpdateActor(float deltatime) {}
-
-void Actor::AddComponent(class Component* component) {
+void Actor::AddComponent(Component* component) {
     int updateOrder = component->GetUpdateOrder();
     auto iter = mComponents.begin();
     for (; iter != mComponents.end(); ++iter) {
@@ -82,6 +66,7 @@ void Actor::ComputeWorldTransform() {
     }
 }
 
+/*
 Component* Actor::GetComponentOfType(Component::TypeID type) {
     Component* comp = nullptr;
 
@@ -113,3 +98,4 @@ void Actor::LoadProperties(const rapidjson::Value& inObj) {
     JsonHelper::GetFloat(inObj, "scale", mScale);
     ComputeWorldTransform();
 }
+*/

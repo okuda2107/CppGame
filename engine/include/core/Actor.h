@@ -1,29 +1,44 @@
 #pragma once
-#include <document.h>
-
-#include <cstdint>
 #include <vector>
 
 #include "Component.h"
 #include "core/Math.h"
+#include "document.h"
 
 class Actor {
+    friend class Component;
+
    public:
-    enum class State { EActive, EPaused, EDead };
+    enum class State {
+        EActive,
+        EPaused,
+        EDead,
+    };
 
-    Actor(class Game* game);
-    virtual ~Actor();
+   private:
+    class ActorsSystem* mSystem;
+    Vector3 mPosition;
+    float mScale;
+    Quaternion mRotation;
+    State mState;
 
-    void ProcessInput(const class InputState& keystate);
-    virtual void ActorInput(const class InputState& keystate) {}
-    void Update(float deltatime);
+    Matrix4 mWorldTransform;
+    bool mRecomputeWorldTransform;
+
+    virtual void UpdateActor(float deltatime) {};
     void UpdateComponent(float deltatime);
-    virtual void UpdateActor(float deltatime);
+
+    std::vector<class Component*> mComponents;
 
     void AddComponent(class Component* component);
     void RemoveComponent(class Component* component);
 
-    class Game* GetGame() { return mGame; }
+   public:
+    Actor(class ActorsSystem* system);
+    virtual ~Actor();
+
+    void Update(float deltatime);
+
     Vector3 GetPosition() { return mPosition; }
     float GetScale() { return mScale; }
     Quaternion GetRotation() { return mRotation; }
@@ -56,26 +71,17 @@ class Actor {
     void ComputeWorldTransform();
     Matrix4& GetWorldTransform() { return mWorldTransform; }
 
+    /*
     Component* GetComponentOfType(Component::TypeID type);
 
-    virtual void LoadProperties(const rapidjson::Value& inObj);
+    void LoadProperties(const rapidjson::Value& inObj);
 
     template <typename T>
-    static Actor* Create(class Game* game, const rapidjson::Value& inObj) {
-        T* t = new T(game);
+    static Actor* Create(class ActorsSystem* system,
+                         const rapidjson::Value& inObj) {
+        T* t = new T(system);
         t->LoadProperties(inObj);
         return t;
     }
-
-   private:
-    Game* mGame;
-    Vector3 mPosition;
-    float mScale;
-    Quaternion mRotation;
-    State mState;
-
-    Matrix4 mWorldTransform;
-    bool mRecomputeWorldTransform;
-
-    std::vector<class Component*> mComponents;
+    */
 };

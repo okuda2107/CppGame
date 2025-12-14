@@ -11,6 +11,8 @@ class InputSystemBase {
    protected:
     InputState mState;
 
+    bool mEnabled;
+
    public:
     InputSystemBase() {}
     virtual ~InputSystemBase() {}
@@ -18,14 +20,11 @@ class InputSystemBase {
     virtual bool Initialize() = 0;
     virtual void Shutdown() = 0;
 
-    // ポーリングではなく，イベントドリブンで入力状態を受け取る
-    // virtual void ProcessEvent(SDL_Event& event) = 0;
-
-    // 入力状態は前の状態からの変化を求められる場合もあるため，前処理で前の状態を保存する必要がある
-    // SDL_PollEventsループの直前に呼ばれる
-    virtual void PrepareForUpdate() = 0;
-    // SDL_PollEventsループの直後に呼ばれる
+    // 更新処理
+    // 入力状態を定期的に問い合わせる (ポーリング)
     virtual void Update() = 0;
 
-    const InputState& GetState() const { return mState; }
+    const InputState& GetState() const { return mEnabled ? mState : NULL; }
+
+    void SetEnabled(bool enabled) { mEnabled = enabled; }
 };

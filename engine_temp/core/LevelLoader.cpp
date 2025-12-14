@@ -84,7 +84,8 @@ bool LevelLoader::LoadJSON(const std::string& fileName,
     return true;
 }
 
-void LevelLoader::LoadActors(Game* game, const rapidjson::Value& inArray) {
+void LevelLoader::LoadActors(ActorsSystem* system,
+                             const rapidjson::Value& inArray) {
     // Loop through array of actors
     for (rapidjson::SizeType i = 0; i < inArray.Size(); i++) {
         const rapidjson::Value& actorObj = inArray[i];
@@ -96,7 +97,7 @@ void LevelLoader::LoadActors(Game* game, const rapidjson::Value& inArray) {
                 auto iter = sActorFactoryMap.find(type);
                 if (iter != sActorFactoryMap.end()) {
                     // Construct with function stored in map
-                    Actor* actor = iter->second(game, actorObj["properties"]);
+                    Actor* actor = iter->second(system, actorObj["properties"]);
                     // Get the actor's components
                     if (actorObj.HasMember("components")) {
                         const rapidjson::Value& components =

@@ -7,21 +7,23 @@
 #include "document.h"
 
 using ActorFunc =
-    std::function<class Actor*(class Game*, const rapidjson::Value&)>;
+    std::function<class Actor*(class ActorsSystem*, const rapidjson::Value&)>;
 
 using ComponentFunc =
     std::function<class Component*(class Actor*, const rapidjson::Value&)>;
 
 class LevelLoader {
    public:
-    static bool LoadLevel(class Game* game, const std::string& fileName);
+    static bool LoadLevel(class ActorsSystem* system,
+                          const std::string& fileName);
     static bool LoadJSON(const std::string& fileName,
                          rapidjson::Document& outDoc);
 
    private:
-    static void LoadGlobalProperties(class Game* game,
+    static void LoadGlobalProperties(class Game* system,
                                      const rapidjson::Value& inObject);
-    static void LoadActors(class Game* game, const rapidjson::Value& inArray);
+    static void LoadActors(class ActorsSystem* system,
+                           const rapidjson::Value& inArray);
     static void LoadComponents(class Actor* owner,
                                const rapidjson::Value& inArray);
 

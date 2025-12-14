@@ -4,6 +4,10 @@
 #include "document.h"
 
 class Component {
+   protected:
+    class Actor* mOwner;
+    int mUpdateOrder;
+
    public:
     enum TypeID {
         TComponent = 0,
@@ -20,12 +24,14 @@ class Component {
 
     virtual void ProcessInput(const class InputState& keystate) {}
 
-    virtual void Update(float deltatime);
+    virtual void Update(float deltatime) {};
 
     virtual void OnUpdateWorldTransform() {}
 
     class Actor* GetOwner() const { return mOwner; }
     const int GetUpdateOrder() { return mUpdateOrder; }
+
+    /*
     virtual TypeID GetType() const { return TComponent; }
 
     virtual void LoadProperties(const rapidjson::Value& inObj);
@@ -37,8 +43,5 @@ class Component {
         t->LoadProperties(inObj);
         return t;
     }
-
-   protected:
-    class Actor* mOwner;
-    int mUpdateOrder;
+    */
 };
