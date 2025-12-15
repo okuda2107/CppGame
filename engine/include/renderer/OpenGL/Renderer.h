@@ -69,6 +69,7 @@ class Renderer : public RendererBase {
     class Texture* GetTexture(const std::string& fileName);
     class Mesh* GetMesh(const std::string& fileName);
     class Shader* GetShader(const std::string& shaderName);
+    class Font* GetFont(const std::string& fileName);
 
     // SDL_Windowは不完全型
     class SDL_Window* GetWindow() const { return mWindow; }
@@ -101,6 +102,7 @@ class Renderer : public RendererBase {
     std::unordered_map<std::string, Texture*> mTextures;
     std::unordered_map<std::string, class Mesh*> mMeshes;
     std::unordered_map<std::string, class Shader*> mShaders;
+    std::unordered_map<std::string, class Font*> mFonts;
     std::vector<class SpriteComponent*> mSprites;
     std::map<ConfigID, std::vector<class MeshComponent*>> mMeshComps;
     // 設定辞書

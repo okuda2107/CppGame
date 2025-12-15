@@ -5,13 +5,12 @@
 #include "SDL_ttf.h"
 #include "core/Math.h"
 
+namespace OpenGL {
 class Font {
     std::unordered_map<int, TTF_Font*> mFontData;
 
-    class Game* mGame;
-
    public:
-    Font(class Game* game);
+    Font();
     ~Font();
 
     // ファイルのロード / アンロード
@@ -22,3 +21,4 @@ class Font {
                               const Vector3& color = Color::White,
                               int pointSize = 30);
 };
+}  // namespace OpenGL

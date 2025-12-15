@@ -4,6 +4,7 @@
 
 #include "GL/glew.h"
 // #include "UI/UIScreen.h"
+#include "UI/OpenGL/Font.h"
 #include "core/Actor.h"
 #include "core/Game.h"
 #include "renderer/OpenGL/Mesh.h"
@@ -299,6 +300,23 @@ OpenGL::Shader* OpenGL::Renderer::GetShader(const std::string& shaderName) {
         }
     }
     return m;
+}
+
+OpenGL::Font* OpenGL::Renderer::GetFont(const std::string& fileName) {
+    auto iter = mFonts.find(fileName);
+    if (iter != mFonts.end()) {
+        return iter->second;
+    } else {
+        Font* font = new Font();
+        if (font->Load(fileName)) {
+            mFonts.emplace(fileName, font);
+        } else {
+            font->Unload();
+            delete font;
+            font = nullptr;
+        }
+        return font;
+    }
 }
 
 bool OpenGL::Renderer::LoadShaders() {
