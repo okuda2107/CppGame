@@ -3,14 +3,25 @@
 #include "Font.h"
 #include "GL/glew.h"
 #include "Game.h"
-#include "Shader.h"
-#include "Texture.h"
+#include "UIManager.h"
+#include "core/Actor.h"
+#include "core/ActorsSystem.h"
+#include "renderer/OpenGL/Renderer.h"
+#include "renderer/OpenGL/Shader.h"
+#include "renderer/OpenGL/SpriteComponent.h"
+#include "renderer/OpenGL/Texture.h"
 
-UIScreen::UIScreen(Game* game)
-    : mGame(game), mTitle(nullptr), mTitlePos(0.0f, 300.0f), mState(EActive) {
+UIScreen::UIScreen(ActorsSystem* actorSystem, UIManager* system,
+                   Renderer* renderer)
+    : Actor(actorSystem),
+      mSystem(system),
+      mTitle(nullptr),
+      mTitlePos(0.0f, 300.0f),
+      mState(EActive) {
     // Add to UI Stack
-    mGame->PushUI(this);
-    mFont = mGame->GetFont("Assets/SlacksideOne-Regular.ttf");
+    mSystem->PushUI(this);
+    // mFont = mGame->GetFont("Assets/SlacksideOne-Regular.ttf");
+    mSprite = new OpenGL::SpriteComponent(this, renderer, 10);
 }
 
 UIScreen::~UIScreen() {
@@ -20,7 +31,7 @@ UIScreen::~UIScreen() {
     }
 }
 
-void UIScreen::Draw(Shader* shader) {
+void UIScreen::Draw(OpenGL::Shader* shader) {
     if (mTitle) {
         DrawTexture(shader, mTitle, mTitlePos);
     }
@@ -41,7 +52,7 @@ void UIScreen::SetTitle(const std::string& text, const Vector3& color,
     mTitle = mFont->RenderText(text, color, pointSize);
 }
 
-void UIScreen::DrawTexture(class Shader* shader, class Texture* texture,
+void UIScreen::DrawTexture(OpenGL::Shader* shader, OpenGL::Texture* texture,
                            const Vector2& offset, float scale) {
     // Scale the quad by the width/height of texture
     Matrix4 scaleMat = Matrix4::CreateScale(
