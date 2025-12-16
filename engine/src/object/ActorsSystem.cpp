@@ -1,12 +1,12 @@
-#include "core/ActorsSystem.h"
+#include "object/ActorsSystem.h"
 
 #include <algorithm>
 
-#include "core/Actor.h"
+#include "object/Actor.h"
 
 ActorsSystem::ActorsSystem() : mUpdatingActors(false) {}
 
-void ActorsSystem::UpdateActors(float deltatime) {
+void ActorsSystem::UpdateObjects(float deltatime) {
     mUpdatingActors = true;
     for (auto actor : mActors) {
         actor->Update(deltatime);
@@ -30,7 +30,7 @@ void ActorsSystem::UpdateActors(float deltatime) {
     }
 }
 
-void ActorsSystem::UnloadActors() {
+void ActorsSystem::UnloadObjects() {
     while (!mActors.empty()) delete mActors.back();
 }
 

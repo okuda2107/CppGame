@@ -26,6 +26,7 @@ class Component {
 
     virtual void Update(float deltatime) {};
 
+    // ActorのComputeWorldTransformが発火したときにその更新に合わせるように処理される関数
     virtual void OnUpdateWorldTransform() {}
 
     class Actor* GetOwner() const { return mOwner; }

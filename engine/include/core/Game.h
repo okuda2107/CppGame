@@ -1,9 +1,12 @@
 #pragma once
 
+#include <vector>
+
+#include "GameBase.h"
 #include "SDL.h"
 
-// Gameのグローバルな設定や状態変数を持つ
-class Game {
+// ゲームプログラムにおける処理の順序などを保証するクラス
+class Game : public GameBase {
    public:
     enum GameState {
         EGameplay,
@@ -11,22 +14,25 @@ class Game {
         EQuit,
     };
 
-   private:
+   protected:
     Uint32 mTicksCount;
-    float mDeltatime;
+
+    bool mUpdatingActors;
 
     GameState mState;
+
+    bool IsGameLoop() override { return mState != EQuit; }
+
+    void ProcessInput() override;
+    float CalculateDeltatime() override;
+    void UpdateGame(float deltatime) override;
+    void GenerateOutput() override;
+
+    class ObjectsSystemBase* mActorsSystem;
 
    public:
     Game();
 
-    bool Initialize();
-    void Shutdown();
-
-    bool IsGameLoop();
-
-    float GetDeltatime() { return mDeltatime; }
-
-    GameState GetState() { return mState; }
-    void SetState(GameState state) { mState = state; }
+    bool Initialize() override;
+    void Shutdown() override;
 };

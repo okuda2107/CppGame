@@ -1,6 +1,11 @@
 #include "core/Game.h"
 
-Game::Game() : mTicksCount(0), mState(EGameplay), mDeltatime(0) {}
+#include <algorithm>
+
+#include "object/Actor.h"
+#include "object/ObjectsSystemBase.h"
+
+Game::Game() : mTicksCount(0), mState(EGameplay) {}
 
 bool Game::Initialize() {
     if (int sdlResult = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
@@ -13,4 +18,21 @@ bool Game::Initialize() {
     return true;
 }
 
-void Game::Shutdown() { SDL_Quit(); }
+void Game::Shutdown() {
+    mActorsSystem->UnloadObjects();
+    SDL_Quit();
+}
+
+float Game::CalculateDeltatime() {
+    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
+    float deltatime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
+    if (deltatime > 0.05f) {
+        deltatime = 0.05f;
+    }
+    mTicksCount = SDL_GetTicks();
+    return deltatime;
+}
+
+void Game::UpdateGame(float deltatime) {
+    mActorsSystem->UpdateObjects(deltatime);
+}

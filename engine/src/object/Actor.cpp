@@ -1,22 +1,22 @@
-#include "core/Actor.h"
+#include "object/Actor.h"
 
 #include <algorithm>
 
-#include "core/ActorsSystem.h"
-#include "core/Component.h"
+#include "core/Game.h"
+#include "object/Component.h"
 // #include "core/LevelLoader.h"
 
-Actor::Actor(ActorsSystem* system)
-    : mSystem(system),
+Actor::Actor(Game* game)
+    : mGame(game),
       mScale(1.0f),
       mRotation(Quaternion::Identity),
       mState(State::EActive),
       mRecomputeWorldTransform(true) {
-    mSystem->AddActor(this);
+    mGame->AddActor(this);
 }
 
 Actor::~Actor() {
-    mSystem->RemoveActor(this);
+    mGame->RemoveActor(this);
     while (!mComponents.empty()) delete mComponents.back();
 }
 

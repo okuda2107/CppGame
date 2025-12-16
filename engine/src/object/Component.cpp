@@ -1,6 +1,6 @@
-#include "core/Component.h"
+#include "object/Component.h"
 
-#include "core/Actor.h"
+#include "object/Actor.h"
 // #include "core/LevelLoader.h"
 
 Component::Component(Actor* owner, int updateOrder)

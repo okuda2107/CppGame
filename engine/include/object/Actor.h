@@ -2,12 +2,11 @@
 #include <vector>
 
 #include "Component.h"
+#include "ObjectBase.h"
 #include "core/Math.h"
 #include "document.h"
 
-class Actor {
-    friend class Component;
-
+class Actor : public ObjectBase {
    public:
     enum class State {
         EActive,
@@ -16,7 +15,7 @@ class Actor {
     };
 
    private:
-    class ActorsSystem* mSystem;
+    class Game* mGame;
     Vector3 mPosition;
     float mScale;
     Quaternion mRotation;
@@ -30,14 +29,11 @@ class Actor {
 
     std::vector<class Component*> mComponents;
 
-    void AddComponent(class Component* component);
-    void RemoveComponent(class Component* component);
-
    public:
-    Actor(class ActorsSystem* system);
+    Actor(class Game* game);
     virtual ~Actor();
 
-    void Update(float deltatime);
+    void Update(float deltatime) override;
 
     Vector3 GetPosition() { return mPosition; }
     float GetScale() { return mScale; }
@@ -71,6 +67,8 @@ class Actor {
     void ComputeWorldTransform();
     Matrix4& GetWorldTransform() { return mWorldTransform; }
 
+    void AddComponent(class Component* component);
+    void RemoveComponent(class Component* component);
     /*
     Component* GetComponentOfType(Component::TypeID type);
 
