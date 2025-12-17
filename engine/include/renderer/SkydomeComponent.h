@@ -1,8 +1,7 @@
 #pragma once
+#include "base/DrawComponentBase.h"
 #include "core/Math.h"
-#include "renderer/DrawComponentBase.h"
 
-namespace OpenGL {
 class SkydomeComponent : public DrawComponentBase<class Renderer> {
     class Mesh* mMesh;
     class Shader* mShader;
@@ -20,4 +19,3 @@ class SkydomeComponent : public DrawComponentBase<class Renderer> {
     void SetShader(class Shader* shader) { mShader = shader; }
     void SetTextureIndex(size_t index) { mTextureIndex = index; }
 };
-}  // namespace OpenGL

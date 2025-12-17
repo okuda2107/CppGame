@@ -5,10 +5,8 @@
 #include <vector>
 
 #include "SDL.h"
+#include "base/RendererBase.h"
 #include "core/Math.h"
-#include "renderer/RendererBase.h"
-
-namespace OpenGL {
 
 struct DirectionalLight {
     // 光の方向
@@ -126,4 +124,3 @@ class Renderer : public RendererBase {
     SDL_Window* mWindow;
     SDL_GLContext mContext;
 };
-}  // namespace OpenGL

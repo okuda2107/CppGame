@@ -2,22 +2,31 @@
 
 #include <algorithm>
 
-#include "core/Game.h"
+#include "object/ActorsSystem.h"
 #include "object/Component.h"
 // #include "core/LevelLoader.h"
 
-Actor::Actor(Game* game)
-    : mGame(game),
+Actor::Actor(ActorsSystem* system)
+    : mSystem(system),
       mScale(1.0f),
       mRotation(Quaternion::Identity),
       mState(State::EActive),
       mRecomputeWorldTransform(true) {
-    mGame->AddActor(this);
+    mSystem->AddActor(this);
 }
 
 Actor::~Actor() {
-    mGame->RemoveActor(this);
+    mSystem->RemoveActor(this);
     while (!mComponents.empty()) delete mComponents.back();
+}
+
+void Actor::ProcessInput(const InputState& state) {
+    if (mState == State::EActive) {
+        for (auto comp : mComponents) {
+            comp->ProcessInput(state);
+        }
+        ActorInput(state);
+    }
 }
 
 void Actor::Update(float deltatime) {

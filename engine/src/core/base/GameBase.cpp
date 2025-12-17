@@ -1,4 +1,4 @@
-#include "core/GameBase.h"
+#include "core/base/GameBase.h"
 
 void GameBase::RunLoop() {
     while (IsGameLoop()) {

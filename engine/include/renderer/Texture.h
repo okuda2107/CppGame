@@ -1,9 +1,6 @@
 #pragma once
 #include <string>
 
-struct SDL_Surface;
-
-namespace OpenGL {
 class Texture {
    public:
     Texture();
@@ -12,7 +9,7 @@ class Texture {
     bool Load(const std::string& fileName);
     void Unload();
 
-    void CreateFromSurface(SDL_Surface* surface);
+    void CreateFromSurface(struct SDL_Surface* surface);
 
     void SetActive(size_t index = 0);
 
@@ -26,4 +23,3 @@ class Texture {
     int mWidth;
     int mHeight;
 };
-}  // namespace OpenGL

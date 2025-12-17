@@ -2,8 +2,9 @@
 
 #include <algorithm>
 
+#include "input/InputSystem.h"
 #include "object/Actor.h"
-#include "object/ObjectsSystemBase.h"
+#include "object/ActorsSystem.h"
 
 Game::Game() : mTicksCount(0), mState(EGameplay) {}
 
@@ -21,6 +22,10 @@ bool Game::Initialize() {
 void Game::Shutdown() {
     mActorsSystem->UnloadObjects();
     SDL_Quit();
+}
+
+void Game::ProcessInput() {
+    mActorsSystem->ProcessInput(mInputSystem->GetState());
 }
 
 float Game::CalculateDeltatime() {

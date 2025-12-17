@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 
-namespace OpenGL {
 class Mesh {
    public:
     Mesh();
@@ -34,4 +33,3 @@ class Mesh {
     // Specular power of surface
     float mSpecPower;
 };
-}  // namespace OpenGL

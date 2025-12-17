@@ -1,14 +1,10 @@
 #pragma once
+#include "ButtonState.h"
 #include "SDL.h"
 #include "core/Math.h"
-#include "input/Button/ButtonState.h"
-
-namespace KeyboardAndMouse {
-class InputSystem;
-}
 
 class MouseState {
-    friend KeyboardAndMouse::InputSystem;
+    friend class InputSystem;
 
     // マウスの位置を格納
     Vector2 mMousePos;

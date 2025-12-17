@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "Component.h"
-#include "ObjectBase.h"
+#include "base/ObjectBase.h"
 #include "core/Math.h"
 #include "document.h"
 
@@ -15,7 +15,7 @@ class Actor : public ObjectBase {
     };
 
    private:
-    class Game* mGame;
+    class ActorsSystem* mSystem;
     Vector3 mPosition;
     float mScale;
     Quaternion mRotation;
@@ -24,15 +24,19 @@ class Actor : public ObjectBase {
     Matrix4 mWorldTransform;
     bool mRecomputeWorldTransform;
 
-    virtual void UpdateActor(float deltatime) {};
     void UpdateComponent(float deltatime);
 
     std::vector<class Component*> mComponents;
 
+   protected:
+    virtual void ActorInput(const struct InputState& state) {};
+    virtual void UpdateActor(float deltatime) {};
+
    public:
-    Actor(class Game* game);
+    Actor(class ActorsSystem* game);
     virtual ~Actor();
 
+    void ProcessInput(const struct InputState& state);
     void Update(float deltatime) override;
 
     Vector3 GetPosition() { return mPosition; }

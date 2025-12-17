@@ -1,7 +1,6 @@
 #pragma once
 #include "GL/glew.h"
 
-namespace OpenGL {
 class VertexArray {
    public:
     VertexArray(const float* verts, unsigned int numVerts,
@@ -26,4 +25,3 @@ class VertexArray {
     //頂点配列オブジェクトのOpenGL ID
     unsigned int mVertexArray;
 };
-}  // namespace OpenGL

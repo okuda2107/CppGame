@@ -1,8 +1,7 @@
 #pragma once
 #include "Renderer.h"
-#include "renderer/DrawComponentBase.h"
+#include "base/DrawComponentBase.h"
 
-namespace OpenGL {
 class MeshComponent : public DrawComponentBase<class Renderer> {
    public:
     MeshComponent(class Actor* owner, Renderer* system,
@@ -23,4 +22,3 @@ class MeshComponent : public DrawComponentBase<class Renderer> {
     // このmeshで用いるテクスチャ群
     std::vector<size_t> mTextureIndices;
 };
-}  // namespace OpenGL

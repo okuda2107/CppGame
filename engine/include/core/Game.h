@@ -2,10 +2,11 @@
 
 #include <vector>
 
-#include "GameBase.h"
 #include "SDL.h"
+#include "base/GameBase.h"
 
 // ゲームプログラムにおける処理の順序などを保証するクラス
+// Game
 class Game : public GameBase {
    public:
     enum GameState {
@@ -17,8 +18,6 @@ class Game : public GameBase {
    protected:
     Uint32 mTicksCount;
 
-    bool mUpdatingActors;
-
     GameState mState;
 
     bool IsGameLoop() override { return mState != EQuit; }
@@ -26,13 +25,14 @@ class Game : public GameBase {
     void ProcessInput() override;
     float CalculateDeltatime() override;
     void UpdateGame(float deltatime) override;
-    void GenerateOutput() override;
 
-    class ObjectsSystemBase* mActorsSystem;
+    class ActorsSystem* mActorsSystem;
+    class InputSystem* mInputSystem;
+    class Renderer* mRenderer;
 
    public:
     Game();
 
-    bool Initialize() override;
-    void Shutdown() override;
+    virtual bool Initialize() override;
+    virtual void Shutdown() override;
 };

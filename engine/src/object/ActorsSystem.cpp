@@ -2,9 +2,18 @@
 
 #include <algorithm>
 
+#include "input/InputState.h"
 #include "object/Actor.h"
 
 ActorsSystem::ActorsSystem() : mUpdatingActors(false) {}
+
+void ActorsSystem::ProcessInput(const InputState& state) {
+    mUpdatingActors = true;
+    for (Actor* actor : mActors) {
+        actor->ProcessInput(state);
+    }
+    mUpdatingActors = false;
+}
 
 void ActorsSystem::UpdateObjects(float deltatime) {
     mUpdatingActors = true;

@@ -11,8 +11,6 @@ class InputSystemBase {
    protected:
     InputState mState;
 
-    bool mEnabled;
-
    public:
     InputSystemBase() {}
     virtual ~InputSystemBase() {}
@@ -24,7 +22,5 @@ class InputSystemBase {
     // 入力状態を定期的に問い合わせる (ポーリング)
     virtual void Update() = 0;
 
-    const InputState& GetState() const { return mEnabled ? mState : NULL; }
-
-    void SetEnabled(bool enabled) { mEnabled = enabled; }
+    const InputState& GetState() const { return mState; }
 };

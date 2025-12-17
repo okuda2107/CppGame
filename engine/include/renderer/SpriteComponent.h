@@ -1,9 +1,8 @@
 #pragma once
 #include "SDL.h"
 #include "SDL_image.h"
-#include "renderer/DrawComponentBase.h"
+#include "base/DrawComponentBase.h"
 
-namespace OpenGL {
 class SpriteComponent : public DrawComponentBase<class Renderer> {
    public:
     SpriteComponent(class Actor* owner, Renderer* system, int drawOrder = 100);
@@ -22,4 +21,3 @@ class SpriteComponent : public DrawComponentBase<class Renderer> {
     int mTexHeight;
     int mTexWidth;
 };
-}  // namespace OpenGL

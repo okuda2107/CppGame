@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
 
-#include "ObjectsSystemBase.h"
+#include "base/ObjectsSystemBase.h"
 
 // Actorの配列を保持し，それらのupdateを保証する
-class ActorsSystem : public ObjectsSystemBase {
+class ActorsSystem : public ObjectsSystemBase<class InputState> {
     friend class Actor;
 
     std::vector<class Actor*> mActors;
@@ -17,7 +17,8 @@ class ActorsSystem : public ObjectsSystemBase {
 
     void UnloadObjects() override;
 
-    void UpdateObjects(float deltatime) = 0;
+    void ProcessInput(const InputState& state);
+    void UpdateObjects(float deltatime);
 
     void AddActor(class Actor* actor);
     void RemoveActor(class Actor* actor);

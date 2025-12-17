@@ -1,5 +1,5 @@
 #pragma once
-#include "core/Component.h"
+#include "object/Component.h"
 
 template <typename InputSystem>
 class InputComponentBase : public Component {
