@@ -4,14 +4,13 @@
 #include "AL/al.h"
 #include "core/Math.h"
 
-namespace OpenAL {
 class SoundHandler {
     friend class System;
 
    public:
-    class System* mSystem;
+    class AudioSystem* mSystem;
     unsigned int mID;
-    SoundHandler(class System* system, unsigned int id);
+    SoundHandler(class AudioSystem* system, unsigned int id);
     ~SoundHandler();
 
     bool IsValid();
@@ -32,4 +31,3 @@ class SoundHandler {
     bool Is3D() const;
     void Set3DAttributes(const Matrix4& worldTrans);
 };
-}  // namespace OpenAL

@@ -3,16 +3,15 @@
 #include <vector>
 
 #include "SoundHandler.h"
-#include "audio/AudioComponentBase.h"
+#include "base/AudioComponentBase.h"
 
-namespace OpenAL {
-class AudioComponent : public AudioComponentBase<class System> {
+class AudioComponent : public AudioComponentBase<class AudioSystem> {
     // ハンドラはAudioSystemでnewされたものを受け取るが，deleteはこちらの責務
     std::unordered_map<std::string, class SoundHandler> mEvents2D;
     std::unordered_map<std::string, class SoundHandler> mEvents3D;
 
    public:
-    AudioComponent(Actor* owner, class System* system);
+    AudioComponent(Actor* owner, class AudioSystem* system);
     ~AudioComponent();
 
     void Update(float deltaTime) override;
@@ -25,4 +24,3 @@ class AudioComponent : public AudioComponentBase<class System> {
 
     TypeID GetType() const { return TypeID::TAudioComponent; }
 };
-}  // namespace OpenAL

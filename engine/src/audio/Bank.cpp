@@ -1,27 +1,27 @@
-#include "audio/OpenAL/Bank.h"
+#include "audio/Bank.h"
 
 #include <fstream>
 #include <sstream>
 
 #include "SDL_log.h"
 #include "SDL_mixer.h"
-#include "audio/OpenAL/Event.h"
-#include "audio/OpenAL/Helper.h"
-#include "audio/OpenAL/System.h"
+#include "audio/AudioSystem.h"
+#include "audio/Event.h"
+#include "audio/Helper.h"
 #include "document.h"
 #include "rapidjson/istreamwrapper.h"
 #include "rapidjson/schema.h"
 #include "rapidjson/stringbuffer.h"
 
-OpenAL::Bank::Bank() {}
-OpenAL::Bank::~Bank() {}
+Bank::Bank() {}
+Bank::~Bank() {}
 
 /*
 Bankデータをロードする
 ロードに成功したらtrue，失敗したらfalseを返す
 Bankデータはjson形式のファイルで記述する
 */
-bool OpenAL::Bank::Load(const std::string& fileName) {
+bool Bank::Load(const std::string& fileName) {
     std::ifstream file(fileName);
     if (!file.is_open()) {
         SDL_Log("File not found: Bank %s", fileName.c_str());
@@ -72,7 +72,7 @@ Notes: ver1のフォーマット
     ]
 }
 */
-bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
+bool Bank::LoadVersion1(rapidjson::Document& doc) {
     // スキーマ読み込み
     const char* schemaJson = R"({
         "type": "object",
@@ -165,7 +165,7 @@ bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
         std::string id = events[i]["id"].GetString();
         auto eventIter = mEvents.find(id);
         if (eventIter == mEvents.end()) {
-            OpenAL::Event* e = new OpenAL::Event(this);
+            Event* e = new Event(this);
             e->mSoundID = soundFileName;
             e->mIs3D = events[i]["is3D"].GetBool();
             e->mIsStream = events[i]["stream"].GetBool();
@@ -179,7 +179,7 @@ bool OpenAL::Bank::LoadVersion1(rapidjson::Document& doc) {
     return true;
 }
 
-bool OpenAL::Bank::Unload() {
+bool Bank::Unload() {
     // イベントのメモリ解放
     for (auto event : mEvents) {
         delete event.second;

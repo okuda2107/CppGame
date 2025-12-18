@@ -6,7 +6,6 @@
 #include "AL/alut.h"
 #include "document.h"
 
-namespace OpenAL {
 // イベント，サンプルデータ，ストリーミングデータの保持を最適化
 class Bank {
     std::unordered_map<std::string, class Event*> mEvents;
@@ -34,4 +33,3 @@ class Bank {
         }
     }
 };
-}  // namespace OpenAL

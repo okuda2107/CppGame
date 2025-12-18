@@ -6,12 +6,11 @@
 #include "Event.h"
 #include "Helper.h"
 #include "SDL.h"
-#include "audio/AudioSystemBase.h"
+#include "base/AudioSystemBase.h"
 #include "core/Math.h"
 
-namespace OpenAL {
 // サウンドイベントの管理
-class System : public AudioSystemBase<class SoundHandler> {
+class AudioSystem : public AudioSystemBase<class SoundHandler> {
     friend class SoundHandler;
 
     // バンク: 複数のイベントを編集，ロード単位で管理
@@ -28,8 +27,8 @@ class System : public AudioSystemBase<class SoundHandler> {
     ALCcontext* mContext;
 
    public:
-    System();
-    ~System();
+    AudioSystem();
+    ~AudioSystem();
 
     bool Initialize() override;
     void Shutdown() override;
@@ -49,4 +48,3 @@ class System : public AudioSystemBase<class SoundHandler> {
         return iter != mInstances.end() ? iter->second : nullptr;
     }
 };
-}  // namespace OpenAL

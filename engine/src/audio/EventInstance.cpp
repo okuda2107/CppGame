@@ -1,10 +1,10 @@
-#include "audio/OpenAL/EventInstance.h"
+#include "audio/EventInstance.h"
 
 #include "SDL.h"
-#include "audio/OpenAL/Event.h"
-#include "audio/OpenAL/Helper.h"
+#include "audio/Event.h"
+#include "audio/Helper.h"
 
-OpenAL::EventInstance::EventInstance(class Event* event) : mEvent(event) {
+EventInstance::EventInstance(class Event* event) : mEvent(event) {
     event->AddInstance(this);
     mSource = AL_NONE;
     alGetError();
@@ -27,7 +27,7 @@ OpenAL::EventInstance::EventInstance(class Event* event) : mEvent(event) {
     }
 }
 
-OpenAL::EventInstance::~EventInstance() {
+EventInstance::~EventInstance() {
     mEvent->RemoveInstance(this);
     alSourcei(mSource, AL_BUFFER, 0);
     alDeleteSources(1, &mSource);

@@ -1,17 +1,17 @@
-#include "audio/OpenAL/AudioComponent.h"
+#include "audio/AudioComponent.h"
 
-#include "audio/AudioComponentBase.h"
-#include "audio/OpenAL/SoundHandler.h"
-#include "audio/OpenAL/System.h"
-#include "core/Actor.h"
+#include "audio/AudioSystem.h"
+#include "audio/SoundHandler.h"
+#include "audio/base/AudioComponentBase.h"
 #include "core/Game.h"
+#include "object/Actor.h"
 
-OpenAL::AudioComponent::AudioComponent(Actor* owner, System* system)
+AudioComponent::AudioComponent(Actor* owner, AudioSystem* system)
     : AudioComponentBase(owner, system) {}
 
-OpenAL::AudioComponent::~AudioComponent() { StopAllEvents(); }
+AudioComponent::~AudioComponent() { StopAllEvents(); }
 
-void OpenAL::AudioComponent::Update(float deltaTime) {
+void AudioComponent::Update(float deltaTime) {
     Component::Update(deltaTime);
 
     // Remove invalid 2D events
@@ -35,7 +35,7 @@ void OpenAL::AudioComponent::Update(float deltaTime) {
     }
 }
 
-void OpenAL::AudioComponent::OnUpdateWorldTransform() {
+void AudioComponent::OnUpdateWorldTransform() {
     // Update 3D event's world transforms
     Matrix4 world = mOwner->GetWorldTransform();
     for (auto event : mEvents3D) {
@@ -46,18 +46,18 @@ void OpenAL::AudioComponent::OnUpdateWorldTransform() {
 }
 
 //
-OpenAL::SoundHandler OpenAL::AudioComponent::GetEvent(const std::string& name) {
+SoundHandler AudioComponent::GetEvent(const std::string& name) {
     auto iter3D = mEvents3D.find(name);
     if (iter3D != mEvents3D.end() && iter3D->second.IsValid())
         return iter3D->second;
     auto iter2D = mEvents2D.find(name);
     if (iter2D != mEvents2D.end() && iter2D->second.IsValid())
         return iter2D->second;
-    return OpenAL::SoundHandler(mSystem, 0);
+    return SoundHandler(mSystem, 0);
 }
 
 // AudioSystemに要請して，イベントを再生する準備をする．
-void OpenAL::AudioComponent::RegisterEvent(const std::string& name) {
+void AudioComponent::RegisterEvent(const std::string& name) {
     // ここでSoundHandlerがnewされる．
     SoundHandler e = mSystem->PlayEvent(name);
     if (!e.IsValid()) return;
@@ -71,7 +71,7 @@ void OpenAL::AudioComponent::RegisterEvent(const std::string& name) {
     }
 }
 
-void OpenAL::AudioComponent::StopAllEvents() {
+void AudioComponent::StopAllEvents() {
     // Stop all sounds
     for (auto& e : mEvents2D) {
         e.second.Stop();

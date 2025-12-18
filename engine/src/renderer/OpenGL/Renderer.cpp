@@ -1,32 +1,33 @@
-#include "renderer/OpenGL/Renderer.h"
+#include "renderer/Renderer.h"
 
 #include <algorithm>
 
 #include "GL/glew.h"
 // #include "UI/UIScreen.h"
-#include "UI/OpenGL/Font.h"
-#include "core/Actor.h"
+#include "UI/Font.h"
 #include "core/Game.h"
-#include "renderer/OpenGL/Mesh.h"
-#include "renderer/OpenGL/MeshComponent.h"
-#include "renderer/OpenGL/Shader.h"
-#include "renderer/OpenGL/SkydomeComponent.h"
-#include "renderer/OpenGL/SpriteComponent.h"
-#include "renderer/OpenGL/Texture.h"
-#include "renderer/OpenGL/VertexArray.h"
+#include "object/Actor.h"
+#include "renderer/Mesh.h"
+#include "renderer/MeshComponent.h"
+#include "renderer/Shader.h"
+#include "renderer/SkydomeComponent.h"
+#include "renderer/SpriteComponent.h"
+#include "renderer/Texture.h"
+#include "renderer/VertexArray.h"
 
-OpenGL::Renderer::Renderer()
+Renderer::Renderer(UISystem* system)
     : mContext(nullptr),
       mScreenHeight(0.0f),
       mScreenWidth(0.0f),
       mSkydome(nullptr),
       mSpriteVerts(nullptr),
       mSpriteShader(nullptr),
-      mWindow(nullptr) {}
+      mWindow(nullptr),
+      mUISystem(system) {}
 
-OpenGL::Renderer::~Renderer() {}
+Renderer::~Renderer() {}
 
-bool OpenGL::Renderer::Initialize(float screenWidth, float screenHeight) {
+bool Renderer::Initialize(float screenWidth, float screenHeight) {
     mScreenWidth = screenWidth;
     mScreenHeight = screenHeight;
 
@@ -68,6 +69,12 @@ bool OpenGL::Renderer::Initialize(float screenWidth, float screenHeight) {
     }
     glGetError();
 
+    // Initialize SDL_ttf
+    if (TTF_Init() != 0) {
+        SDL_Log("Failed to initialize SDL_ttf");
+        return false;
+    }
+
     if (!LoadShaders()) {
         SDL_Log("Failed to Load Shaders");
         return false;
@@ -78,7 +85,7 @@ bool OpenGL::Renderer::Initialize(float screenWidth, float screenHeight) {
     return true;
 }
 
-void OpenGL::Renderer::Shutdown() {
+void Renderer::Shutdown() {
     delete mSpriteVerts;
     mSpriteShader->Unload();
     delete mSpriteShader;
@@ -86,7 +93,7 @@ void OpenGL::Renderer::Shutdown() {
     SDL_DestroyWindow(mWindow);
 }
 
-void OpenGL::Renderer::UnloadData() {
+void Renderer::UnloadData() {
     // Destroy textures
     for (auto i : mTextures) {
         i.second->Unload();
@@ -109,7 +116,7 @@ void OpenGL::Renderer::UnloadData() {
     mShaders.clear();
 }
 
-void OpenGL::Renderer::Draw() {
+void Renderer::Draw() {
     glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -171,7 +178,7 @@ void OpenGL::Renderer::Draw() {
     SDL_GL_SwapWindow(mWindow);
 }
 
-void OpenGL::Renderer::ApplyConfig(const ConfigID id) {
+void Renderer::ApplyConfig(const ConfigID id) {
     RenderConfig config = mMeshConfigs.at(id);
     if (config.mBlend)
         glEnable(GL_BLEND);
@@ -211,13 +218,13 @@ void OpenGL::Renderer::ApplyConfig(const ConfigID id) {
     }
 }
 
-void OpenGL::Renderer::ResetConfig() {
+void Renderer::ResetConfig() {
     // todo: 状態をリセットすることを検討
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_TRUE);
 }
 
-void OpenGL::Renderer::AddSprite(class SpriteComponent* sprite) {
+void Renderer::AddSprite(class SpriteComponent* sprite) {
     auto iter = mSprites.begin();
     for (; iter != mSprites.end(); ++iter) {
         if ((*iter)->GetDrawOrder() > sprite->GetDrawOrder()) {
@@ -227,12 +234,12 @@ void OpenGL::Renderer::AddSprite(class SpriteComponent* sprite) {
     mSprites.insert(iter, sprite);
 }
 
-void OpenGL::Renderer::RemoveSprite(class SpriteComponent* sprite) {
+void Renderer::RemoveSprite(class SpriteComponent* sprite) {
     auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
     mSprites.erase(iter);
 }
 
-void OpenGL::Renderer::AddMeshComp(const ConfigID id, MeshComponent* mesh) {
+void Renderer::AddMeshComp(const ConfigID id, MeshComponent* mesh) {
     auto iter = mMeshComps.find(id);
     if (iter != mMeshComps.end()) {
         iter->second.push_back(mesh);
@@ -241,7 +248,7 @@ void OpenGL::Renderer::AddMeshComp(const ConfigID id, MeshComponent* mesh) {
     }
 }
 
-void OpenGL::Renderer::RemoveMeshComp(const ConfigID id, MeshComponent* mesh) {
+void Renderer::RemoveMeshComp(const ConfigID id, MeshComponent* mesh) {
     auto vectorIter = mMeshComps.find(id);
     if (vectorIter != mMeshComps.end()) {
         auto meshIter = std::find(vectorIter->second.begin(),
@@ -251,7 +258,7 @@ void OpenGL::Renderer::RemoveMeshComp(const ConfigID id, MeshComponent* mesh) {
     }
 }
 
-OpenGL::Texture* OpenGL::Renderer::GetTexture(const std::string& filename) {
+Texture* Renderer::GetTexture(const std::string& filename) {
     Texture* tex = nullptr;
     auto iter = mTextures.find(filename);
     if (iter != mTextures.end()) {
@@ -268,7 +275,7 @@ OpenGL::Texture* OpenGL::Renderer::GetTexture(const std::string& filename) {
     return tex;
 }
 
-OpenGL::Mesh* OpenGL::Renderer::GetMesh(const std::string& fileName) {
+Mesh* Renderer::GetMesh(const std::string& fileName) {
     Mesh* m = nullptr;
     auto iter = mMeshes.find(fileName);
     if (iter != mMeshes.end()) {
@@ -285,7 +292,7 @@ OpenGL::Mesh* OpenGL::Renderer::GetMesh(const std::string& fileName) {
     return m;
 }
 
-OpenGL::Shader* OpenGL::Renderer::GetShader(const std::string& shaderName) {
+Shader* Renderer::GetShader(const std::string& shaderName) {
     Shader* m = nullptr;
     auto iter = mShaders.find(shaderName);
     if (iter != mShaders.end()) {
@@ -302,7 +309,7 @@ OpenGL::Shader* OpenGL::Renderer::GetShader(const std::string& shaderName) {
     return m;
 }
 
-OpenGL::Font* OpenGL::Renderer::GetFont(const std::string& fileName) {
+Font* Renderer::GetFont(const std::string& fileName) {
     auto iter = mFonts.find(fileName);
     if (iter != mFonts.end()) {
         return iter->second;
@@ -319,7 +326,7 @@ OpenGL::Font* OpenGL::Renderer::GetFont(const std::string& fileName) {
     }
 }
 
-bool OpenGL::Renderer::LoadShaders() {
+bool Renderer::LoadShaders() {
     mSpriteShader = new Shader();
 
     if (!mSpriteShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag")) {
@@ -342,7 +349,7 @@ bool OpenGL::Renderer::LoadShaders() {
     return true;
 }
 
-void OpenGL::Renderer::CreateSpriteVerts() {
+void Renderer::CreateSpriteVerts() {
     float vertexBuffer[] = {
         -0.5f, 0.5f,  0.f, 0.f, 0.f, 0.0f, 0.f, 0.f,  // top left
         0.5f,  0.5f,  0.f, 0.f, 0.f, 0.0f, 1.f, 0.f,  // top right
@@ -356,7 +363,7 @@ void OpenGL::Renderer::CreateSpriteVerts() {
 }
 
 //ShaderファイルはGLSLへの架け橋の役目，光のセットアップを書いてしまうとそれが崩れる
-void OpenGL::Renderer::SetLightUniforms(Shader* shader) {
+void Renderer::SetLightUniforms(Shader* shader) {
     // Camera position is from inverted view
     Matrix4 invView = mView;
     invView.Invert();
@@ -379,7 +386,7 @@ void OpenGL::Renderer::SetLightUniforms(Shader* shader) {
 デメリット: ハッシュ値に変換すると，元の設定内容が分からないため，デバッグに工夫が必要．
 ハッシュ値を出力するようにする場合，描画順序を考慮させることが難しい．そのため上位ピットのいくつかは描画順序を表す数字にして，mapの描画順序を表す
 */
-OpenGL::ConfigID OpenGL::Renderer::GetConfigID(const RenderConfig& config) {
+ConfigID Renderer::GetConfigID(const RenderConfig& config) {
     ConfigID id;
     if (config.mCullFaceBack) {
         id = ConfigID::Dome;

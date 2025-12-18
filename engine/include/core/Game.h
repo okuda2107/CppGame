@@ -22,17 +22,18 @@ class Game : public GameBase {
 
     bool IsGameLoop() override { return mState != EQuit; }
 
-    void ProcessInput() override;
     float CalculateDeltatime() override;
-    void UpdateGame(float deltatime) override;
 
     class ActorsSystem* mActorsSystem;
     class InputSystem* mInputSystem;
     class Renderer* mRenderer;
+    class AudioSystem* mAudioSystem;
+    // class PhysicsSystem* mPhysicsSystem;
+    class UISystem* mUISystem;
 
    public:
     Game();
 
-    virtual bool Initialize() override;
-    virtual void Shutdown() override;
+    bool Initialize() override;
+    void Shutdown() override;
 };

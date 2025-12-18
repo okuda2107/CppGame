@@ -5,7 +5,6 @@
 
 #include "core/Math.h"
 
-namespace OpenAL {
 inline const char* alGetErrorString(ALenum error) {
     switch (error) {
         case AL_NO_ERROR:
@@ -38,4 +37,3 @@ inline Vector3 VecToOpenAL(const Vector3& in) {
     out.z = -in.x * rate;
     return out;
 }
-}  // namespace OpenAL

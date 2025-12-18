@@ -45,7 +45,7 @@ enum ConfigID {
 
 class Renderer : public RendererBase {
    public:
-    Renderer();
+    Renderer(class UISystem* system);
     ~Renderer();
     // レンダラーの初期化処理と終了処理
     bool Initialize(float screenWidth, float screenHeight);
@@ -95,7 +95,7 @@ class Renderer : public RendererBase {
     // このファイルに新しく光源の配列作っても良し
     // 光の計算はシェーダーにとっては必要不可欠ではない
 
-    class Game* mGame;
+    class UISystem* mUISystem;
 
     std::unordered_map<std::string, Texture*> mTextures;
     std::unordered_map<std::string, class Mesh*> mMeshes;

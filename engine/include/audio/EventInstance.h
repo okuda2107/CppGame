@@ -3,7 +3,6 @@
 
 #include "AL/al.h"
 
-namespace OpenAL {
 // イベントの実体
 // このクラスはEventクラスで管理される．
 class EventInstance {
@@ -22,4 +21,3 @@ class EventInstance {
         return state;
     }
 };
-}  // namespace OpenAL

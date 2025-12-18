@@ -6,7 +6,6 @@
 #include "Bank.h"
 #include "SDL.h"
 
-namespace OpenAL {
 // イベントで再生するサウンドのパラメータを保持
 // イベントインスタンスを管理する．
 class Event {
@@ -29,4 +28,3 @@ class Event {
     void AddInstance(class EventInstance* instance);
     void RemoveInstance(class EventInstance* instance);
 };
-}  // namespace OpenAL

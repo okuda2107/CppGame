@@ -1,19 +1,19 @@
-#include "audio/OpenAL/System.h"
+#include "audio/AudioSystem.h"
 
 #include "AL/al.h"
 #include "AL/alut.h"
 #include "SDL.h"
 #include "SDL_mixer.h"
-#include "audio/OpenAL/Bank.h"
-#include "audio/OpenAL/EventInstance.h"
-#include "audio/OpenAL/Helper.h"
-#include "audio/OpenAL/SoundHandler.h"
+#include "audio/Bank.h"
+#include "audio/EventInstance.h"
+#include "audio/Helper.h"
+#include "audio/SoundHandler.h"
 #include "core/Math.h"
 
-OpenAL::System::System() {}
-OpenAL::System::~System() {}
+AudioSystem::AudioSystem() {}
+AudioSystem::~AudioSystem() {}
 
-bool OpenAL::System::Initialize() {
+bool AudioSystem::Initialize() {
     if (!Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG)) {
         SDL_Log("Failed to Initialize SDL_Mixer");
         return false;
@@ -51,7 +51,7 @@ bool OpenAL::System::Initialize() {
     return true;
 }
 
-void OpenAL::System::Shutdown() {
+void AudioSystem::Shutdown() {
     alcMakeContextCurrent(NULL);
     alcDestroyContext(mContext);
     alcCloseDevice(mDevice);
@@ -59,11 +59,11 @@ void OpenAL::System::Shutdown() {
     Mix_Quit();
 }
 
-void OpenAL::System::LoadBank(const std::string& name) {
+void AudioSystem::LoadBank(const std::string& name) {
     if (mBanks.find(name) != mBanks.end()) return;
 
     // バンクをロード
-    OpenAL::Bank* bank = new OpenAL::Bank();
+    Bank* bank = new Bank();
     if (!bank->Load(name)) {
         SDL_Log("Failed to load bank data");
         return;
@@ -80,7 +80,7 @@ void OpenAL::System::LoadBank(const std::string& name) {
     }
 }
 
-void OpenAL::System::UnloadBank(const std::string& name) {
+void AudioSystem::UnloadBank(const std::string& name) {
     auto iter = mBanks.find(name);
     if (iter == mBanks.end()) return;
 
@@ -100,7 +100,7 @@ void OpenAL::System::UnloadBank(const std::string& name) {
     mBanks.erase(iter);
 }
 
-void OpenAL::System::UnloadAllBanks() {
+void AudioSystem::UnloadAllBanks() {
     for (auto bank : mBanks) {
         bank.second->Unload();
         delete bank.second;
@@ -111,7 +111,7 @@ void OpenAL::System::UnloadAllBanks() {
 }
 
 // 再生が終了したハンドラをクリーンアップする
-void OpenAL::System::Update(float deltaTime) {
+void AudioSystem::Update(float deltaTime) {
     // stopしたハンドラを探す
     std::vector<unsigned int> done;
     for (auto& iter : mInstances) {
@@ -132,7 +132,7 @@ void OpenAL::System::Update(float deltaTime) {
     for (auto id : done) mInstances.erase(id);
 }
 
-void OpenAL::System::SetListener(const Matrix4& viewMatrix) {
+void AudioSystem::SetListener(const Matrix4& viewMatrix) {
     // ベクトルを得るためのビュー行列の逆行列を計算
     Matrix4 invView = viewMatrix;
     invView.Invert();
@@ -160,16 +160,15 @@ void OpenAL::System::SetListener(const Matrix4& viewMatrix) {
 }
 
 // OpenALのSourceを作成．
-OpenAL::SoundHandler OpenAL::System::PlayEvent(const std::string& name) {
+SoundHandler AudioSystem::PlayEvent(const std::string& name) {
     auto iter = mEvents.find(name);
     if (iter != mEvents.end()) {
         // イベントインスタンスを作成，登録
-        OpenAL::EventInstance* instance =
-            new OpenAL::EventInstance(iter->second);
+        EventInstance* instance = new EventInstance(iter->second);
         unsigned int id = instance->GetSource();
         mInstances.emplace(id, instance);
         // サウンドハンドラを作成
-        return OpenAL::SoundHandler(this, id);
+        return SoundHandler(this, id);
     } else
-        return OpenAL::SoundHandler(this, 0);
+        return SoundHandler(this, 0);
 }

@@ -1,15 +1,15 @@
-#include "UI/OpenGL/Font.h"
+#include "UI/Font.h"
 
 #include <vector>
 
-#include "renderer/OpenGL/Renderer.h"
-#include "renderer/OpenGL/Texture.h"
+#include "renderer/Renderer.h"
+#include "renderer/Texture.h"
 
-OpenGL::Font::Font() {}
+Font::Font() {}
 
-OpenGL::Font::~Font() {}
+Font::~Font() {}
 
-bool OpenGL::Font::Load(const std::string& filename) {
+bool Font::Load(const std::string& filename) {
     // サポートするフォントサイズ
     std::vector<int> fontSizes = {8,  9,  10, 11, 12, 14, 16, 18, 20, 22,
                                   24, 26, 28, 30, 32, 34, 38, 40, 42, 44,
@@ -27,14 +27,14 @@ bool OpenGL::Font::Load(const std::string& filename) {
     return true;
 }
 
-void OpenGL::Font::Unload() {
+void Font::Unload() {
     for (auto& font : mFontData) {
         TTF_CloseFont(font.second);
     }
 }
 
-OpenGL::Texture* OpenGL::Font::RenderText(const std::string& text,
-                                          const Vector3& color, int pointSize) {
+Texture* Font::RenderText(const std::string& text, const Vector3& color,
+                          int pointSize) {
     Texture* texture = nullptr;
 
     SDL_Color sdlColor;

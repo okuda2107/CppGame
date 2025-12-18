@@ -19,8 +19,8 @@ class GameBase {
     GameBase() {}
     virtual ~GameBase() {}
 
-    virtual bool Initialize() {};
-    virtual void Shutdown() {};
+    virtual bool Initialize() { return true; }
+    virtual void Shutdown() {}
 
     void RunLoop();
 };
