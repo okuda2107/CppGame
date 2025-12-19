@@ -12,7 +12,7 @@ class InputSystemBase;
 
 // ゲームプログラムにおける処理の順序などを保証するクラス
 // Game
-template <typename InputState>
+template <typename InputState, typename RenderData>
 class Game : public GameBase {
    public:
     enum GameState {
@@ -25,14 +25,11 @@ class Game : public GameBase {
     Uint32 mTicksCount;
 
     GameState mState;
-
-    bool IsGameLoop() override { return mState != EQuit; }
-
-    float CalculateDeltatime() override;
+    void ProcessInput(const InputState& state);
+    void Update(float deltatime);
+    const RenderData& GenerateRenderData();
 
     class ObjectsSystemBase<InputState>* mActorsSystem;
-    class InputSystemBase<InputState>* mInputSystem;
-    class Renderer* mRenderer;
     class AudioSystem* mAudioSystem;
     // class PhysicsSystem* mPhysicsSystem;
     class UISystem* mUISystem;

@@ -1,20 +1,13 @@
 #pragma once
-#include <unordered_map>
-#include <vector>
 
-#include "core/Math.h"
-
+template <typename RenderData>
 class RendererBase {
-   protected:
-    Matrix4 mView;
-    Matrix4 mProjection;
-
    public:
     RendererBase() {}
     virtual ~RendererBase() {}
 
-    virtual bool Initialize(float screenWidth, float screenHeight) = 0;
-    virtual void Shutdown() = 0;
+    virtual bool Initialize() { return true; }
+    virtual void Shutdown() {}
 
-    virtual void Draw() = 0;
+    virtual void Draw(const RenderData& data) = 0;
 };
