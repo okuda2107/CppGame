@@ -17,7 +17,9 @@ Game::Game() : mTicksCount(0), mState(EGameplay) {
     mRenderer = new Renderer(mUISystem);
 }
 
-bool Game::Initialize() {
+Game<InputState>::Game() : mTicksCount(0), mState(EGameplay) {}
+
+bool Game<InputState>::Initialize() {
     if (int sdlResult = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
         SDL_Log("Failed to Initialize SDL:%s", SDL_GetError());
         return false;
@@ -49,12 +51,18 @@ bool Game::Initialize() {
     return true;
 }
 
-void Game::Shutdown() {
+GAME_TEMPLATE
+
+void Game<InputState>::Shutdown() {
     mActorsSystem->UnloadObjects();
     SDL_Quit();
 }
 
-float Game::CalculateDeltatime() {
+void Game<InputState>::ProcessInput() {
+    mActorsSystem->ProcessInput(mInputSystem->GetState());
+}
+
+float Game<InputState>::CalculateDeltatime() {
     while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
     float deltatime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
     if (deltatime > 0.05f) {
@@ -62,4 +70,8 @@ float Game::CalculateDeltatime() {
     }
     mTicksCount = SDL_GetTicks();
     return deltatime;
+}
+
+void Game<InputState>::UpdateGame(float deltatime) {
+    mActorsSystem->UpdateObjects(deltatime);
 }

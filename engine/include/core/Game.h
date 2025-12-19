@@ -5,8 +5,14 @@
 #include "SDL.h"
 #include "base/GameBase.h"
 
+template <typename InputState>
+class ObjectsSystemBase;
+template <typename InputState>
+class InputSystemBase;
+
 // ゲームプログラムにおける処理の順序などを保証するクラス
 // Game
+template <typename InputState>
 class Game : public GameBase {
    public:
     enum GameState {
@@ -24,8 +30,8 @@ class Game : public GameBase {
 
     float CalculateDeltatime() override;
 
-    class ActorsSystem* mActorsSystem;
-    class InputSystem* mInputSystem;
+    class ObjectsSystemBase<InputState>* mActorsSystem;
+    class InputSystemBase<InputState>* mInputSystem;
     class Renderer* mRenderer;
     class AudioSystem* mAudioSystem;
     // class PhysicsSystem* mPhysicsSystem;
