@@ -4,7 +4,6 @@
 template <typename InputState, typename RenderData, typename GameData,
           typename GameMetrics>
 class GameBase {
-   protected:
    public:
     GameBase() = default;
     virtual ~GameBase() = default;

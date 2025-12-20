@@ -1,42 +1,27 @@
 #pragma once
-
-#include <vector>
-
-#include "SDL.h"
 #include "base/GameBase.h"
+
+enum class RuntimeState;
+struct GameMetrics;
 
 template <typename InputState>
 class ObjectsSystemBase;
-template <typename InputState>
-class InputSystemBase;
 
-// ゲームプログラムにおける処理の順序などを保証するクラス
-// Game
-template <typename InputState, typename RenderData, typename GameData>
-class Game : public GameBase {
-   public:
-    enum GameState {
-        EGameplay,
-        EPaused,
-        EQuit,
-    };
-
+template <typename InputState, typename RenderData>
+class Game
+    : public GameBase<InputState, RenderData, RuntimeState, GameMetrics> {
    protected:
-    Uint32 mTicksCount;
-
-    GameState mState;
-    void ProcessInput(const InputState& state);
-    const GameData& Update(float deltatime);
-    const RenderData& GenerateRenderData();
-
     class ObjectsSystemBase<InputState>* mActorsSystem;
     class AudioSystem* mAudioSystem;
     // class PhysicsSystem* mPhysicsSystem;
     class UISystem* mUISystem;
 
    public:
-    Game();
-
     bool Initialize() override;
     void Shutdown() override;
+
+    void ProcessInput(const InputState& state) override;
+    const RuntimeState& Update(float deltatime,
+                               const GameMetrics& metrics) override;
+    const RenderData& GenerateRenderData() override;
 };
