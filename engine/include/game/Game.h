@@ -12,7 +12,7 @@ class InputSystemBase;
 
 // ゲームプログラムにおける処理の順序などを保証するクラス
 // Game
-template <typename InputState, typename RenderData>
+template <typename InputState, typename RenderData, typename GameData>
 class Game : public GameBase {
    public:
     enum GameState {
@@ -26,7 +26,7 @@ class Game : public GameBase {
 
     GameState mState;
     void ProcessInput(const InputState& state);
-    void Update(float deltatime);
+    const GameData& Update(float deltatime);
     const RenderData& GenerateRenderData();
 
     class ObjectsSystemBase<InputState>* mActorsSystem;
