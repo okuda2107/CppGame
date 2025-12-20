@@ -1,20 +1,29 @@
 #pragma once
 
+template <typename GameView, typename RendererView>
+struct MetricsBundle {
+    using Game = GameView;
+    using Renderer = RendererView;
+};
+
 // ゲームプログラムの実行環境，フレーム，時間処理を責務とする
-template <typename GameData>
+template <typename GameData, typename Metrics>
 class RuntimeSystemBase {
    protected:
     float mDeltatime;
 
+    typename Metrics::Game mGameMetrics;
+    typename Metrics::Renderer mRendererMetrics;
+
    public:
-    RuntimeSystemBase() {}
-    virtual ~RuntimeSystemBase() {}
+    RuntimeSystemBase() = default;
+    virtual ~RuntimeSystemBase() = default;
 
     virtual bool Initialize() { return true; }
     virtual void Shutdown() {}
 
     // gameの更新を続行するか
-    virtual bool IsRunning() = 0;
+    virtual bool IsRunning() const = 0;
 
     // フレームの開始，終了を明示
     virtual void BeginFrame() = 0;
@@ -24,6 +33,27 @@ class RuntimeSystemBase {
     // ex. ゲームループの継続判定など
     virtual void ProcessGameData(const GameData& data) = 0;
 
-    // deltatimeを提供する
-    float GetDeltatime() { return mDeltatime; };
+    float GetDeltatime() const { return mDeltatime; }
+
+    // Metricsを出力
+    const typename Metrics::Game& GetGameMetrics() const {
+        return mGameMetrics;
+    }
+    const typename Metrics::Renderer& GetRendererMetrics() const {
+        return mRendererMetrics;
+    }
 };
+
+/*
+    このクラスはまだ成長段階で，将来ここに機能が追加されて，Engine側の処理にも組み込まれる可能性がある．
+    将来的にはデバッグ機能や，パフォーマンスの表示なども責務としたいが，
+    現在の理解と，プロジェクトの規模では，どのような機能が必要で，どのようなフェーズで処理されるかがわからない．
+    そのため，Baseクラスであるが，拡張される可能性があるということだけ明示しておく．
+    考えられるのは，
+    - frame外でRuntimeSystemの更新を行う機能
+        - frame内で更新を行うのと，frame外で更新を行うのでは，意味的に差があるので，それを追加するかどうか
+    - パフォーマンスの表示などを行う機能をこのクラスに実装？
+        - rendererかと思われるかもしれないが，rendererはゲーム結果の表示を責務としており，パフォーマンスなどの表示は
+    - ゲームオブジェクトのホットリロード対応
+        - ホットリロードに関しては，まだ詳細にどのように実装したらいいかは浮かんでないのでわからないが，実行環境の操作という文脈ではこのクラスで処理することもある気がする
+*/

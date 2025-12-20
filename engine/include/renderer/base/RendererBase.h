@@ -3,8 +3,8 @@
 template <typename RenderData>
 class RendererBase {
    public:
-    RendererBase() {}
-    virtual ~RendererBase() {}
+    RendererBase() = default;
+    virtual ~RendererBase() = default;
 
     virtual bool Initialize() { return true; }
     virtual void Shutdown() {}
