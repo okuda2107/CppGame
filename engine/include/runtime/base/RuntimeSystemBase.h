@@ -1,10 +1,9 @@
 #pragma once
 #include "IRuntimeSystem.h"
 
-template <typename GameView, typename RendererView>
+template <typename GameView>
 struct MetricsBundle {
     using Game = GameView;
-    using Renderer = RendererView;
 };
 
 // ゲームプログラムの実行環境，フレーム，時間処理を責務とする
@@ -14,15 +13,10 @@ class RuntimeSystemBase : public IRuntimeSystem {
         std::is_base_of<GameMetricsBase, typename Metrics::Game>::value,
         "Metrics::Game must derive from GameMetricsBase");
 
-    static_assert(
-        std::is_base_of<RendererMetricsBase, typename Metrics::Renderer>::value,
-        "Metrics::Renderer must derive from RendererMetricsBase");
-
    protected:
     float mDeltatime;
 
     typename Metrics::Game mGameMetrics;
-    typename Metrics::Renderer mRendererMetrics;
 
    public:
     RuntimeSystemBase() = default;

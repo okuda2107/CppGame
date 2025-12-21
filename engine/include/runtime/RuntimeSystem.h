@@ -2,7 +2,7 @@
 #include "base/MetricsBase.h"
 #include "base/RuntimeSystemBase.h"
 
-using Metrics = MetricsBundle<GameMetricsBase, RendererMetricsBase>;
+using Metrics = MetricsBundle<GameMetricsBase>;
 
 enum class RuntimeState;
 
