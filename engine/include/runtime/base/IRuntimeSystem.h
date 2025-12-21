@@ -1,10 +1,10 @@
 #pragma once
 #include "MetricsBase.h"
 
-class IRuntimeSystemBase {
+class IRuntimeSystem {
    public:
-    IRuntimeSystemBase() = default;
-    virtual ~IRuntimeSystemBase() = default;
+    IRuntimeSystem() = default;
+    virtual ~IRuntimeSystem() = default;
 
     // gameの更新を続行するか
     virtual bool IIsRunning() const = 0;
