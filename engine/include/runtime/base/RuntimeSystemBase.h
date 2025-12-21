@@ -8,7 +8,15 @@ struct MetricsBundle {
 
 // ゲームプログラムの実行環境，フレーム，時間処理を責務とする
 template <typename GameData, typename Metrics>
-class RuntimeSystemBase {
+class RuntimeSystemBase : public IRuntimeSystemBase {
+    static_assert(
+        std::is_base_of<GameMetricsBase, typename Metrics::Game>::value,
+        "Metrics::Game must derive from GameMetricsBase");
+
+    static_assert(
+        std::is_base_of<RendererMetricsBase, typename Metrics::Renderer>::value,
+        "Metrics::Renderer must derive from RendererMetricsBase");
+
    protected:
     float mDeltatime;
 
@@ -33,13 +41,21 @@ class RuntimeSystemBase {
     // ex. ゲームループの継続判定など
     virtual void ProcessGameData(const GameData& data) = 0;
 
-    float GetDeltatime() const { return mDeltatime; }
+    bool IIsRunning() const final { return IsRunning(); }
 
-    // Metricsを出力
-    const typename Metrics::Game& GetGameMetrics() const {
+    void IBeginFrame() final { BeginFrame(); }
+    void IEndFrame() final { EndFrame(); }
+
+    void IProcessGameData(const struct GameDataBase& data) final {
+        ProcessGameData(static_cast<const GameData&>(data));
+    }
+
+    float IGetDeltatime() const final { return mDeltatime; }
+
+    const struct GameMetricsBase& IGetGameMetrics() const final {
         return mGameMetrics;
     }
-    const typename Metrics::Renderer& GetRendererMetrics() const {
+    const struct RendererMetricsBase& IGetRendererMetrics() const final {
         return mRendererMetrics;
     }
 };

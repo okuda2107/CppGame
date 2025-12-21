@@ -1,10 +1,8 @@
 #include "SDL.h"
+#include "base/MetricsBase.h"
 #include "base/RuntimeSystemBase.h"
 
-struct GameMetrics {};
-struct RendererMetrics {};
-
-using Metrics = MetricsBundle<GameMetrics, RendererMetrics>;
+using Metrics = MetricsBundle<GameMetricsBase, RendererMetricsBase>;
 
 enum class RuntimeState;
 
