@@ -42,6 +42,7 @@ class RuntimeSystemBase : public IRuntimeSystem {
     // ex. ゲームループの継続判定など
     virtual void ProcessGameData(const GameData& data) = 0;
 
+    // Engineで使われるためのエントリポイント
     bool IIsRunning() const final { return IsRunning(); }
 
     void IBeginFrame() final { BeginFrame(); }
