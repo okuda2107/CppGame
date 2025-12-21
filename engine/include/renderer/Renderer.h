@@ -55,29 +55,8 @@ class Renderer : public RendererBase {
     // フレームの描画
     void Draw();
 
-    void AddSprite(class SpriteComponent* sprite);
-    void RemoveSprite(class SpriteComponent* sprite);
-
-    void AddMeshComp(const ConfigID config, class MeshComponent* mesh);
-    void RemoveMeshComp(const ConfigID config, class MeshComponent* mesh);
-
-    void AddSkydome(class SkydomeComponent* skydome) { mSkydome = skydome; }
-    void RemoveSkydome() { mSkydome = nullptr; }
-
-    class Texture* GetTexture(const std::string& fileName);
-    class Mesh* GetMesh(const std::string& fileName);
-    class Shader* GetShader(const std::string& shaderName);
-    class Font* GetFont(const std::string& fileName);
-
     // SDL_Windowは不完全型
     class SDL_Window* GetWindow() const { return mWindow; }
-
-    void SetViewMatrix(const class Matrix4& view) { mView = view; }
-
-    void SetAmbientLight(const Vector3& ambient) {
-        mAmbientLight = ambient;
-    }  // 全体に一つしかないのでRendererに書く
-    DirectionalLight& GetDirectionalLight() { return mDirLight; }
 
     // order順に比較できるhashを返す
     ConfigID GetConfigID(const RenderConfig& config);
@@ -97,29 +76,13 @@ class Renderer : public RendererBase {
 
     class UISystem* mUISystem;
 
-    std::unordered_map<std::string, Texture*> mTextures;
-    std::unordered_map<std::string, class Mesh*> mMeshes;
-    std::unordered_map<std::string, class Shader*> mShaders;
-    std::unordered_map<std::string, class Font*> mFonts;
-    std::vector<class SpriteComponent*> mSprites;
-    std::map<ConfigID, std::vector<class MeshComponent*>> mMeshComps;
-    // 設定辞書
-    std::unordered_map<ConfigID, RenderConfig> mMeshConfigs;
-
-    class SkydomeComponent* mSkydome;
-
     class Shader* mSpriteShader;
     class VertexArray* mSpriteVerts;
 
-    Matrix4 mView;
     Matrix4 mProjection;
 
     float mScreenWidth;
     float mScreenHeight;
-
-    // Lighting data
-    Vector3 mAmbientLight;
-    DirectionalLight mDirLight;
 
     SDL_Window* mWindow;
     SDL_GLContext mContext;

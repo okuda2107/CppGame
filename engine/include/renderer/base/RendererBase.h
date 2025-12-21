@@ -3,6 +3,9 @@
 
 template <typename RenderData>
 class RendererBase : public IRenderer {
+    static_assert(std::is_base_of<RenderDataBase, RenderData>::value,
+                  "RenderData must derive from RenderDataBase");
+
    public:
     RendererBase() = default;
     virtual ~RendererBase() = default;

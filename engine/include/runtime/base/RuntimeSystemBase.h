@@ -9,6 +9,8 @@ struct MetricsBundle {
 // ゲームプログラムの実行環境，フレーム，時間処理を責務とする
 template <typename GameData, typename Metrics>
 class RuntimeSystemBase : public IRuntimeSystem {
+    static_assert(std::is_base_of<GameDataBase, GameData>::value,
+                  "GameData must derive from GameDataBase");
     static_assert(
         std::is_base_of<GameMetricsBase, typename Metrics::Game>::value,
         "Metrics::Game must derive from GameMetricsBase");

@@ -1,3 +1,3 @@
 #pragma once
 
-struct RenderData {};
+struct RenderDataBase {};
