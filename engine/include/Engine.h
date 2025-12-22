@@ -23,6 +23,12 @@ class Engine {
 
    public:
     // 型指定の正当性を保証するためのsetter
+    /*
+        InputState: InputStateBaseを基底クラスとした，入力情報を取り扱う構造体
+        RenderData: RenderDataBaseを基底クラスとした，Rendererにレンダリングする情報を伝えるための構造体
+        GameData: GameDataBaseを基底クラスとした，Gameが実行環境に情報を伝えるための構造体
+        Metrics: 実行環境からGameなどのシステムに情報を伝えるための型をMetricsBundleで束ねた構造体
+    */
     template <typename InputState, typename RenderData, typename GameData,
               typename Metrics>
     void SetSystem(class GameBase<InputState, RenderData, GameData,
