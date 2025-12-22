@@ -1,10 +1,10 @@
 #pragma once
 #include "Renderer.h"
-#include "base/DrawComponentBase.h"
+#include "object/Component.h"
 
-class MeshComponent : public DrawComponentBase<class Renderer> {
+class MeshComponent : public Component {
    public:
-    MeshComponent(class Actor* owner, Renderer* system,
+    MeshComponent(class Actor* owner, class RenderDB* database,
                   struct RenderConfig config);
     virtual ~MeshComponent();
     // Draw this mesh component

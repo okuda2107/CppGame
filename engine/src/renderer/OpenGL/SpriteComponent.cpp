@@ -6,12 +6,8 @@
 #include "renderer/OpenGL/Shader.h"
 #include "renderer/OpenGL/Texture.h"
 
-OpenGL::SpriteComponent::SpriteComponent(class Actor* owner, Renderer* system,
-                                         int drawOrder)
-    : DrawComponentBase(owner, system, drawOrder = drawOrder),
-      mTexHeight(128),
-      mTexWidth(128),
-      mTexture(nullptr) {
+SpriteComponent::SpriteComponent(class Actor* owner, int drawOrder)
+    : Component(owner), mTexHeight(128), mTexWidth(128), mTexture(nullptr) {
     mSystem->AddSprite(this);
 }
 

@@ -1,11 +1,12 @@
 #pragma once
 #include "SDL.h"
 #include "SDL_image.h"
-#include "base/DrawComponentBase.h"
+#include "object/Component.h"
 
-class SpriteComponent : public DrawComponentBase<class Renderer> {
+class SpriteComponent : public Component {
    public:
-    SpriteComponent(class Actor* owner, Renderer* system, int drawOrder = 100);
+    SpriteComponent(class Actor* owner, class RenderDB* database,
+                    int drawOrder = 100);
     ~SpriteComponent();
 
     virtual void Draw(class Shader* shader);

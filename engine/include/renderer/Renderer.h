@@ -43,9 +43,30 @@ enum ConfigID {
     NUM_CONFIG_ID,
 };
 
-class Renderer : public RendererBase {
+class Renderer : public RendererBase<struct RenderData> {
+   private:
+    bool LoadShaders();
+    void CreateSpriteVerts();
+    void SetLightUniforms(class Shader* shader);
+    // これは本来Shader.hファイルに書くべき？ <-
+    // 3D表示するときにしか使わんからRendererファイルでいいかも
+    // このファイルに新しく光源の配列作っても良し
+    // 光の計算はシェーダーにとっては必要不可欠ではない
+
+    class Shader* mSpriteShader;
+    class VertexArray* mSpriteVerts;
+
+    Matrix4 mView;
+    Matrix4 mProjection;
+
+    float mScreenWidth;
+    float mScreenHeight;
+
+    SDL_Window* mWindow;
+    SDL_GLContext mContext;
+
    public:
-    Renderer(class UISystem* system);
+    Renderer();
     ~Renderer();
     // レンダラーの初期化処理と終了処理
     bool Initialize(float screenWidth, float screenHeight);
@@ -53,7 +74,7 @@ class Renderer : public RendererBase {
     // 全てのテクスチャ・メッシュを解放
     void UnloadData();
     // フレームの描画
-    void Draw();
+    void Draw(const struct RenderData& data);
 
     // SDL_Windowは不完全型
     class SDL_Window* GetWindow() const { return mWindow; }
@@ -64,26 +85,4 @@ class Renderer : public RendererBase {
     // 与えられた描画設定を適用する / 解除する
     void ApplyConfig(const ConfigID id);
     void ResetConfig();
-
-   private:
-    bool LoadShaders();
-    void CreateSpriteVerts();
-    void SetLightUniforms(class Shader* shader);
-    // これは本来Shader.hファイルに書くべき？ <-
-    // 3D表示するときにしか使わんからRendererファイルでいいかも
-    // このファイルに新しく光源の配列作っても良し
-    // 光の計算はシェーダーにとっては必要不可欠ではない
-
-    class UISystem* mUISystem;
-
-    class Shader* mSpriteShader;
-    class VertexArray* mSpriteVerts;
-
-    Matrix4 mProjection;
-
-    float mScreenWidth;
-    float mScreenHeight;
-
-    SDL_Window* mWindow;
-    SDL_GLContext mContext;
 };

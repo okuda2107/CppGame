@@ -24,9 +24,6 @@ enum ConfigID {
 };
 
 struct RenderData : RenderDataBase {
-    // これは微妙かも．この行列にプレイヤーのtransformを含んでいるかどうか
-    Matrix4 mView;
-
     std::vector<class SpriteComponent*> mSprites;
     std::map<ConfigID, std::vector<class MeshComponent*>> mMeshComps;
 

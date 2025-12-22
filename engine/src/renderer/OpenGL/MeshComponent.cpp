@@ -9,9 +9,9 @@
 #include "renderer/OpenGL/Texture.h"
 #include "renderer/OpenGL/VertexArray.h"
 
-OpenGL::MeshComponent::MeshComponent(Actor* owner, Renderer* system,
-                                     RenderConfig config)
-    : DrawComponentBase(owner, system), mMesh(nullptr) {
+MeshComponent::MeshComponent(Actor* owner, class RenderDB* database,
+                             RenderConfig config)
+    : Component(owner), mMesh(nullptr) {
     ConfigID id = mSystem->GetConfigID(config);
     mConfigID = id;
     mSystem->AddMeshComp(id, this);

@@ -15,15 +15,13 @@
 #include "renderer/Texture.h"
 #include "renderer/VertexArray.h"
 
-Renderer::Renderer(UISystem* system)
+Renderer::Renderer()
     : mContext(nullptr),
       mScreenHeight(0.0f),
       mScreenWidth(0.0f),
-      mSkydome(nullptr),
       mSpriteVerts(nullptr),
       mSpriteShader(nullptr),
-      mWindow(nullptr),
-      mUISystem(system) {}
+      mWindow(nullptr) {}
 
 Renderer::~Renderer() {}
 
