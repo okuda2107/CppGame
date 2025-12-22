@@ -10,13 +10,14 @@
 #include "renderer/OpenGL/Renderer.h"
 #include "renderer/OpenGL/Texture.h"
 #include "renderer/OpenGL/VertexArray.h"
+#include "renderer/RenderDB.h"
 
 OpenGL::Mesh::Mesh()
     : mVertexArray(nullptr), mRadius(0.0f), mSpecPower(100.0f) {}
 
 OpenGL::Mesh::~Mesh() {}
 
-bool OpenGL::Mesh::Load(const std::string& fileName, Renderer* renderer) {
+bool OpenGL::Mesh::Load(const std::string& fileName, RenderDB* renderer) {
     std::ifstream file(fileName);
     if (!file.is_open()) {
         SDL_Log("File not found: Mesh %s", fileName.c_str());

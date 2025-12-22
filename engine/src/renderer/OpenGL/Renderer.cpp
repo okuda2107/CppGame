@@ -9,11 +9,33 @@
 #include "object/Actor.h"
 #include "renderer/Mesh.h"
 #include "renderer/MeshComponent.h"
+#include "renderer/RenderData.h"
 #include "renderer/Shader.h"
 #include "renderer/SkydomeComponent.h"
 #include "renderer/SpriteComponent.h"
 #include "renderer/Texture.h"
 #include "renderer/VertexArray.h"
+
+RenderConfig RenderConfig::Dome() {
+    RenderConfig config;
+    config.mDepthTest = true;
+    config.mDepthMask = true;
+}
+
+RenderConfig RenderConfig::Dome() {
+    RenderConfig config;
+    config.mDepthMask =
+}
+
+RenderConfig RenderConfig::Dome() {
+    RenderConfig config;
+    config.mDepthMask =
+}
+
+std::unordered_map<ConfigID, RenderConfig> Renderer::mMeshConfigs = {
+    {ConfigID::Dome, RenderConfig{
+
+                     }}};
 
 Renderer::Renderer()
     : mContext(nullptr),
@@ -25,7 +47,8 @@ Renderer::Renderer()
 
 Renderer::~Renderer() {}
 
-bool Renderer::Initialize(float screenWidth, float screenHeight) {
+bool Renderer::Initialize(float screenWidth, float screenHeight,
+                          std::string windowTitle, bool isFullScreen) {
     mScreenWidth = screenWidth;
     mScreenHeight = screenHeight;
 
@@ -48,10 +71,13 @@ bool Renderer::Initialize(float screenWidth, float screenHeight) {
 
     SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
-    mWindow = SDL_CreateWindow(
-        "Game Programming in C++", 100, 100, static_cast<int>(mScreenWidth),
-        static_cast<int>(mScreenHeight),
-        SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP);
+    Uint32 flags = isFullScreen
+                       ? SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP
+                       : SDL_WINDOW_OPENGL;
+
+    mWindow = SDL_CreateWindow(windowTitle.c_str(), 100, 100,
+                               static_cast<int>(mScreenWidth),
+                               static_cast<int>(mScreenHeight), flags);
     if (!mWindow) {
         SDL_Log("Faled to Create Window:%s", SDL_GetError());
         return false;
@@ -66,12 +92,6 @@ bool Renderer::Initialize(float screenWidth, float screenHeight) {
         return false;
     }
     glGetError();
-
-    // Initialize SDL_ttf
-    if (TTF_Init() != 0) {
-        SDL_Log("Failed to initialize SDL_ttf");
-        return false;
-    }
 
     if (!LoadShaders()) {
         SDL_Log("Failed to Load Shaders");
@@ -91,61 +111,39 @@ void Renderer::Shutdown() {
     SDL_DestroyWindow(mWindow);
 }
 
-void Renderer::UnloadData() {
-    // Destroy textures
-    for (auto i : mTextures) {
-        i.second->Unload();
-        delete i.second;
-    }
-    mTextures.clear();
-
-    // Destroy meshes
-    for (auto i : mMeshes) {
-        i.second->Unload();
-        delete i.second;
-    }
-    mMeshes.clear();
-
-    // Destroy shaders
-    for (auto i : mShaders) {
-        i.second->Unload();
-        delete i.second;
-    }
-    mShaders.clear();
-}
-
-void Renderer::Draw() {
+void Renderer::Draw(const RenderData& data) {
     glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // 背景描画
     // todo: 複数の背景オブジェクトに対応？
-    if (mSkydome != nullptr) {
+    if (data.mSkydome != nullptr) {
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
         glDisable(GL_DEPTH_TEST);
         glDepthMask(GL_FALSE);  // 深度書き込み禁止
 
         // 背景用のビュー行列 (平行移動成分を除去)
-        Matrix4 viewNoTrans = mView;
+        Matrix4 viewNoTrans = data.mView;
         viewNoTrans.mat[3][0] = 0.0f;  // x平行移動消去
         viewNoTrans.mat[3][1] = 0.0f;  // y平行移動消去
         viewNoTrans.mat[3][2] = 0.0f;  // z平行移動消去
 
         Matrix4 viewProj = viewNoTrans * mProjection;
-        mSkydome->Draw(viewProj);
+        data.mSkydome->Draw(viewProj);
 
         glDepthMask(GL_TRUE);
         glDisable(GL_CULL_FACE);
     }
 
     // メッシュ描画
-    for (auto mc : mMeshComps) {
+    for (auto mc : data.mMeshComps) {
         ApplyConfig(mc.first);
 
-        for (auto shader : mShaders) {
+        for (auto shader : data.mShaders) {
             shader.second->SetActive();
-            shader.second->SetMatrixUniform("uViewProj", mView * mProjection);
+            shader.second->SetMatrixUniform("uViewProj",
+                                            data.mView * mProjection);
             SetLightUniforms(shader.second);
             for (auto mc : mc.second) {
                 mc->Draw(shader.first, shader.second);
@@ -164,7 +162,7 @@ void Renderer::Draw() {
     // Set shader/vao as active
     mSpriteShader->SetActive();
     mSpriteVerts->SetActive();
-    for (auto sprite : mSprites) {
+    for (auto sprite : data.mSprites) {
         sprite->Draw(mSpriteShader);
     }
 
@@ -220,108 +218,6 @@ void Renderer::ResetConfig() {
     // todo: 状態をリセットすることを検討
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_TRUE);
-}
-
-void Renderer::AddSprite(class SpriteComponent* sprite) {
-    auto iter = mSprites.begin();
-    for (; iter != mSprites.end(); ++iter) {
-        if ((*iter)->GetDrawOrder() > sprite->GetDrawOrder()) {
-            break;
-        }
-    }
-    mSprites.insert(iter, sprite);
-}
-
-void Renderer::RemoveSprite(class SpriteComponent* sprite) {
-    auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
-    mSprites.erase(iter);
-}
-
-void Renderer::AddMeshComp(const ConfigID id, MeshComponent* mesh) {
-    auto iter = mMeshComps.find(id);
-    if (iter != mMeshComps.end()) {
-        iter->second.push_back(mesh);
-    } else {
-        mMeshComps.emplace(id, std::vector<MeshComponent*>{mesh});
-    }
-}
-
-void Renderer::RemoveMeshComp(const ConfigID id, MeshComponent* mesh) {
-    auto vectorIter = mMeshComps.find(id);
-    if (vectorIter != mMeshComps.end()) {
-        auto meshIter = std::find(vectorIter->second.begin(),
-                                  vectorIter->second.end(), mesh);
-        if (meshIter != vectorIter->second.end())
-            vectorIter->second.erase(meshIter);
-    }
-}
-
-Texture* Renderer::GetTexture(const std::string& filename) {
-    Texture* tex = nullptr;
-    auto iter = mTextures.find(filename);
-    if (iter != mTextures.end()) {
-        tex = iter->second;
-    } else {
-        tex = new Texture();
-        if (tex->Load(filename)) {
-            mTextures.emplace(filename, tex);
-        } else {
-            delete tex;
-            tex = nullptr;
-        }
-    }
-    return tex;
-}
-
-Mesh* Renderer::GetMesh(const std::string& fileName) {
-    Mesh* m = nullptr;
-    auto iter = mMeshes.find(fileName);
-    if (iter != mMeshes.end()) {
-        m = iter->second;
-    } else {
-        m = new Mesh();
-        if (m->Load(fileName, this)) {
-            mMeshes.emplace(fileName, m);
-        } else {
-            delete m;
-            m = nullptr;
-        }
-    }
-    return m;
-}
-
-Shader* Renderer::GetShader(const std::string& shaderName) {
-    Shader* m = nullptr;
-    auto iter = mShaders.find(shaderName);
-    if (iter != mShaders.end()) {
-        m = iter->second;
-    } else {
-        m = new Shader();
-        if (m->Load(shaderName + ".vert", shaderName + ".frag")) {
-            mShaders.emplace(shaderName, m);
-        } else {
-            delete m;
-            m = nullptr;
-        }
-    }
-    return m;
-}
-
-Font* Renderer::GetFont(const std::string& fileName) {
-    auto iter = mFonts.find(fileName);
-    if (iter != mFonts.end()) {
-        return iter->second;
-    } else {
-        Font* font = new Font();
-        if (font->Load(fileName)) {
-            mFonts.emplace(fileName, font);
-        } else {
-            font->Unload();
-            delete font;
-            font = nullptr;
-        }
-        return font;
-    }
 }
 
 bool Renderer::LoadShaders() {

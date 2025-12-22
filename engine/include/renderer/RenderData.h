@@ -23,7 +23,10 @@ enum ConfigID {
     NUM_CONFIG_ID,
 };
 
+// RenderDBが実体として持ち，dataの操作を行うため，lifetimeもRenderDBが責務を持つ
 struct RenderData : RenderDataBase {
+    Matrix4 mView;
+
     std::vector<class SpriteComponent*> mSprites;
     std::map<ConfigID, std::vector<class MeshComponent*>> mMeshComps;
 
@@ -35,6 +38,4 @@ struct RenderData : RenderDataBase {
     // Lighting data
     Vector3 mAmbientLight;
     DirectionalLight mDirLight;
-
-    void Unload();
 };

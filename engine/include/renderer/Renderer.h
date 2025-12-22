@@ -4,18 +4,10 @@
 #include <unordered_map>
 #include <vector>
 
+#include "RenderData.h"
 #include "SDL.h"
 #include "base/RendererBase.h"
 #include "core/Math.h"
-
-struct DirectionalLight {
-    // 光の方向
-    Vector3 mDirection;
-    // 拡散反射光
-    Vector3 mDiffuseColor;
-    // 鏡面反射光
-    Vector3 mSpecColor;
-};
 
 // 将来的に描画設定を個別に設定できるようにする
 struct RenderConfig {
@@ -24,39 +16,19 @@ struct RenderConfig {
     bool mBlend;
     bool mCullFaceBack;
     bool mSortByCamera;
-    int mOrder = 100;  // 設定別の描画優先順位
-    // 一般的な不透明オブジェクトをデフォルト値とする
-    RenderConfig()
-        : mBlend(false),
-          mCullFaceBack(false),
-          mDepthMask(true),
-          mDepthTest(true),
-          mSortByCamera(false) {}
-};
 
-// 将来的にハッシュ値になる可能性
-// 現在はここで順序を設定
-enum ConfigID {
-    Dome = 0,
-    Opaque,
-    Translucent,
-    NUM_CONFIG_ID,
+    RenderConfig Dome();
+    RenderConfig Opaque();
+    RenderConfig Translucent();
 };
 
 class Renderer : public RendererBase<struct RenderData> {
    private:
-    bool LoadShaders();
-    void CreateSpriteVerts();
-    void SetLightUniforms(class Shader* shader);
-    // これは本来Shader.hファイルに書くべき？ <-
-    // 3D表示するときにしか使わんからRendererファイルでいいかも
-    // このファイルに新しく光源の配列作っても良し
-    // 光の計算はシェーダーにとっては必要不可欠ではない
-
     class Shader* mSpriteShader;
     class VertexArray* mSpriteVerts;
 
-    Matrix4 mView;
+    static std::unordered_map<ConfigID, RenderConfig> mMeshConfigs;
+
     Matrix4 mProjection;
 
     float mScreenWidth;
@@ -65,14 +37,22 @@ class Renderer : public RendererBase<struct RenderData> {
     SDL_Window* mWindow;
     SDL_GLContext mContext;
 
+    bool LoadShaders();
+    void CreateSpriteVerts();
+    void SetLightUniforms(class Shader* shader);
+    // これは本来Shader.hファイルに書くべき？ <-
+    // 3D表示するときにしか使わんからRendererファイルでいいかも
+    // このファイルに新しく光源の配列作っても良し
+    // 光の計算はシェーダーにとっては必要不可欠ではない
+
    public:
     Renderer();
     ~Renderer();
     // レンダラーの初期化処理と終了処理
-    bool Initialize(float screenWidth, float screenHeight);
+    bool Initialize(float screenWidth, float screenHeight,
+                    std::string windowTitle, bool isFullScreen);
     void Shutdown();
-    // 全てのテクスチャ・メッシュを解放
-    void UnloadData();
+
     // フレームの描画
     void Draw(const struct RenderData& data);
 

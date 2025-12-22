@@ -7,7 +7,7 @@ class Mesh {
     Mesh();
     ~Mesh();
     // Load/unload mesh
-    bool Load(const std::string& fileName, class Renderer* renderer);
+    bool Load(const std::string& fileName, class RenderDB* renderer);
     void Unload();
     // Get the vertex array associated with this mesh
     class VertexArray* GetVertexArray() { return mVertexArray; }

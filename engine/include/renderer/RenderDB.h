@@ -12,10 +12,13 @@ class RenderDB {
     std::unordered_map<std::string, class Shader*> mShaders;
     std::unordered_map<std::string, class Font*> mFonts;
 
-   public:
-    const RenderData& GetData() { return mData; }
-
     void UnloadAssets();
+
+   public:
+    bool Initialize();
+    void Shutdown();
+
+    const RenderData& GetData() { return mData; }
 
     void AddSprite(class SpriteComponent* sprite);
     void RemoveSprite(class SpriteComponent* sprite);
