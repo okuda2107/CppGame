@@ -1,9 +1,9 @@
-#include "object/ActorsSystem.h"
+#include "game/object/ActorsSystem.h"
 
 #include <algorithm>
 
+#include "game/object/Actor.h"
 #include "input/InputState.h"
-#include "object/Actor.h"
 
 ActorsSystem::ActorsSystem() : mUpdatingActors(false) {}
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "Renderer.h"
-#include "object/Component.h"
+#include "game/object/Component.h"
 
 class MeshComponent : public Component {
    public:

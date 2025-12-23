@@ -1,14 +1,14 @@
-#include "renderer/OpenGL/Texture.h"
+#include "renderer/Texture.h"
 
 #include <GL/glew.h>
 #include <SDL.h>
 #include <SOIL.h>
 
-OpenGL::Texture::Texture() : mTextureID(0), mWidth(0), mHeight(0) {}
+Texture::Texture() : mTextureID(0), mWidth(0), mHeight(0) {}
 
-OpenGL::Texture::~Texture() {}
+Texture::~Texture() {}
 
-bool OpenGL::Texture::Load(const std::string& fileName) {
+bool Texture::Load(const std::string& fileName) {
     int channels = 0;
     unsigned char* image = SOIL_load_image(fileName.c_str(), &mWidth, &mHeight,
                                            &channels, SOIL_LOAD_AUTO);
@@ -42,15 +42,15 @@ bool OpenGL::Texture::Load(const std::string& fileName) {
     return true;
 }
 
-void OpenGL::Texture::Unload() { glDeleteTextures(1, &mTextureID); }
+void Texture::Unload() { glDeleteTextures(1, &mTextureID); }
 
 // 何番目のtexture unitに流し込むか
-void OpenGL::Texture::SetActive(size_t index) {
+void Texture::SetActive(size_t index) {
     glActiveTexture(GL_TEXTURE0 + index);
     glBindTexture(GL_TEXTURE_2D, mTextureID);
 }
 
-void OpenGL::Texture::CreateFromSurface(SDL_Surface* surface) {
+void Texture::CreateFromSurface(SDL_Surface* surface) {
     mWidth = surface->w;
     mHeight = surface->h;
 

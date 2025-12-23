@@ -1,9 +1,9 @@
-#include "audio/AudioComponent.h"
+#include "game/audio/AudioComponent.h"
 
-#include "audio/AudioSystem.h"
-#include "audio/SoundHandler.h"
-#include "audio/base/AudioComponentBase.h"
-#include "object/Actor.h"
+#include "game/audio/AudioSystem.h"
+#include "game/audio/SoundHandler.h"
+#include "game/audio/base/AudioComponentBase.h"
+#include "game/object/Actor.h"
 
 AudioComponent::AudioComponent(Actor* owner, AudioSystem* system)
     : AudioComponentBase(owner, system) {}

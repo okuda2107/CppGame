@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "object/Actor.h"
+#include "game/object/Actor.h"
 #include "renderer/Mesh.h"
 #include "renderer/RenderDB.h"
 #include "renderer/Shader.h"

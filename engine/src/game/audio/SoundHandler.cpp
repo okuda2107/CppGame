@@ -1,8 +1,8 @@
-#include "audio/SoundHandler.h"
+#include "game/audio/SoundHandler.h"
 
-#include "audio/AudioSystem.h"
-#include "audio/EventInstance.h"
 #include "core/Math.h"
+#include "game/audio/AudioSystem.h"
+#include "game/audio/EventInstance.h"
 
 SoundHandler::SoundHandler(AudioSystem* system, unsigned int id)
     : mSystem(system), mID(id) {}

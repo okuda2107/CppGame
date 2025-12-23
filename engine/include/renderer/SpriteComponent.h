@@ -1,7 +1,7 @@
 #pragma once
 #include "SDL.h"
 #include "SDL_image.h"
-#include "object/Component.h"
+#include "game/object/Component.h"
 
 class SpriteComponent : public Component {
    public:
@@ -17,6 +17,8 @@ class SpriteComponent : public Component {
     TypeID GetType() const { return TypeID::TSpriteComponent; }
 
    protected:
+    class RenderDB* mDatabase;
+
     class Texture* mTexture;
     int mDrawOrder;
     int mTexHeight;

@@ -1,8 +1,8 @@
-#include "UI/UIScreen.h"
+#include "game/UI/UIScreen.h"
 
 #include "GL/glew.h"
-#include "UI/Font.h"
-#include "UI/UISystem.h"
+#include "game/UI/Font.h"
+#include "game/UI/UISystem.h"
 #include "renderer/Shader.h"
 #include "renderer/Texture.h"
 

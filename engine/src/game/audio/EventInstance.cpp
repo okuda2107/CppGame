@@ -1,8 +1,8 @@
-#include "audio/EventInstance.h"
+#include "game/audio/EventInstance.h"
 
 #include "SDL.h"
-#include "audio/Event.h"
-#include "audio/Helper.h"
+#include "game/audio/Event.h"
+#include "game/audio/Helper.h"
 
 EventInstance::EventInstance(class Event* event) : mEvent(event) {
     event->AddInstance(this);

@@ -12,9 +12,9 @@ class InputSystemBase : public IInputSystem {
     static_assert(std::is_base_of<InputStateBase, InputState>::value,
                   "InputState must derive from InputStateBase");
 
-    static_assert(std::is_base_of<InputSystemMetricsBase,
-                                  typename InputSystemMetrics>::value,
-                  "InputSystemMetrics must derive from InputSystemMetricsBase");
+    static_assert(
+        std::is_base_of<InputSystemMetricsBase, InputSystemMetrics>::value,
+        "InputSystemMetrics must derive from InputSystemMetricsBase");
 
    protected:
     InputState mState;

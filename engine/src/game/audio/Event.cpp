@@ -1,6 +1,6 @@
-#include "audio/Event.h"
+#include "game/audio/Event.h"
 
-#include "audio/EventInstance.h"
+#include "game/audio/EventInstance.h"
 
 Event::Event(class Bank* bank) : mBank(bank) {};
 Event::~Event() {

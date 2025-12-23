@@ -1,12 +1,6 @@
 #include "runtime/RuntimeSystem.h"
 
-#include "MetricsBase.h"
-
-enum class RuntimeState {
-    EGameplay,
-    EPaused,
-    EQuit,
-};
+#include "runtime/RuntimeData.h"
 
 bool RuntimeSystem::Initialize() {
     if (int sdlResult = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {

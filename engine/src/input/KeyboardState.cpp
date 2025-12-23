@@ -1,4 +1,4 @@
-#include "input/KeyboardAndMouse/KeyboardState.h"
+#include "input/KeyboardState.h"
 
 bool KeyboardState::GetKeyValue(SDL_Scancode keyCode) const {
     return mCurrState[keyCode];

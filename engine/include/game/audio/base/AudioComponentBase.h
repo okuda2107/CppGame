@@ -1,5 +1,5 @@
 #pragma once
-#include "object/Component.h"
+#include "game/object/Component.h"
 
 template <typename AudioSystem>
 class AudioComponentBase : public Component {

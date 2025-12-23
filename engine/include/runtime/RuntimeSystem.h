@@ -1,17 +1,6 @@
+#include "RuntimeData.h"
 #include "SDL.h"
-#include "base/MetricsBase.h"
 #include "base/RuntimeSystemBase.h"
-
-enum class RuntimeState;
-
-struct GameState : GameDataBase {
-    RuntimeState mState;
-};
-
-struct InputSystemMetrics : InputSystemMetricsBase {
-    // 相対マウスモードを有効 / 無効
-    bool mRelativeMouseMode;
-};
 
 using Metrics = MetricsBundle<GameMetricsBase, InputSystemMetrics>;
 

@@ -1,9 +1,9 @@
-#include "object/Actor.h"
+#include "game/object/Actor.h"
 
 #include <algorithm>
 
-#include "object/ActorsSystem.h"
-#include "object/Component.h"
+#include "game/object/ActorsSystem.h"
+#include "game/object/Component.h"
 // #include "core/LevelLoader.h"
 
 Actor::Actor(ActorsSystem* system)

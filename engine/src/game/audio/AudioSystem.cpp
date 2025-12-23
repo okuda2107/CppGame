@@ -1,14 +1,14 @@
-#include "audio/AudioSystem.h"
+#include "game/audio/AudioSystem.h"
 
 #include "AL/al.h"
 #include "AL/alut.h"
 #include "SDL.h"
 #include "SDL_mixer.h"
-#include "audio/Bank.h"
-#include "audio/EventInstance.h"
-#include "audio/Helper.h"
-#include "audio/SoundHandler.h"
 #include "core/Math.h"
+#include "game/audio/Bank.h"
+#include "game/audio/EventInstance.h"
+#include "game/audio/Helper.h"
+#include "game/audio/SoundHandler.h"
 
 AudioSystem::AudioSystem() {}
 AudioSystem::~AudioSystem() {}

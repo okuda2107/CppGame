@@ -1,8 +1,9 @@
 #pragma once
 #include "core/Math.h"
-#include "object/Component.h"
+#include "game/object/Component.h"
 
 class SkydomeComponent : public Component {
+    class RenderDB* mDatabase;
     class Mesh* mMesh;
     class Shader* mShader;
     size_t mTextureIndex;

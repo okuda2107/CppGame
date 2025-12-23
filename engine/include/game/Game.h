@@ -1,37 +1,50 @@
 #pragma once
+#include "GameCore.h"
 #include "base/GameBase.h"
-#include "runtime/RuntimeSystem.h"
-
-template <typename InputState>
-class ObjectsSystemBase;
+#include "object/base/ObjectsSystemBase.h"
 
 template <typename InputState>
 class Game : public GameBase<InputState, struct RenderData, struct GameState,
                              struct GameMetrics> {
    protected:
-    class ObjectsSystemBase<InputState>* mActorsSystem;
-    class RenderDB* mRenderDB;
-    class AudioSystem* mAudioSystem;
-    // class PhysicsSystem* mPhysicsSystem;
-    class UISystem* mUISystem;
+    class GameCore* mCore;
 
-    GameState mState;
+    ObjectsSystemBase<InputState>* mActorsSystem;
 
    public:
-    bool Initialize() override;
-    void Shutdown() override;
+    Game(class GameCore* core, ObjectsSystemBase<InputState>* system)
+        : mCore(core), mActorsSystem(system) {}
 
-    void ProcessInput(const InputState& state) override;
+    bool Initialize() override {
+        mActorsSystem = new ObjectsSystemBase<InputState>();
+        return mCore->Initialize();
+    }
+    void Shutdown() override {
+        mActorsSystem->UnloadObjects();
+        mCore->Shutdown();
+    }
+
+    // ユーザ定義の入力処理
+    virtual void InputHandle(const InputState& state) = 0;
+
+    void ProcessInput(const InputState& state) override {
+        InputHandle(state);
+        mActorsSystem->ProcessInput(state);
+    }
     const struct GameState& Update(float deltatime,
-                                   const struct GameMetrics& metrics) override;
-    const struct RenderData& GenerateRenderData() override;
+                                   const struct GameMetrics& metrics) override {
+        mActorsSystem->UpdateObjects(deltatime);
+        return mCore->mState;
+    }
+    const struct RenderData& GenerateRenderData() override {
+        return mCore->mRenderDB->GetData();
+    }
 
     class ObjectSystemBase<InputState>* GetObjectSystem() {
         return mActorsSystem;
     }
-    class RenderDB* GetRenderDB() { return mRenderDB; }
-    class AudioSystem* GetAudioSystem() { return mAudioSystem; }
-    class UISystem* GetUISystem() { return mUISystem; }
+    class RenderDB* GetRenderDB() { return mCore.mRenderDB; }
+    class AudioSystem* GetAudioSystem() { return mCore.mAudioSystem; }
+    // class PhysicsSystem* GetPhysicsSystem() { return mCore.mPhysicsSystem; }
+    class UISystem* GetUISystem() { return mCore.mUISystem; }
 };
-
-#include "Game.inl"

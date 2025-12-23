@@ -1,14 +1,14 @@
-#include "audio/Bank.h"
+#include "game/audio/Bank.h"
 
 #include <fstream>
 #include <sstream>
 
 #include "SDL_log.h"
 #include "SDL_mixer.h"
-#include "audio/AudioSystem.h"
-#include "audio/Event.h"
-#include "audio/Helper.h"
 #include "document.h"
+#include "game/audio/AudioSystem.h"
+#include "game/audio/Event.h"
+#include "game/audio/Helper.h"
 #include "rapidjson/istreamwrapper.h"
 #include "rapidjson/schema.h"
 #include "rapidjson/stringbuffer.h"

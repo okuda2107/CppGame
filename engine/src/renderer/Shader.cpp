@@ -1,17 +1,16 @@
-#include "renderer/OpenGL/Shader.h"
+#include "renderer/Shader.h"
 
 #include <fstream>
 #include <sstream>
 
 #include "SDL.h"
 
-OpenGL::Shader::Shader()
-    : mShaderProgram(0), mVertexShader(0), mFragShader(0) {}
+Shader::Shader() : mShaderProgram(0), mVertexShader(0), mFragShader(0) {}
 
-OpenGL::Shader::~Shader() {}
+Shader::~Shader() {}
 
-bool OpenGL::Shader::CompileShader(const std::string& filename,
-                                   GLuint shaderType, GLuint& outShader) {
+bool Shader::CompileShader(const std::string& filename, GLuint shaderType,
+                           GLuint& outShader) {
     //ファイルの文字列を読み込む
     std::ifstream shaderFile(filename);
     if (shaderFile.is_open()) {
@@ -38,7 +37,7 @@ bool OpenGL::Shader::CompileShader(const std::string& filename,
     return true;
 }
 
-bool OpenGL::Shader::IsCompiled(GLuint shader) {
+bool Shader::IsCompiled(GLuint shader) {
     GLint status;
     //シェーダーが正しくコンパイルされたか
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
@@ -53,8 +52,7 @@ bool OpenGL::Shader::IsCompiled(GLuint shader) {
     return true;
 }
 
-bool OpenGL::Shader::Load(const std::string& vertName,
-                          const std::string& fragName) {
+bool Shader::Load(const std::string& vertName, const std::string& fragName) {
     //コンパイルする
     if (!CompileShader(vertName, GL_VERTEX_SHADER, mVertexShader) ||
         !CompileShader(fragName, GL_FRAGMENT_SHADER, mFragShader)) {
@@ -71,7 +69,7 @@ bool OpenGL::Shader::Load(const std::string& vertName,
     return true;
 }
 
-bool OpenGL::Shader::IsValidProgram() {
+bool Shader::IsValidProgram() {
     GLint status;
     //正しくプログラムが作成できたかどうか
     glGetProgramiv(mShaderProgram, GL_LINK_STATUS, &status);
@@ -86,9 +84,9 @@ bool OpenGL::Shader::IsValidProgram() {
     return true;
 }
 
-void OpenGL::Shader::SetActive() { glUseProgram(mShaderProgram); }
+void Shader::SetActive() { glUseProgram(mShaderProgram); }
 
-void OpenGL::Shader::SetMatrixUniform(const char* name, const Matrix4& matrix) {
+void Shader::SetMatrixUniform(const char* name, const Matrix4& matrix) {
     // Search uniform
     GLuint loc = glGetUniformLocation(mShaderProgram, name);
 
@@ -96,19 +94,19 @@ void OpenGL::Shader::SetMatrixUniform(const char* name, const Matrix4& matrix) {
     glUniformMatrix4fv(loc, 1, GL_TRUE, matrix.GetAsFloatPtr());
 }
 
-void OpenGL::Shader::SetVectorUniform(const char* name, const Vector3& vector) {
+void Shader::SetVectorUniform(const char* name, const Vector3& vector) {
     GLuint loc = glGetUniformLocation(mShaderProgram, name);
     // Send the vector data
     glUniform3fv(loc, 1, vector.GetAsFloatPtr());
 }
 
-void OpenGL::Shader::SetFloatUniform(const char* name, float value) {
+void Shader::SetFloatUniform(const char* name, float value) {
     GLuint loc = glGetUniformLocation(mShaderProgram, name);
     // Send the float data
     glUniform1f(loc, value);
 }
 
-void OpenGL::Shader::Unload() {
+void Shader::Unload() {
     glDeleteProgram(mShaderProgram);
     glDeleteShader(mVertexShader);
     glDeleteShader(mFragShader);

@@ -2,10 +2,10 @@
 #include "InputState.h"
 #include "SDL.h"
 #include "base/InputSystemBase.h"
+#include "runtime/RuntimeData.h"
 
 // 入力の状態を管理
-class InputSystem
-    : public InputSystemBase<InputState, struct InputSystemMetrics> {
+class InputSystem : public InputSystemBase<InputState, InputSystemMetrics> {
    public:
     InputSystem();
 

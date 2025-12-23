@@ -4,9 +4,9 @@
 
 #include "GL/glew.h"
 // #include "UI/UIScreen.h"
-#include "UI/Font.h"
-#include "UI/UIScreen.h"
-#include "object/Actor.h"
+#include "game/UI/Font.h"
+#include "game/UI/UIScreen.h"
+#include "game/object/Actor.h"
 #include "renderer/Mesh.h"
 #include "renderer/MeshComponent.h"
 #include "renderer/RenderData.h"

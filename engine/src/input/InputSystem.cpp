@@ -1,12 +1,12 @@
-#include "input/KeyboardAndMouse/InputSystem.h"
+#include "input/InputSystem.h"
 
 #include <unordered_map>
 
-#include "input/KeyboardAndMouse/InputState.h"
+#include "input/InputState.h"
 
-KeyboardAndMouse::InputSystem::InputSystem() {}
+InputSystem::InputSystem() {}
 
-bool KeyboardAndMouse::InputSystem::Initialize() {
+bool InputSystem::Initialize() {
     // キーボード
     mState.Keyboard = KeyboardState();
     // 現在の状態を示すポインタを保存
@@ -26,9 +26,9 @@ bool KeyboardAndMouse::InputSystem::Initialize() {
     return true;
 }
 
-void KeyboardAndMouse::InputSystem::Shutdown() { mState.EventMap.clear(); }
+void InputSystem::Shutdown() { mState.EventMap.clear(); }
 
-void KeyboardAndMouse::InputSystem::Update() {
+void InputSystem::Update() {
     // 前処理
     // キーボード
     memcpy(mState.Keyboard.mPrevState, mState.Keyboard.mCurrState,
@@ -65,7 +65,7 @@ void KeyboardAndMouse::InputSystem::Update() {
     mState.Mouse.mMousePos.y = static_cast<float>(y);
 }
 
-void KeyboardAndMouse::InputSystem::SetRelativeMouseMode(bool value) {
+void InputSystem::SetRelativeMouseMode(bool value) {
     SDL_bool set = value ? SDL_TRUE : SDL_FALSE;
     SDL_SetRelativeMouseMode(set);
     mState.Mouse.mIsRelative = value;
