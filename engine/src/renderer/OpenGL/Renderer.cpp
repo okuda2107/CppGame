@@ -20,22 +20,36 @@ RenderConfig RenderConfig::Dome() {
     RenderConfig config;
     config.mDepthTest = true;
     config.mDepthMask = true;
+    config.mBlend = false;
+    config.mCullFaceBack = true;
+    config.mSortByCamera = false;
+    return config;
 }
 
-RenderConfig RenderConfig::Dome() {
+RenderConfig RenderConfig::Opaque() {
     RenderConfig config;
-    config.mDepthMask =
+    config.mDepthTest = true;
+    config.mDepthMask = true;
+    config.mBlend = false;
+    config.mCullFaceBack = false;
+    config.mSortByCamera = false;
+    return config;
 }
 
-RenderConfig RenderConfig::Dome() {
+RenderConfig RenderConfig::Translucent() {
     RenderConfig config;
-    config.mDepthMask =
+    config.mDepthTest = true;
+    config.mDepthMask = false;
+    config.mBlend = true;
+    config.mCullFaceBack = false;
+    config.mSortByCamera = true;
+    return config;
 }
 
 std::unordered_map<ConfigID, RenderConfig> Renderer::mMeshConfigs = {
-    {ConfigID::Dome, RenderConfig{
-
-                     }}};
+    {ConfigID::Dome, RenderConfig::Dome()},
+    {ConfigID::Opaque, RenderConfig::Opaque()},
+    {ConfigID::Translucent, RenderConfig::Translucent()}};
 
 Renderer::Renderer()
     : mContext(nullptr),

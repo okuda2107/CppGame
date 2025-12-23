@@ -17,9 +17,9 @@ struct RenderConfig {
     bool mCullFaceBack;
     bool mSortByCamera;
 
-    RenderConfig Dome();
-    RenderConfig Opaque();
-    RenderConfig Translucent();
+    static RenderConfig Dome();
+    static RenderConfig Opaque();
+    static RenderConfig Translucent();
 };
 
 class Renderer : public RendererBase<struct RenderData> {
