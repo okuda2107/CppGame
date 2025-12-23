@@ -1,4 +1,6 @@
 #pragma once
+#include <type_traits>
+
 #include "IGame.h"
 
 // ゲームの内部での処理定義を責務とする

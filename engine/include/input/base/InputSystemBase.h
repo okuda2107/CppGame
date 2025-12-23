@@ -1,4 +1,6 @@
 #pragma once
+#include <type_traits>
+
 #include "IInputSystem.h"
 
 // 入力の状態を管理

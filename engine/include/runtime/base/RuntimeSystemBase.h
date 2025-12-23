@@ -1,4 +1,6 @@
 #pragma once
+#include <type_traits>
+
 #include "IRuntimeSystem.h"
 
 template <typename GameView, typename InputView>
