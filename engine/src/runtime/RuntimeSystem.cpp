@@ -1,5 +1,7 @@
 #include "runtime/RuntimeSystem.h"
 
+#include "MetricsBase.h"
+
 enum class RuntimeState {
     EGameplay,
     EPaused,

@@ -2,6 +2,12 @@
 #include "base/MetricsBase.h"
 #include "base/RuntimeSystemBase.h"
 
+enum class RuntimeState;
+
+struct GameState : GameDataBase {
+    RuntimeState mState;
+};
+
 struct InputSystemMetrics : InputSystemMetricsBase {
     // 相対マウスモードを有効 / 無効
     bool mRelativeMouseMode;
@@ -9,9 +15,7 @@ struct InputSystemMetrics : InputSystemMetricsBase {
 
 using Metrics = MetricsBundle<GameMetricsBase, InputSystemMetrics>;
 
-enum class RuntimeState;
-
-class RuntimeSystem : public RuntimeSystemBase<RuntimeState, Metrics> {
+class RuntimeSystem : public RuntimeSystemBase<GameState, Metrics> {
     Uint32 mTicksCount;
     RuntimeState mState;
 
