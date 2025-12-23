@@ -1,14 +1,14 @@
 #pragma once
-#include "base/DrawComponentBase.h"
 #include "core/Math.h"
+#include "object/Component.h"
 
-class SkydomeComponent : public DrawComponentBase<class Renderer> {
+class SkydomeComponent : public Component {
     class Mesh* mMesh;
     class Shader* mShader;
     size_t mTextureIndex;
 
    public:
-    SkydomeComponent(class Actor* owner, Renderer* system);
+    SkydomeComponent(class Actor* owner, class RenderDB* system);
     ~SkydomeComponent();
 
     void Draw(Matrix4 viewProj);

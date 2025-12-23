@@ -27,7 +27,7 @@ class Renderer : public RendererBase<struct RenderData> {
     class Shader* mSpriteShader;
     class VertexArray* mSpriteVerts;
 
-    static std::unordered_map<ConfigID, RenderConfig> mMeshConfigs;
+    static std::unordered_map<RenderConfigID, RenderConfig> mMeshConfigs;
 
     Matrix4 mProjection;
 
@@ -39,11 +39,19 @@ class Renderer : public RendererBase<struct RenderData> {
 
     bool LoadShaders();
     void CreateSpriteVerts();
-    void SetLightUniforms(class Shader* shader);
+    void SetLightUniforms(class Shader* shader, const struct RenderData& data);
     // これは本来Shader.hファイルに書くべき？ <-
     // 3D表示するときにしか使わんからRendererファイルでいいかも
     // このファイルに新しく光源の配列作っても良し
     // 光の計算はシェーダーにとっては必要不可欠ではない
+
+    // meshを描画する補助関数
+    void MeshDraw(const std::vector<MeshComponent*>& meshComps,
+                  const struct RenderData& view);
+
+    // 与えられた描画設定を適用する / 解除する
+    void ApplyConfig(const RenderConfig& id);
+    void ResetConfig();
 
    public:
     Renderer();
@@ -60,9 +68,5 @@ class Renderer : public RendererBase<struct RenderData> {
     class SDL_Window* GetWindow() const { return mWindow; }
 
     // order順に比較できるhashを返す
-    ConfigID GetConfigID(const RenderConfig& config);
-
-    // 与えられた描画設定を適用する / 解除する
-    void ApplyConfig(const ConfigID id);
-    void ResetConfig();
+    // ConfigID GetConfigID(const RenderConfig& config);
 };

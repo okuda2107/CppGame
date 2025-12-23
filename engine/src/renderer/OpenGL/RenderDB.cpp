@@ -17,6 +17,10 @@ bool RenderDB::Initialize() {
         return false;
     }
 
+    // initialize data
+    mData.mView =
+        Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
+
     return true;
 }
 
@@ -67,7 +71,7 @@ void RenderDB::RemoveSprite(SpriteComponent* sprite) {
     mData.mSprites.erase(iter);
 }
 
-void RenderDB::AddMeshComp(const ConfigID id, MeshComponent* mesh) {
+void RenderDB::AddMeshComp(const RenderConfigID id, MeshComponent* mesh) {
     auto iter = mData.mMeshComps.find(id);
     if (iter != mData.mMeshComps.end()) {
         iter->second.push_back(mesh);
@@ -76,7 +80,7 @@ void RenderDB::AddMeshComp(const ConfigID id, MeshComponent* mesh) {
     }
 }
 
-void RenderDB::RemoveMeshComp(const ConfigID id, MeshComponent* mesh) {
+void RenderDB::RemoveMeshComp(const RenderConfigID id, MeshComponent* mesh) {
     auto vectorIter = mData.mMeshComps.find(id);
     if (vectorIter != mData.mMeshComps.end()) {
         auto meshIter = std::find(vectorIter->second.begin(),

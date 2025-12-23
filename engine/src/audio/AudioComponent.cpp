@@ -3,7 +3,6 @@
 #include "audio/AudioSystem.h"
 #include "audio/SoundHandler.h"
 #include "audio/base/AudioComponentBase.h"
-#include "core/Game.h"
 #include "object/Actor.h"
 
 AudioComponent::AudioComponent(Actor* owner, AudioSystem* system)

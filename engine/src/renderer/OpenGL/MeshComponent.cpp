@@ -1,35 +1,31 @@
-#include "renderer/OpenGL/MeshComponent.h"
+#include "renderer/MeshComponent.h"
 
 #include <algorithm>
 
-#include "core/Actor.h"
-#include "renderer/OpenGL/Mesh.h"
-#include "renderer/OpenGL/Renderer.h"
-#include "renderer/OpenGL/Shader.h"
-#include "renderer/OpenGL/Texture.h"
-#include "renderer/OpenGL/VertexArray.h"
+#include "object/Actor.h"
+#include "renderer/Mesh.h"
+#include "renderer/RenderDB.h"
+#include "renderer/Shader.h"
+#include "renderer/Texture.h"
+#include "renderer/VertexArray.h"
 
 MeshComponent::MeshComponent(Actor* owner, class RenderDB* database,
-                             RenderConfig config)
-    : Component(owner), mMesh(nullptr) {
-    ConfigID id = mSystem->GetConfigID(config);
+                             RenderConfigID id)
+    : Component(owner), mDatabase(database), mMesh(nullptr), mShader(nullptr) {
     mConfigID = id;
-    mSystem->AddMeshComp(id, this);
+
+    mDatabase->AddMeshComp(id, this);
 }
 
-OpenGL::MeshComponent::~MeshComponent() {
-    mSystem->RemoveMeshComp(mConfigID, this);
-}
+MeshComponent::~MeshComponent() { mDatabase->RemoveMeshComp(mConfigID, this); }
 
-void OpenGL::MeshComponent::Draw(const std::string& shaderName,
-                                 Shader* shader) {
-    if (mMesh) {
-        if (mMesh->GetShaderName() != shaderName) return;
+void MeshComponent::Draw() {
+    if (mMesh && mShader) {
         // Set the world transform
         //そのオブジェクト特有のパラメータを用いる場合ここに書く
-        shader->SetMatrixUniform("uWorldTransform",
-                                 mOwner->GetWorldTransform());
-        shader->SetFloatUniform("uSpecPower", mMesh->GetSpecPower());
+        mShader->SetMatrixUniform("uWorldTransform",
+                                  mOwner->GetWorldTransform());
+        mShader->SetFloatUniform("uSpecPower", mMesh->GetSpecPower());
         // Set the active texture
         for (size_t i = 0; i < mTextureIndices.size(); i++) {
             Texture* t = mMesh->GetTexture(mTextureIndices[i]);
@@ -60,11 +56,11 @@ void OpenGL::MeshComponent::Draw(const std::string& shaderName,
 //     }
 // }
 
-void OpenGL::MeshComponent::AddTextureIndex(size_t index) {
+void MeshComponent::AddTextureIndex(size_t index) {
     mTextureIndices.push_back(index);
 }
 
-void OpenGL::MeshComponent::RemoveTextureIndex(size_t index) {
+void MeshComponent::RemoveTextureIndex(size_t index) {
     auto iter =
         std::find(mTextureIndices.begin(), mTextureIndices.end(), index);
     if (iter != mTextureIndices.end()) {

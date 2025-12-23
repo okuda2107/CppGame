@@ -23,8 +23,8 @@ class RenderDB {
     void AddSprite(class SpriteComponent* sprite);
     void RemoveSprite(class SpriteComponent* sprite);
 
-    void AddMeshComp(const ConfigID config, class MeshComponent* mesh);
-    void RemoveMeshComp(const ConfigID config, class MeshComponent* mesh);
+    void AddMeshComp(const RenderConfigID config, class MeshComponent* mesh);
+    void RemoveMeshComp(const RenderConfigID config, class MeshComponent* mesh);
 
     void AddSkydome(class SkydomeComponent* skydome) {
         mData.mSkydome = skydome;

@@ -5,7 +5,7 @@
 #include "GL/glew.h"
 // #include "UI/UIScreen.h"
 #include "UI/Font.h"
-#include "core/Game.h"
+#include "UI/UIScreen.h"
 #include "object/Actor.h"
 #include "renderer/Mesh.h"
 #include "renderer/MeshComponent.h"
@@ -46,10 +46,10 @@ RenderConfig RenderConfig::Translucent() {
     return config;
 }
 
-std::unordered_map<ConfigID, RenderConfig> Renderer::mMeshConfigs = {
-    {ConfigID::Dome, RenderConfig::Dome()},
-    {ConfigID::Opaque, RenderConfig::Opaque()},
-    {ConfigID::Translucent, RenderConfig::Translucent()}};
+std::unordered_map<RenderConfigID, RenderConfig> Renderer::mMeshConfigs = {
+    {RenderConfigID::Dome, RenderConfig::Dome()},
+    {RenderConfigID::Opaque, RenderConfig::Opaque()},
+    {RenderConfigID::Translucent, RenderConfig::Translucent()}};
 
 Renderer::Renderer()
     : mContext(nullptr),
@@ -152,16 +152,31 @@ void Renderer::Draw(const RenderData& data) {
 
     // メッシュ描画
     for (auto mc : data.mMeshComps) {
-        ApplyConfig(mc.first);
+        auto config = mMeshConfigs.at(mc.first);
+        ApplyConfig(config);
 
-        for (auto shader : data.mShaders) {
-            shader.second->SetActive();
-            shader.second->SetMatrixUniform("uViewProj",
-                                            data.mView * mProjection);
-            SetLightUniforms(shader.second);
-            for (auto mc : mc.second) {
-                mc->Draw(shader.first, shader.second);
-            }
+        if (config.mSortByCamera) {
+            // カメラから遠い順に描画するための描画
+            // この処理はRenderDBの責務です．
+            // と思ったけど，この処理は毎秒行われるべきなので，rendererがしてもいいのかも
+            auto comps = mc.second;
+            Matrix4 invView = data.mView;
+            invView.Invert();
+            Vector3 cameraPos = invView.GetTranslation();
+            // 半透明相当の描画設定 → 遠い順にソート
+            std::sort(
+                comps.begin(), comps.end(),
+                [cameraPos](MeshComponent* a, MeshComponent* b) {
+                    float distA =
+                        (a->GetOwner()->GetPosition() - cameraPos).LengthSq();
+                    float distB =
+                        (b->GetOwner()->GetPosition() - cameraPos).LengthSq();
+                    return distA > distB;  // 遠い順
+                });
+            MeshDraw(comps, data);
+
+        } else {  // カメラから遠い順に描画する必要がないとき
+            MeshDraw(mc.second, data);
         }
 
         ResetConfig();
@@ -181,15 +196,29 @@ void Renderer::Draw(const RenderData& data) {
     }
 
     // Draw UI
-    // for (auto ui : mGame->GetUIStack()) {
-    //     ui->Draw(mSpriteShader);
-    // }
+    if (data.mUI) {
+        data.mUI->Draw(mSpriteShader);
+    }
 
     SDL_GL_SwapWindow(mWindow);
 }
 
-void Renderer::ApplyConfig(const ConfigID id) {
-    RenderConfig config = mMeshConfigs.at(id);
+void Renderer::MeshDraw(const std::vector<MeshComponent*>& meshComps,
+                        const RenderData& data) {
+    Shader* previousShader = nullptr;
+    for (auto mc : meshComps) {
+        if (mc->GetShader() != previousShader) {
+            mc->GetShader()->SetActive();
+            mc->GetShader()->SetMatrixUniform("uViewProj",
+                                              data.mView * mProjection);
+            SetLightUniforms(mc->GetShader(), data);
+        }
+        mc->Draw();
+    }
+}
+
+// OpenGLの状態をconfigに基づいて適用
+void Renderer::ApplyConfig(const RenderConfig& config) {
     if (config.mBlend)
         glEnable(GL_BLEND);
     else if (!config.mBlend)
@@ -209,23 +238,6 @@ void Renderer::ApplyConfig(const ConfigID id) {
         glEnable(GL_DEPTH_TEST);
     else if (!config.mDepthTest)
         glDisable(GL_DEPTH_TEST);
-
-    // カメラから遠い順に描画
-    if (config.mSortByCamera) {
-        auto comps = mMeshComps.at(id);
-        Matrix4 invView = mView;
-        invView.Invert();
-        Vector3 cameraPos = invView.GetTranslation();
-        // 半透明相当の描画設定 → 遠い順にソート
-        std::sort(comps.begin(), comps.end(),
-                  [cameraPos](MeshComponent* a, MeshComponent* b) {
-                      float distA =
-                          (a->GetOwner()->GetPosition() - cameraPos).LengthSq();
-                      float distB =
-                          (b->GetOwner()->GetPosition() - cameraPos).LengthSq();
-                      return distA > distB;  // 遠い順
-                  });
-    }
 }
 
 void Renderer::ResetConfig() {
@@ -249,8 +261,6 @@ bool Renderer::LoadShaders() {
     mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
 
     // Set the view-projection matrix
-    mView =
-        Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
     mProjection = Matrix4::CreatePerspectiveFOV(
         Math::ToRadians(70.0f), mScreenWidth, mScreenHeight, 25.0f, 10000.0f);
 
@@ -271,18 +281,18 @@ void Renderer::CreateSpriteVerts() {
 }
 
 //ShaderファイルはGLSLへの架け橋の役目，光のセットアップを書いてしまうとそれが崩れる
-void Renderer::SetLightUniforms(Shader* shader) {
+void Renderer::SetLightUniforms(Shader* shader, const RenderData& data) {
     // Camera position is from inverted view
-    Matrix4 invView = mView;
+    Matrix4 invView = data.mView;
     invView.Invert();
     shader->SetVectorUniform("uCameraPos", invView.GetTranslation());
     // Ambient light
-    shader->SetVectorUniform("uAmbientLight", mAmbientLight);
+    shader->SetVectorUniform("uAmbientLight", data.mAmbientLight);
     // Directional light
-    shader->SetVectorUniform("uDirLight.mDirection", mDirLight.mDirection);
+    shader->SetVectorUniform("uDirLight.mDirection", data.mDirLight.mDirection);
     shader->SetVectorUniform("uDirLight.mDiffuseColor",
-                             mDirLight.mDiffuseColor);
-    shader->SetVectorUniform("uDirLight.mSpecColor", mDirLight.mSpecColor);
+                             data.mDirLight.mDiffuseColor);
+    shader->SetVectorUniform("uDirLight.mSpecColor", data.mDirLight.mSpecColor);
 }
 
 /*
@@ -294,15 +304,15 @@ void Renderer::SetLightUniforms(Shader* shader) {
 デメリット: ハッシュ値に変換すると，元の設定内容が分からないため，デバッグに工夫が必要．
 ハッシュ値を出力するようにする場合，描画順序を考慮させることが難しい．そのため上位ピットのいくつかは描画順序を表す数字にして，mapの描画順序を表す
 */
-ConfigID Renderer::GetConfigID(const RenderConfig& config) {
-    ConfigID id;
-    if (config.mCullFaceBack) {
-        id = ConfigID::Dome;
-    } else if (config.mBlend && !config.mDepthMask && config.mDepthTest) {
-        id = ConfigID::Translucent;
-    } else {
-        id = ConfigID::Opaque;
-    }
-    mMeshConfigs.emplace(id, config);
-    return id;
-}
+// ConfigID Renderer::GetConfigID(const RenderConfig& config) {
+//     ConfigID id;
+//     if (config.mCullFaceBack) {
+//         id = ConfigID::Dome;
+//     } else if (config.mBlend && !config.mDepthMask && config.mDepthTest) {
+//         id = ConfigID::Translucent;
+//     } else {
+//         id = ConfigID::Opaque;
+//     }
+//     mMeshConfigs.emplace(id, config);
+//     return id;
+// }

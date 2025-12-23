@@ -3,7 +3,6 @@
 #include "GL/glew.h"
 #include "UI/Font.h"
 #include "UI/UISystem.h"
-#include "core/Game.h"
 #include "renderer/Shader.h"
 #include "renderer/Texture.h"
 

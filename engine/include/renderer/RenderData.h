@@ -16,7 +16,7 @@ struct DirectionalLight {
 
 // 将来的にハッシュ値になる可能性
 // 現在はここで順序を設定
-enum ConfigID {
+enum RenderConfigID {
     Dome = 0,
     Opaque,
     Translucent,
@@ -28,7 +28,7 @@ struct RenderData : RenderDataBase {
     Matrix4 mView;
 
     std::vector<class SpriteComponent*> mSprites;
-    std::map<ConfigID, std::vector<class MeshComponent*>> mMeshComps;
+    std::map<RenderConfigID, std::vector<class MeshComponent*>> mMeshComps;
 
     class SkydomeComponent* mSkydome;
 
