@@ -196,8 +196,8 @@ void Renderer::Draw(const RenderData& data) {
     }
 
     // Draw UI
-    if (data.mUI) {
-        data.mUI->Draw(mSpriteShader);
+    for (auto ui : *data.mUI) {
+        ui->Draw(mSpriteShader);
     }
 
     SDL_GL_SwapWindow(mWindow);

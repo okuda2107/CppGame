@@ -1,6 +1,8 @@
 #include "game/GameCore.h"
 
 #include "SDL.h"
+#include "game/UI/UIScreen.h"
+#include "game/UI/UISystem.h"
 #include "game/audio/AudioSystem.h"
 #include "renderer/RenderDB.h"
 #include "renderer/RenderData.h"
@@ -31,4 +33,34 @@ void GameCore::Shutdown() {
         mAudioSystem->UnloadAllBanks();
         mAudioSystem->Shutdown();
     }
+}
+
+void GameCore::BeforeUpdate(float deltatime) {
+    mAudioSystem->Update(deltatime);
+}
+
+void GameCore::AfterUpdate(float deltatime) {
+    // UIの更新
+    for (auto ui : mUISystem->GetUIStack()) {
+        if (ui->GetState() == UIScreen::EActive) ui->Update(deltatime);
+    }
+
+    // close状態のUIを削除
+    auto iter = mUISystem->GetUIStack().begin();
+    while (iter != mUISystem->GetUIStack().end()) {
+        if ((*iter)->GetState() == UIScreen::EClosing) {
+            delete *iter;
+            iter = mUISystem->GetUIStack().erase(iter);
+        } else {
+            ++iter;
+        }
+    }
+}
+
+const RenderData& GameCore::GenerateRenderData() {
+    if (!mUISystem->GetUIStack().empty())
+        mRenderDB->SetUI(&mUISystem->GetUIStack());
+    else
+        mRenderDB->SetUI(nullptr);
+    return mRenderDB->GetData();
 }

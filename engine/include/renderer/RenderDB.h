@@ -31,6 +31,8 @@ class RenderDB {
     }
     void RemoveSkydome() { mData.mSkydome = nullptr; }
 
+    void SetUI(const std::vector<class UIScreen*>* ui) { mData.mUI = ui; }
+
     void SetViewMatrix(const class Matrix4& view) { mData.mView = view; }
 
     void SetAmbientLight(const Vector3& ambient) {

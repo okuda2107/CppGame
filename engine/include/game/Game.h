@@ -33,11 +33,13 @@ class Game : public GameBase<InputState, struct RenderData, struct GameState,
     }
     const struct GameState& Update(float deltatime,
                                    const struct GameMetrics& metrics) override {
+        mCore->BeforeUpdate(deltatime);
         mActorsSystem->UpdateObjects(deltatime);
+        mCore->AfterUpdate(deltatime);
         return mCore->mState;
     }
     const struct RenderData& GenerateRenderData() override {
-        return mCore->mRenderDB->GetData();
+        return mCore->GenerateRenderData();
     }
 
     class ObjectSystemBase<InputState>* GetObjectSystem() {

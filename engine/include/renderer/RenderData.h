@@ -32,8 +32,10 @@ struct RenderData : RenderDataBase {
 
     class SkydomeComponent* mSkydome;
 
-    // 表示するUIを一つ渡す
-    class UIScreen* mUI;
+    // 表示するUIを渡す
+    // constポインタにすると，ポインタの先の内容を変更はできない．
+    // 変数がconstなわけでは無いので，mUIへポインタを再代入はできる．
+    const std::vector<class UIScreen*>* mUI;
 
     // Lighting data
     Vector3 mAmbientLight;

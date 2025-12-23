@@ -12,4 +12,12 @@ class GameCore {
 
     bool Initialize();
     void Shutdown();
+
+    // Actorのupdateの前に動かす
+    void BeforeUpdate(float deltatime);
+
+    // Actorのupdateの後に動かす
+    void AfterUpdate(float deltatime);
+
+    const struct RenderData& GenerateRenderData();
 };
