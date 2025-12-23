@@ -20,33 +20,12 @@ Game::Game() : mTicksCount(0), mState(EGameplay) {
 Game<InputState>::Game() : mTicksCount(0), mState(EGameplay) {}
 
 bool Game<InputState>::Initialize() {
-    if (int sdlResult = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
-        SDL_Log("Failed to Initialize SDL:%s", SDL_GetError());
-        return false;
-    }
-
-    if (!mInputSystem->Initialize()) {
-        SDL_Log("Failed to initialize input system");
-        delete mInputSystem;
-        mInputSystem = nullptr;
-        return false;
-    }
-
-    if (!mRenderer->Initialize(1024.0f, 768.0f)) {
-        SDL_Log("Failed to initialize renderer");
-        delete mRenderer;
-        mRenderer = nullptr;
-        return false;
-    }
-
     if (!mAudioSystem->Initialize()) {
         SDL_Log("Failed to initialize audio system");
         delete mAudioSystem;
         mAudioSystem = nullptr;
         return false;
     }
-
-    mTicksCount = SDL_GetTicks();
 
     return true;
 }
