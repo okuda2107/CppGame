@@ -1,10 +1,17 @@
 #include "audio/AudioSystem.h"
+#include "object/base/ObjectsSystemBase.h"
 #include "renderer/RenderDB.h"
 #include "renderer/RenderData.h"
 #include "runtime/RuntimeSystem.h"
 
 template <typename InputState>
 bool Game<InputState>::Initialize() {
+    mActorsSystem = new ObjectsSystemBase<InputState>();
+
+    mRenderDB = new RenderDB();
+    if (!mRenderDB->Initialize()) {
+    }
+
     if (!mAudioSystem->Initialize()) {
         SDL_Log("Failed to initialize audio system");
         delete mAudioSystem;
