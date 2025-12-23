@@ -31,11 +31,13 @@ class Engine {
     */
     template <typename InputState, typename RenderData, typename GameData,
               typename Metrics>
-    void SetSystem(class GameBase<InputState, RenderData, GameData,
-                                  typename Metrics::Game>* game,
-                   class InputSystemBase<InputState>* inputSystem,
-                   class RendererBase<RenderData>* renderer,
-                   class RuntimeSystemBase<GameData, Metrics>* runtimeSystem) {
+    void SetSystem(
+        class GameBase<InputState, RenderData, GameData,
+                       typename Metrics::Game>* game,
+        class InputSystemBase<InputState, typename Metrics::InputSystem>*
+            inputSystem,
+        class RendererBase<RenderData>* renderer,
+        class RuntimeSystemBase<GameData, Metrics>* runtimeSystem) {
         mGame = game;
         mInputSystem = inputSystem;
         mRenderer = renderer;
@@ -61,6 +63,10 @@ class Engine {
 
             // runtimeの更新，情報の集計など
             mRuntimeSystem->IProcessGameData(gameData);
+
+            // metricsの伝播
+            mInputSystem->IProcessMetrics(
+                mRuntimeSystem->IGetInputSystemMetrics());
 
             // frameの終了
             mRuntimeSystem->IEndFrame();

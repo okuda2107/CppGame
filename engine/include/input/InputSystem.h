@@ -4,7 +4,8 @@
 #include "base/InputSystemBase.h"
 
 // 入力の状態を管理
-class InputSystem : public InputSystemBase<InputState> {
+class InputSystem
+    : public InputSystemBase<InputState, struct InputSystemMetrics> {
    public:
     InputSystem();
 

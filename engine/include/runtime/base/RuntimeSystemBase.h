@@ -1,12 +1,14 @@
 #pragma once
 #include "IRuntimeSystem.h"
 
-template <typename GameView>
+template <typename GameView, typename InputView>
 struct MetricsBundle {
     using Game = GameView;
+    using InputSystem = InputView;
 };
 
 // ゲームプログラムの実行環境，フレーム，時間処理を責務とする
+// ゲームからの要求に基づき，実行環境に関わる設定変更を各システムへ反映する
 template <typename GameData, typename Metrics>
 class RuntimeSystemBase : public IRuntimeSystem {
     static_assert(std::is_base_of<GameDataBase, GameData>::value,
@@ -15,10 +17,16 @@ class RuntimeSystemBase : public IRuntimeSystem {
         std::is_base_of<GameMetricsBase, typename Metrics::Game>::value,
         "Metrics::Game must derive from GameMetricsBase");
 
+    static_assert(
+        std::is_base_of<InputSystemMetricsBase,
+                        typename Metrics::InputSystem>::value,
+        "Metrics::InputSystem must derive from InputSystemMetricsBase");
+
    protected:
     float mDeltatime;
 
     typename Metrics::Game mGameMetrics;
+    typename Metrics::InputSystem mInputSystemMetrics;
 
    public:
     RuntimeSystemBase() = default;
@@ -53,8 +61,8 @@ class RuntimeSystemBase : public IRuntimeSystem {
     const struct GameMetricsBase& IGetGameMetrics() const final {
         return mGameMetrics;
     }
-    const struct RendererMetricsBase& IGetRendererMetrics() const final {
-        return mRendererMetrics;
+    const struct InputSystemMetricsBase& IGetInputSystemMetrics() const final {
+        return mInputSystemMetrics;
     }
 };
 

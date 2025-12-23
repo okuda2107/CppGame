@@ -20,5 +20,6 @@ class IRuntimeSystem {
 
     // Metricsを出力
     virtual const struct GameMetricsBase& IGetGameMetrics() const = 0;
-    virtual const struct RendererMetricsBase& IGetRendererMetrics() const = 0;
+    virtual const struct InputSystemMetricsBase& IGetInputSystemMetrics()
+        const = 0;
 };
