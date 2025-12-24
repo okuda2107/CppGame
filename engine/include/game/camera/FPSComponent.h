@@ -1,6 +1,5 @@
 #pragma once
 #include "CameraComponent.h"
-#include "SDL.h"
 
 // FPS視点の位置にカメラをアタッチする
 class FPSComponent : public CameraComponent {
@@ -13,7 +12,8 @@ class FPSComponent : public CameraComponent {
     float mPitchSpeed;
 
    public:
-    FPSComponent(class Actor* owner, int drawOrder = 200);
+    FPSComponent(class Actor* owner, struct CameraCompDeps& fcd,
+                 int drawOrder = 200);
     ~FPSComponent();
 
     void Update(float deltatime) override;

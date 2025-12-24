@@ -1,7 +1,9 @@
 #pragma once
-#include "Actor.h"
-#include "FPSComponent.h"
 #include "SDL.h"
+#include "game/camera/FPSComponent.h"
+#include "game/object/Actor.h"
+
+struct FPSActorDeps;
 
 //  キーマウでの操作ができるFPS視点のActor
 class FPSActor : public Actor {
@@ -24,7 +26,7 @@ class FPSActor : public Actor {
     const static SDL_Scancode mLeftKey = SDL_SCANCODE_A;
 
    public:
-    FPSActor(class Game* game);
+    FPSActor(class ActorsSystem* system, struct FPSActorDeps& fad);
 
     void ActorInput(const InputState& state) override;
     void UpdateActor(float deltaTime) override;

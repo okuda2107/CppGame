@@ -1,6 +1,6 @@
-#include "MoveComponent.h"
+#include "game/object/MoveComponent.h"
 
-#include "Actor.h"
+#include "game/object/Actor.h"
 
 MoveComponent::MoveComponent(class Actor* owner, int updateOrder)
     : Component(owner, updateOrder),

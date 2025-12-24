@@ -5,8 +5,12 @@
 #include "game/audio/base/AudioComponentBase.h"
 #include "game/object/Actor.h"
 
-AudioComponent::AudioComponent(Actor* owner, AudioSystem* system)
-    : AudioComponentBase(owner, system) {}
+struct AudioCompDeps {
+    class AudioSystem* system;
+};
+
+AudioComponent::AudioComponent(Actor* owner, AudioCompDeps& acd)
+    : AudioComponentBase(owner, acd.system) {}
 
 AudioComponent::~AudioComponent() { StopAllEvents(); }
 

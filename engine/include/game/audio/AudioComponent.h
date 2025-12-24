@@ -5,13 +5,15 @@
 #include "SoundHandler.h"
 #include "base/AudioComponentBase.h"
 
+struct AudioCompDeps;
+
 class AudioComponent : public AudioComponentBase<class AudioSystem> {
     // ハンドラはAudioSystemでnewされたものを受け取るが，deleteはこちらの責務
     std::unordered_map<std::string, class SoundHandler> mEvents2D;
     std::unordered_map<std::string, class SoundHandler> mEvents3D;
 
    public:
-    AudioComponent(Actor* owner, class AudioSystem* system);
+    AudioComponent(Actor* owner, struct AudioCompDeps& acd);
     ~AudioComponent();
 
     void Update(float deltaTime) override;

@@ -1,18 +1,16 @@
-#include "FPSComponent.h"
+#include "game/camera/FPSComponent.h"
 
-#include "Actor.h"
-#include "AudioSystem.h"
-#include "Game.h"
-#include "Renderer.h"
 #include "core/Math.h"
-#include "input/KeyboardAndMouse/InputSystem.h"
+#include "game/audio/AudioSystem.h"
+#include "game/object/Actor.h"
 
-FPSComponent::FPSComponent(class Actor* owner, int updateOrder)
-    : CameraComponent(owner, updateOrder),
+FPSComponent::FPSComponent(class Actor* owner, struct CameraCompDeps& ccd,
+                           int updateOrder)
+    : CameraComponent(owner, ccd, updateOrder),
       mPitch(0.0f),
       mMaxPitch(Math::Pi / 3.0f),
       mPitchSpeed(0.0f) {
-    mOwner->GetGame()->GetInputSystem()->SetRelativeMouseMode(true);
+    // mOwner->GetGame()->GetInputSystem()->SetRelativeMouseMode(true);
 }
 
 FPSComponent::~FPSComponent() {}
