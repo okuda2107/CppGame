@@ -1,12 +1,12 @@
 #include "BonfireGame.h"
 
-#include "audio/OpenAL/System.h"
 #include "core/ActorsSystem.h"
 #include "core/Game.h"
+#include "game/audio/AudioSystem.h"
 #include "input/KeyboardAndMouse/InputSystem.h"
 #include "renderer/OpenGL/Renderer.h"
 
-BonfireGame::BonfireGame() {
+BonfireGame::BonfireGame() : Game {
     mGame = new Game();
     mActorsSystem = new ActorsSystem();
     mInputSystem = new KeyboardAndMouse::InputSystem();

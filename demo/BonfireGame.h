@@ -1,37 +1,14 @@
 #pragma once
+#include "core/Math.h"
+#include "game/Game.h"
+#include "input/InputState.h"
 
-namespace KeyboardAndMouse {
-class InputSystem;
-}
+class BonfireGame : Game<InputState> {
+    Vector2 mFieldMin;
+    Vector2 mFieldMax;
 
-namespace OpenGL {
-class Renderer;
-}
-
-namespace OpenAL {
-class System;
-}
-
-class BonfireGame {
-    class Game* mGame;
-    class ActorsSystem* mActorsSystem;
-    KeyboardAndMouse::InputSystem* mInputSystem;
-    OpenGL::Renderer* mRenderer;
-    OpenAL::System* mAudioSystem;
-
-    class Vector2* mFieldMin;
-    class Vector2* mFieldMax;
-
-    void ProcessInput();
-    void UpdateGame();
-    void GenerateOutput();
-
-    void LoadData();
+    void InputHandle(const InputState& state);
 
    public:
     BonfireGame();
-
-    bool Initialize();
-    void RunLoop();
-    void Shutdown();
 };
