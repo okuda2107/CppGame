@@ -1,6 +1,8 @@
 #pragma once
 #include "GameCore.h"
 #include "base/GameBase.h"
+#include "game/UI/UIScreen.h"
+#include "game/UI/UISystem.h"
 #include "object/base/ObjectsSystemBase.h"
 
 template <typename InputState>
@@ -12,7 +14,7 @@ class Game : public GameBase<InputState, struct RenderData, struct GameState,
     ObjectsSystemBase<InputState>* mActorsSystem;
 
     // ユーザ定義の入力処理
-    virtual void InputHandle(const InputState& state) = 0;
+    virtual void InputHandle(const InputState& state) {};
 
    public:
     Game(class GameCore* core, ObjectsSystemBase<InputState>* system)
@@ -29,7 +31,13 @@ class Game : public GameBase<InputState, struct RenderData, struct GameState,
 
     void ProcessInput(const InputState& state) override {
         InputHandle(state);
-        mActorsSystem->ProcessInput(state);
+
+        // 入力に対して，ゲームオブジェクト，UIを反応させる
+        if (mCore->mState.mState == EGameplay) {
+            mActorsSystem->ProcessInput(state);
+        } else if (!mUIStack.empty()) {
+            mCore->mUISystem->GetUIStack().back()->ProcessInput(state);
+        }
     }
     const struct GameState& Update(float deltatime,
                                    const struct GameMetrics& metrics) override {

@@ -22,7 +22,7 @@ struct RenderConfig {
     static RenderConfig Translucent();
 };
 
-class Renderer : public RendererBase<struct RenderData> {
+class Renderer : public RendererBase<RenderData> {
    private:
     class Shader* mSpriteShader;
     class VertexArray* mSpriteVerts;
