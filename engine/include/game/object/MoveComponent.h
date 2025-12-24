@@ -69,7 +69,7 @@ class MoveComponent : public Component {
         mZAngularSpeed = zAngularSpeed;
     }
 
-    TypeID GetType() const { return TypeID::TMoveComponent; }
+    // TypeID GetType() const { return TypeID::TMoveComponent; }
 
-    void LoadProperties(const rapidjson::Value& inObj) override;
+    // void LoadProperties(const rapidjson::Value& inObj) override;
 };

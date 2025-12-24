@@ -5,8 +5,6 @@
 
 // Actorの配列を保持し，それらのupdateを保証する
 class ActorsSystem : public ObjectsSystemBase<class InputState> {
-    friend class Actor;
-
     std::vector<class Actor*> mActors;
     std::vector<class Actor*> mPendingActors;
 

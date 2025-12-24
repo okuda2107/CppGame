@@ -61,4 +61,4 @@ void MoveComponent::Update(float deltatime) {
         SetOwnerRotation(Vector3::UnitZ, mZAngularSpeed, deltatime);
 }
 
-void MoveComponent::LoadProperties(const rapidjson::Value& inObj) {}
+// void MoveComponent::LoadProperties(const rapidjson::Value& inObj) {}
