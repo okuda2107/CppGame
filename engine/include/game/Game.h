@@ -11,6 +11,9 @@ class Game : public GameBase<InputState, struct RenderData, struct GameState,
 
     ObjectsSystemBase<InputState>* mActorsSystem;
 
+    // ユーザ定義の入力処理
+    virtual void InputHandle(const InputState& state) = 0;
+
    public:
     Game(class GameCore* core, ObjectsSystemBase<InputState>* system)
         : mCore(core), mActorsSystem(system) {}
@@ -23,9 +26,6 @@ class Game : public GameBase<InputState, struct RenderData, struct GameState,
         mActorsSystem->UnloadObjects();
         mCore->Shutdown();
     }
-
-    // ユーザ定義の入力処理
-    virtual void InputHandle(const InputState& state) = 0;
 
     void ProcessInput(const InputState& state) override {
         InputHandle(state);

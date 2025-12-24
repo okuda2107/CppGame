@@ -12,7 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(prj CXX)
 
 add_subdirectory("engine")
-add_subdirectory("engine_temp")
+# add_subdirectory("engine_temp")
 
 add_subdirectory("demo")
 
