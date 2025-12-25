@@ -20,7 +20,7 @@ class Engine {
     class IRuntimeSystem* mRuntimeSystem;
 
    public:
-    // 型指定の正当性を保証するためのsetter
+    // 型指定の正当性を保証するためにtemplate constractorを設ける
     /*
         InputState: InputStateBaseを基底クラスとした，入力情報を取り扱う構造体
         RenderData: RenderDataBaseを基底クラスとした，Rendererにレンダリングする情報を伝えるための構造体
@@ -29,18 +29,16 @@ class Engine {
     */
     template <typename InputState, typename RenderData, typename GameData,
               typename Metrics>
-    void SetSystem(
-        class GameBase<InputState, RenderData, GameData,
-                       typename Metrics::Game>* game,
-        class InputSystemBase<InputState, typename Metrics::InputSystem>*
-            inputSystem,
-        class RendererBase<RenderData>* renderer,
-        class RuntimeSystemBase<GameData, Metrics>* runtimeSystem) {
-        mGame = game;
-        mInputSystem = inputSystem;
-        mRenderer = renderer;
-        mRuntimeSystem = runtimeSystem;
-    }
+    Engine(class GameBase<InputState, RenderData, GameData,
+                          typename Metrics::Game>* game,
+           class InputSystemBase<InputState, typename Metrics::InputSystem>*
+               inputSystem,
+           class RendererBase<RenderData>* renderer,
+           class RuntimeSystemBase<GameData, Metrics>* runtimeSystem)
+        : mGame(game),
+          mInputSystem(inputSystem),
+          mRenderer(renderer),
+          mRuntimeSystem(runtimeSystem) {}
 
     bool Initialize() {
         if (!mGame->Initialize() || !mInputSystem->Initialize() ||
@@ -68,32 +66,5 @@ class Engine {
         mRuntimeSystem = nullptr;
     }
 
-    void RunLoop() {
-        while (mRuntimeSystem->IIsRunning()) {
-            // frameの開始
-            mRuntimeSystem->IBeginFrame();
-
-            // 入力処理
-            mInputSystem->IUpdate();
-            mGame->IProcessInput(mInputSystem->IGetState());
-
-            // game更新
-            const GameDataBase& gameData =
-                mGame->IUpdate(mRuntimeSystem->IGetDeltatime(),
-                               mRuntimeSystem->IGetGameMetrics());
-
-            // 画面出力
-            mRenderer->IDraw(mGame->IGenerateRenderData());
-
-            // runtimeの更新，情報の集計など
-            mRuntimeSystem->IProcessGameData(gameData);
-
-            // metricsの伝播
-            mInputSystem->IProcessMetrics(
-                mRuntimeSystem->IGetInputSystemMetrics());
-
-            // frameの終了
-            mRuntimeSystem->IEndFrame();
-        }
-    }
+    void RunLoop();
 };

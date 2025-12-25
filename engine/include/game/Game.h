@@ -19,13 +19,24 @@ class Game
     virtual void InputHandle(const InputState& state) {};
 
    public:
-    Game(class GameCore* core, ObjectsSystemBase<InputState>* system)
-        : mCore(core), mActorsSystem(system) {}
+    Game(ObjectsSystemBase<InputState>* system) : mActorsSystem(system) {
+        mCore = new GameCore();
+    }
 
-    bool Initialize() override { return mCore->Initialize(); }
+    bool Initialize() override {
+        if (!mCore->Initialize()) {
+            mCore
+        }
+        return mCore->Initialize();
+    }
     void Shutdown() override {
-        mActorsSystem->UnloadObjects();
         mCore->Shutdown();
+        mActorsSystem->UnloadObjects();
+
+        delete mCore;
+
+        mCore = nullptr;
+        mActorsSystem = nullptr;
     }
 
     void ProcessInput(const InputState& state) override {
