@@ -1,9 +1,5 @@
 #include "Engine.h"
 
-bool Engine::Initialize() {}
-
-void Engine::Shutdown() {}
-
 void Engine::RunLoop() {
     while (mRuntimeSystem->IIsRunning()) {
         // frameの開始

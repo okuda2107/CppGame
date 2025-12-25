@@ -40,31 +40,5 @@ class Engine {
           mRenderer(renderer),
           mRuntimeSystem(runtimeSystem) {}
 
-    bool Initialize() {
-        if (!mGame->Initialize() || !mInputSystem->Initialize() ||
-            !mRenderer->Initialize() || !mRuntimeSystem->Initialize()) {
-            mGame = nullptr;
-            mInputSystem = nullptr;
-            mRenderer = nullptr;
-            mRuntimeSystem = nullptr;
-
-            return false;
-        }
-
-        return true;
-    }
-
-    void Shutdown() {
-        mGame->Shutdown();
-        mInputSystem->Shutdown();
-        mRenderer->Shutdown();
-        mRuntimeSystem->Shutdown();
-
-        mGame = nullptr;
-        mInputSystem = nullptr;
-        mRenderer = nullptr;
-        mRuntimeSystem = nullptr;
-    }
-
     void RunLoop();
 };
