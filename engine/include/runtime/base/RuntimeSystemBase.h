@@ -34,9 +34,6 @@ class RuntimeSystemBase : public IRuntimeSystem {
     RuntimeSystemBase() = default;
     virtual ~RuntimeSystemBase() = default;
 
-    virtual bool Initialize() { return true; }
-    virtual void Shutdown() {}
-
     // gameの更新を続行するか
     virtual bool IsRunning() const = 0;
 

@@ -9,8 +9,6 @@
 #include "runtime/base/RuntimeSystemBase.h"
 
 // 入力，更新，出力の連携を責務とする
-// systemの初期化，終了処理は処理していない．
-// 現状の実装は，必要ならばゲーム実装者側で処理する必要がある．
 class Engine {
     // game内部の世界を表現
     class IGame* mGame;
@@ -42,6 +40,32 @@ class Engine {
         mInputSystem = inputSystem;
         mRenderer = renderer;
         mRuntimeSystem = runtimeSystem;
+    }
+
+    bool Initialize() {
+        if (!mGame->Initialize() || !mInputSystem->Initialize() ||
+            !mRenderer->Initialize() || !mRuntimeSystem->Initialize()) {
+            mGame = nullptr;
+            mInputSystem = nullptr;
+            mRenderer = nullptr;
+            mRuntimeSystem = nullptr;
+
+            return false;
+        }
+
+        return true;
+    }
+
+    void Shutdown() {
+        mGame->Shutdown();
+        mInputSystem->Shutdown();
+        mRenderer->Shutdown();
+        mRuntimeSystem->Shutdown();
+
+        mGame = nullptr;
+        mInputSystem = nullptr;
+        mRenderer = nullptr;
+        mRuntimeSystem = nullptr;
     }
 
     void RunLoop() {

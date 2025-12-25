@@ -5,6 +5,9 @@ class IRuntimeSystem {
     IRuntimeSystem() = default;
     virtual ~IRuntimeSystem() = default;
 
+    virtual bool Initialize() { return true; }
+    virtual void Shutdown() {}
+
     // gameの更新を続行するか
     virtual bool IIsRunning() const = 0;
 

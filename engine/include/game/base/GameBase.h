@@ -23,9 +23,6 @@ class GameBase : public IGame {
     GameBase() = default;
     virtual ~GameBase() = default;
 
-    virtual bool Initialize() { return true; }
-    virtual void Shutdown() {}
-
     // 入力を処理
     virtual void ProcessInput(const InputState& state) = 0;
     // deltatimeに基づいてgameを更新する

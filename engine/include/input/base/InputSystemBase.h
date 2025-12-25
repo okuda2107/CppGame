@@ -23,9 +23,6 @@ class InputSystemBase : public IInputSystem {
     InputSystemBase() = default;
     virtual ~InputSystemBase() = default;
 
-    virtual bool Initialize() { return true; }
-    virtual void Shutdown() {}
-
     // 更新処理
     // 入力状態を定期的に問い合わせる (ポーリング)
     virtual void Update() = 0;
