@@ -37,6 +37,8 @@ class Renderer : public RendererBase<RenderData> {
     SDL_Window* mWindow;
     SDL_GLContext mContext;
 
+    void Shutdown();
+
     bool LoadShaders();
     void CreateSpriteVerts();
     void SetLightUniforms(class Shader* shader, const struct RenderData& data);
@@ -59,7 +61,6 @@ class Renderer : public RendererBase<RenderData> {
     // レンダラーの初期化処理と終了処理
     bool Initialize(float screenWidth, float screenHeight,
                     std::string windowTitle, bool isFullScreen);
-    void Shutdown();
 
     // フレームの描画
     void Draw(const struct RenderData& data);

@@ -2,6 +2,11 @@
 
 #include "runtime/RuntimeData.h"
 
+RuntimeSystem::RuntimeSystem()
+    : mTicksCount(0), mState(RuntimeState::EGameplay) {}
+
+RuntimeSystem::~RuntimeSystem() { Shutdown(); }
+
 bool RuntimeSystem::Initialize() {
     if (int sdlResult = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
         SDL_Log("Failed to Initialize SDL:%s", SDL_GetError());
@@ -15,7 +20,7 @@ bool RuntimeSystem::Initialize() {
 
 void RuntimeSystem::Shutdown() { SDL_Quit(); }
 
-bool RuntimeSystem::IsRunning() { return mState != RuntimeState::EQuit; }
+bool RuntimeSystem::IsRunning() const { return mState != RuntimeState::EQuit; }
 
 void RuntimeSystem::BeginFrame() {
     while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
@@ -28,6 +33,6 @@ void RuntimeSystem::BeginFrame() {
 
 void RuntimeSystem::EndFrame() {}
 
-void RuntimeSystem::ProcessGameData(const RuntimeState& state) {
-    mState = state;
+void RuntimeSystem::ProcessGameData(const GameState& state) {
+    mState = state.mState;
 }

@@ -59,7 +59,7 @@ Renderer::Renderer()
       mSpriteShader(nullptr),
       mWindow(nullptr) {}
 
-Renderer::~Renderer() {}
+Renderer::~Renderer() { Shutdown(); }
 
 bool Renderer::Initialize(float screenWidth, float screenHeight,
                           std::string windowTitle, bool isFullScreen) {

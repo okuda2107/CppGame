@@ -8,14 +8,18 @@ class RuntimeSystem : public RuntimeSystemBase<GameState, Metrics> {
     Uint32 mTicksCount;
     RuntimeState mState;
 
-   public:
-    bool Initialize();
     void Shutdown();
 
-    bool IsRunning();
+   public:
+    RuntimeSystem();
+    ~RuntimeSystem();
 
-    void BeginFrame();
-    void EndFrame();
+    bool Initialize();
 
-    void ProcessGameData(const RuntimeState& state);
+    bool IsRunning() const override;
+
+    void BeginFrame() override;
+    void EndFrame() override;
+
+    void ProcessGameData(const GameState& state);
 };

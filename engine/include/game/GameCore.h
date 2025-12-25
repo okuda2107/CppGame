@@ -2,6 +2,8 @@
 #include "runtime/RuntimeSystem.h"
 
 class GameCore {
+    void Shutdown();
+
    public:
     class RenderDB* mRenderDB;
     class AudioSystem* mAudioSystem;
@@ -10,8 +12,10 @@ class GameCore {
 
     GameState mState;
 
+    GameCore();
+    ~GameCore();
+
     bool Initialize();
-    void Shutdown();
 
     // Actorのupdateの前に動かす
     void BeforeUpdate(float deltatime);

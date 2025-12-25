@@ -7,20 +7,35 @@
 #include "renderer/RenderDB.h"
 #include "renderer/RenderData.h"
 
-bool GameCore::Initialize() {
+GameCore::GameCore() {
     mRenderDB = new RenderDB();
-    if (!mRenderDB->Initialize()) {
-        SDL_Log("Failed to initialize render database");
-        delete mRenderDB;
-        mRenderDB = nullptr;
-        return false;
-    }
-
     mAudioSystem = new AudioSystem();
-    if (!mAudioSystem->Initialize()) {
-        SDL_Log("Failed to initialize audio system");
+    mUISystem = new UISystem();
+}
+
+GameCore::~GameCore() {
+    Shutdown();
+    delete mUISystem;
+    delete mAudioSystem;
+    delete mRenderDB;
+}
+
+bool GameCore::Initialize() {
+    try {  // 初期化に失敗したら初期状態にロールバックを行う
+        if (!mRenderDB->Initialize()) {
+            throw std::runtime_error("Failed to Initialize RenderDB");
+        }
+
+        if (!mAudioSystem->Initialize()) {
+            throw std::runtime_error("Failed to initialize audio system");
+        }
+    } catch (const std::runtime_error& e) {
+        SDL_Log(e.what());
+        delete mRenderDB;
         delete mAudioSystem;
-        mAudioSystem = nullptr;
+        mRenderDB = new RenderDB();
+        mAudioSystem = new AudioSystem();
+
         return false;
     }
 

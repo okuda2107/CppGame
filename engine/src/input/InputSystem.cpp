@@ -4,7 +4,7 @@
 
 #include "input/InputState.h"
 
-InputSystem::InputSystem() {}
+InputSystem::InputSystem() { Shutdown(); }
 
 bool InputSystem::Initialize() {
     // キーボード

@@ -6,11 +6,13 @@
 
 // 入力の状態を管理
 class InputSystem : public InputSystemBase<InputState, InputSystemMetrics> {
+    void Shutdown();
+
    public:
     InputSystem();
+    ~InputSystem();
 
     bool Initialize();
-    void Shutdown();
 
     // 入力状態更新処理
     void Update();

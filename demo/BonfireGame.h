@@ -10,5 +10,5 @@ class BonfireGame : Game<InputState> {
     void InputHandle(const InputState& state);
 
    public:
-    BonfireGame(class GameCore* core, class ActorsSystem* system);
+    BonfireGame(class ActorsSystem* system);
 };
