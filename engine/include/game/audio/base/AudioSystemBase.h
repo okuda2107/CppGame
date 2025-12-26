@@ -9,12 +9,14 @@
 */
 template <typename SoundHandler>
 class AudioSystemBase {
+   protected:
+    virtual void Shutdown() = 0;
+
    public:
-    AudioSystemBase() {};
-    virtual ~AudioSystemBase() {};
+    AudioSystemBase() = default;
+    virtual ~AudioSystemBase() = default;
 
     virtual bool Initialize() = 0;
-    virtual void Shutdown() = 0;
 
     virtual void LoadBank(const std::string& name) = 0;
     virtual void UnloadBank(const std::string& name) = 0;

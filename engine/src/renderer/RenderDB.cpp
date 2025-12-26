@@ -11,6 +11,8 @@
 #include "renderer/SpriteComponent.h"
 #include "renderer/Texture.h"
 
+RenderDB::~RenderDB() { UnloadAssets(); }
+
 bool RenderDB::Initialize() {
     if (TTF_Init() != 0) {
         SDL_Log("Failed to initialize SDL_ttf");
@@ -23,8 +25,6 @@ bool RenderDB::Initialize() {
 
     return true;
 }
-
-void RenderDB::Shutdown() { UnloadAssets(); }
 
 void RenderDB::UnloadAssets() {
     // Destroy textures

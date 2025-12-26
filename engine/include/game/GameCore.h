@@ -2,8 +2,6 @@
 #include "runtime/RuntimeSystem.h"
 
 class GameCore {
-    void Shutdown();
-
    public:
     class RenderDB* mRenderDB;
     class AudioSystem* mAudioSystem;

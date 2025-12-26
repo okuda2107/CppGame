@@ -26,16 +26,17 @@ class AudioSystem : public AudioSystemBase<class SoundHandler> {
 
     ALCcontext* mContext;
 
+    void Shutdown() override;
+
+    void UnloadAllBanks();
+
    public:
-    AudioSystem();
     ~AudioSystem();
 
     bool Initialize() override;
-    void Shutdown() override;
 
     void LoadBank(const std::string& name) override;
     void UnloadBank(const std::string& name) override;
-    void UnloadAllBanks();
 
     void Update(float deltaTIme) override;
 

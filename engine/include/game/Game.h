@@ -18,21 +18,13 @@ class Game
     // ユーザ定義の入力処理
     virtual void InputHandle(const InputState& state) {};
 
-    void Shutdown() override {
-        mCore->Shutdown();
-        mActorsSystem->UnloadObjects();
-    }
-
    public:
     Game(ObjectsSystemBase<InputState>* system) : mActorsSystem(system) {
         mCore = new GameCore();
     }
-    virtual ~Game() {
-        Shutdown();
-        delete mCore;
-    }
+    virtual ~Game() { delete mCore; }
 
-    bool Initialize() override {
+    bool Initialize() {
         if (!mCore->Initialize()) {
             return false;
         }

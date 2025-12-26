@@ -10,10 +10,11 @@ class ActorsSystem : public ObjectsSystemBase<class InputState> {
 
     bool mUpdatingActors;
 
+    void UnloadObjects() override;
+
    public:
     ActorsSystem();
-
-    void UnloadObjects() override;
+    ~ActorsSystem() override;
 
     void ProcessInput(const InputState& state);
     void UpdateObjects(float deltatime);

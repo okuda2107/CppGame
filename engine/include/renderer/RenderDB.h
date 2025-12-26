@@ -15,8 +15,9 @@ class RenderDB {
     void UnloadAssets();
 
    public:
+    ~RenderDB();
+
     bool Initialize();
-    void Shutdown();
 
     const RenderData& GetData() { return mData; }
 

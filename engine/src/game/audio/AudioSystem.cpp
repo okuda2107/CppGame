@@ -10,8 +10,10 @@
 #include "game/audio/Helper.h"
 #include "game/audio/SoundHandler.h"
 
-AudioSystem::AudioSystem() {}
-AudioSystem::~AudioSystem() {}
+AudioSystem::~AudioSystem() {
+    UnloadAllBanks();
+    Shutdown();
+}
 
 bool AudioSystem::Initialize() {
     if (!Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG)) {

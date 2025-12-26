@@ -3,7 +3,7 @@
 #include "game/Game.h"
 #include "input/InputState.h"
 
-class BonfireGame : Game<InputState> {
+class BonfireGame : public Game<InputState> {
     Vector2 mFieldMin;
     Vector2 mFieldMax;
 

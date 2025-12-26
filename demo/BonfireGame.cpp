@@ -7,7 +7,7 @@
 #include "input/InputSystem.h"
 #include "renderer/Renderer.h"
 
-BonfireGame::BonfireGame(ActorsSystem* system) : Game<InputState>(system) {
+BonfireGame::BonfireGame(class ActorsSystem* system) : Game(system) {
     mFieldMin = Vector2(-1500, -500);
     mFieldMax = Vector2(500, 1500);
 }

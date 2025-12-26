@@ -14,7 +14,6 @@ GameCore::GameCore() {
 }
 
 GameCore::~GameCore() {
-    Shutdown();
     delete mUISystem;
     delete mAudioSystem;
     delete mRenderDB;
@@ -40,14 +39,6 @@ bool GameCore::Initialize() {
     }
 
     return true;
-}
-
-void GameCore::Shutdown() {
-    if (mRenderDB) mRenderDB->Shutdown();
-    if (mAudioSystem) {
-        mAudioSystem->UnloadAllBanks();
-        mAudioSystem->Shutdown();
-    }
 }
 
 void GameCore::BeforeUpdate(float deltatime) {

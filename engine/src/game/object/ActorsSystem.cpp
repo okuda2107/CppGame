@@ -7,6 +7,8 @@
 
 ActorsSystem::ActorsSystem() : mUpdatingActors(false) {}
 
+ActorsSystem::~ActorsSystem() { UnloadObjects(); }
+
 void ActorsSystem::ProcessInput(const InputState& state) {
     mUpdatingActors = true;
     for (Actor* actor : mActors) {
