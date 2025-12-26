@@ -9,13 +9,14 @@ class InputSystem : public InputSystemBase<InputState, InputSystemMetrics> {
     void Shutdown();
 
    public:
-    InputSystem();
-    ~InputSystem();
+    ~InputSystem() override;
 
     bool Initialize();
 
     // 入力状態更新処理
     void Update();
+
+    void ProcessMetrics(const InputSystemMetrics& metrics);
 
     // 相対マウスモードを有効 / 無効
     void SetRelativeMouseMode(bool value);

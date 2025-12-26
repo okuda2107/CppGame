@@ -4,7 +4,7 @@
 
 #include "input/InputState.h"
 
-InputSystem::InputSystem() { Shutdown(); }
+InputSystem::~InputSystem() { Shutdown(); }
 
 bool InputSystem::Initialize() {
     // キーボード
@@ -63,6 +63,11 @@ void InputSystem::Update() {
     }
     mState.Mouse.mMousePos.x = static_cast<float>(x);
     mState.Mouse.mMousePos.y = static_cast<float>(y);
+}
+
+void InputSystem::ProcessMetrics(const InputSystemMetrics& metrics) {
+    if (mState.Mouse.mIsRelative != metrics.mRelativeMouseMode)
+        SetRelativeMouseMode(metrics.mRelativeMouseMode);
 }
 
 void InputSystem::SetRelativeMouseMode(bool value) {

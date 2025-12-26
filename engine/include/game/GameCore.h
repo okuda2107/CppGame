@@ -1,5 +1,5 @@
 #pragma once
-#include "runtime/RuntimeSystem.h"
+#include "runtime/RuntimeData.h"
 
 class GameCore {
    public:
