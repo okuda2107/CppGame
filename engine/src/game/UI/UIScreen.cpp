@@ -1,12 +1,25 @@
 #include "game/UI/UIScreen.h"
 
+#include <functional>
+#include <string>
+
 #include "GL/glew.h"
 #include "game/UI/Font.h"
 #include "game/UI/UISystem.h"
 #include "renderer/Shader.h"
 #include "renderer/Texture.h"
 
-UIScreen::UIScreen(UISystem* system) : mSystem(system), mState(EActive) {
+size_t HashText::operator()(const TextKey& k) const noexcept {
+    size_t hash = std::hash<std::string>()(k.text);
+    hash ^= std::hash<int>()(k.size) << 1;
+    hash ^= std::hash<uint8_t>()(k.color.x) << 2;
+    hash ^= std::hash<uint8_t>()(k.color.y) << 3;
+    hash ^= std::hash<uint8_t>()(k.color.z) << 4;
+    return hash;
+}
+
+UIScreen::UIScreen(UISystem* system)
+    : mSystem(system), mState(EActive), mFont(nullptr) {
     // Add to UI Stack
     mSystem->PushUI(this);
     // mFont = mGame->GetFont("Assets/SlacksideOne-Regular.ttf");
@@ -36,4 +49,15 @@ void UIScreen::DrawTexture(Shader* shader, Texture* texture,
     // Draw quad
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+}
+
+Texture* UIScreen::GetFontTexture(const TextKey& key) {
+    if (!mFont) return nullptr;
+    auto iter = mFontTexture.find(key);
+    if (iter != mFontTexture.end()) {
+        return iter->second;
+    } else {
+        Texture* tex = new Texture();
+        tex = mFont->RenderText(key.text, key.color, key.size);
+    }
 }
