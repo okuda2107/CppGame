@@ -1,10 +1,10 @@
 #pragma once
 
-#include "UIScreen.h"
+#include "game/UI/UIScreen.h"
 
 class AddWoodUI : public UIScreen {
    public:
-    AddWoodUI(class Game* game) : UIScreen(game) {
+    AddWoodUI(class UISystem* system) : UIScreen(system) {
         SetTitle("Add wood ... [e]");
     }
 
