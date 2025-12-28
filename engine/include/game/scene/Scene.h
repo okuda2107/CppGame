@@ -15,6 +15,7 @@ struct SceneCreateDeps {
 
 class Scene {
    protected:
+    class ActorsSystem& mActorsSystem;
     class RenderDB& mRenderDB;
     class AudioSystem& mAudioSystem;
     // class PhysicsSystem& mPhysicsSystem;
