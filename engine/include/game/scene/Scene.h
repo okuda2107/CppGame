@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 struct SceneCreateDeps {
     /*
@@ -11,19 +12,39 @@ struct SceneCreateDeps {
     class AudioSystem& audioSystem;
     // class PhysicsSystem& physicsSystem;
     class UISystem& uiSystem;
+    class SceneManager& sceneManager;
 };
 
 class Scene {
+    friend class SceneManager;
+
    protected:
     class ActorsSystem& mActorsSystem;
     class RenderDB& mRenderDB;
     class AudioSystem& mAudioSystem;
     // class PhysicsSystem& mPhysicsSystem;
     class UISystem& mUISystem;
+    class SceneManager& mSceneManager;
+
+    /*
+        外部からSceneをロードされ，SceneManagerを通さないことを防ぐため，
+        SceneManagerをfriendクラスにして，Load / Unload をprotectedにする．
+    */
+    virtual void LoadActors() = 0;
+    virtual void UnloadActors() = 0;
 
    public:
     Scene(struct SceneCreateDeps& scd)
-        : mRenderDB(scd.renderDB),
+        : mActorsSystem(scd.actorsSystem),
+          mRenderDB(scd.renderDB),
           mAudioSystem(scd.audioSystem),
-          mUISystem(scd.uiSystem) {}
+          mUISystem(scd.uiSystem),
+          mSceneManager(scd.sceneManager) {}
+
+    virtual ~Scene() = default;
+
+    // SceneManagerに登録されているSceneのtag文字列を返す
+    // 遷移しないときは空文字列を返す
+    // 存在しないtag文字列を返すと，Logを出して，処理が続行される
+    virtual std::string PollNextScene() = 0;
 };

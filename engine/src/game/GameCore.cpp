@@ -4,6 +4,7 @@
 #include "game/UI/UIScreen.h"
 #include "game/UI/UISystem.h"
 #include "game/audio/AudioSystem.h"
+#include "game/scene/SceneManager.h"
 #include "renderer/RenderDB.h"
 #include "renderer/RenderData.h"
 
@@ -61,6 +62,9 @@ void GameCore::AfterUpdate(float deltatime) {
             ++iter;
         }
     }
+
+    // SceneManagerの更新
+    mSceneManager->Update();
 }
 
 const RenderData& GameCore::GenerateRenderData() {

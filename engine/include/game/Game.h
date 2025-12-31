@@ -59,4 +59,6 @@ class Game
     class AudioSystem* GetAudioSystem() { return mCore->mAudioSystem; }
     // class PhysicsSystem* GetPhysicsSystem() { return mCore->mPhysicsSystem; }
     class UISystem* GetUISystem() { return mCore->mUISystem; }
+
+    class SceneManager* GetSceneManager() { return mCore->mSceneManager; }
 };

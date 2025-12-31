@@ -8,6 +8,8 @@ class GameCore {
     // class PhysicsSystem* mPhysicsSystem;
     class UISystem* mUISystem;
 
+    class SceneManager* mSceneManager;
+
     GameState mState;
 
     GameCore();

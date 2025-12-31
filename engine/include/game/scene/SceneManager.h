@@ -1,8 +1,26 @@
 #pragma once
+#include <string>
+#include <unordered_map>
+
+struct SceneContext {
+    int number;
+    std::string str;
+};
 
 class SceneManager {
+    std::string mCurrentSceneTag = "";
+    std::unordered_map<std::string, class Scene*> mScenes;
+
+    void UnloadScenes();
+
    public:
-    void RequestChange(SceneID next);
-    void Update(float deltatime);
-    Scene& CurrentScene();
+    virtual ~SceneManager();
+
+    void Update();
+
+    bool SetEntryScene(const std::string& tag);
+    bool SetScene(const std::string& tag, class Scene* scene);
+
+    // Scene間でデータをやり取りする際に用いる
+    std::unordered_map<std::string, SceneContext> mData;
 };
