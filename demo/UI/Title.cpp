@@ -7,7 +7,7 @@
 #include "Game.h"
 #include "SDL.h"
 
-Title::Title(Game* game) : UIScreen(game), mParent(nullptr) {
+Title::Title(UISystem* system) : UIScreen(system), mParent(nullptr) {
     mGame->SetState(Game::EPaused);
     SetTitle("Chillut's Fire", Color::White, 72);
 }

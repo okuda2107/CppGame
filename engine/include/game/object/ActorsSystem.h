@@ -5,6 +5,7 @@
 
 #include "Actor.h"
 #include "base/ObjectsSystemBase.h"
+#include "input/InputState.h"
 
 // 入力を処理するハンドラ
 struct ProcessInputHandlerBase {
@@ -50,6 +51,8 @@ class ActorsSystem : public ObjectsSystemBase<class InputState> {
 
     void AddActor(const std::string& tag, class Actor* actor);
     void RemoveActor(const std::string& tag, class Actor* actor);
+
+    void DeleteActorsByTag(const std::string& tag);
 
     template <typename InputHandler, typename UpdateHandler>
     void SetPolicy(const std::string& tag) {

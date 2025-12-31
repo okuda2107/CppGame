@@ -1,11 +1,11 @@
 #pragma once
-#include "UIScreen.h"
+#include "game/UI/UIScreen.h"
 
 class Title : public UIScreen {
     class BonfireGameManager* mParent;
 
    public:
-    Title(class Game* game);
+    Title(class UISystem* system);
     ~Title();
 
     void HandleKeyPress(int key) override;

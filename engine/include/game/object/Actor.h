@@ -15,6 +15,8 @@ class Actor : public ObjectBase {
     };
 
    private:
+    std::string mTag;
+
     class ActorsSystem* mSystem;
     Vector3 mPosition;
     float mScale;
@@ -33,7 +35,7 @@ class Actor : public ObjectBase {
     virtual void UpdateActor(float deltatime) {};
 
    public:
-    Actor(class ActorsSystem* game);
+    Actor(class ActorsSystem* game, const std::string& tag);
     virtual ~Actor();
 
     void ProcessInput(const struct InputState& state);

@@ -6,17 +6,18 @@
 #include "game/object/Component.h"
 // #include "core/LevelLoader.h"
 
-Actor::Actor(ActorsSystem* system)
-    : mSystem(system),
+Actor::Actor(ActorsSystem* system, const std::string& tag)
+    : mTag(tag),
+      mSystem(system),
       mScale(1.0f),
       mRotation(Quaternion::Identity),
       mState(State::EActive),
       mRecomputeWorldTransform(true) {
-    mSystem->AddActor(this);
+    mSystem->AddActor(mTag, this);
 }
 
 Actor::~Actor() {
-    mSystem->RemoveActor(this);
+    mSystem->RemoveActor(mTag, this);
     while (!mComponents.empty()) delete mComponents.back();
 }
 

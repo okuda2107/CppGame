@@ -110,3 +110,17 @@ void ActorsSystem::RemoveActor(const std::string& tag, Actor* actor) {
         }
     }
 }
+
+void ActorsSystem::DeleteActorsByTag(const std::string& tag) {
+    auto mapIter = mPendingActors.find(tag);
+    if (mapIter != mPendingActors.end()) {
+        for (auto actor : mapIter->second) delete actor;
+        mPendingActors.erase(mapIter);
+    }
+
+    mapIter = mActors.find(tag);
+    if (mapIter != mActors.end()) {
+        for (auto actor : mapIter->second) delete actor;
+        mActors.erase(mapIter);
+    }
+}
