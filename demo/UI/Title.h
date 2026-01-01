@@ -8,7 +8,7 @@ class Title : public UIScreen {
     Title(class UISystem* system);
     ~Title();
 
-    void HandleKeyPress(int key) override;
+    void ProcessInput(const class InputState& state) override;
 
     // Closingするときに処理を伝えたいため保持
     void SetParent(class BonfireGameManager* parent) { mParent = parent; }
