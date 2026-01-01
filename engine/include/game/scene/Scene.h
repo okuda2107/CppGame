@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <unordered_map>
 
 struct SceneCreateDeps {
     /*
@@ -12,7 +13,7 @@ struct SceneCreateDeps {
     class AudioSystem& audioSystem;
     // class PhysicsSystem& physicsSystem;
     class UISystem& uiSystem;
-    class SceneManager& sceneManager;
+    std::unordered_map<std::string, struct SceneContext>& sceneManagerData;
 };
 
 class Scene {
@@ -24,7 +25,7 @@ class Scene {
     class AudioSystem& mAudioSystem;
     // class PhysicsSystem& mPhysicsSystem;
     class UISystem& mUISystem;
-    class SceneManager& mSceneManager;
+    std::unordered_map<std::string, struct SceneContext>& mSceneManagerData;
 
     /*
         外部からSceneをロードされ，SceneManagerを通さないことを防ぐため，
@@ -39,7 +40,7 @@ class Scene {
           mRenderDB(scd.renderDB),
           mAudioSystem(scd.audioSystem),
           mUISystem(scd.uiSystem),
-          mSceneManager(scd.sceneManager) {}
+          mSceneManagerData(scd.sceneManagerData) {}
 
     virtual ~Scene() = default;
 
