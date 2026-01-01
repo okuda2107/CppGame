@@ -26,6 +26,9 @@ void SceneManager::Update() {
 
     auto currIter = mScenes.find(mCurrentSceneTag);
     if (currIter != mScenes.end()) return;
+
+    currIter->second->TickRules();
+
     std::string nextSceneTag = currIter->second->PollNextScene();
 
     if (nextSceneTag == "") return;

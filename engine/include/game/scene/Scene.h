@@ -43,6 +43,9 @@ class Scene {
 
     virtual ~Scene() = default;
 
+    // Gameの状態を監視し，必要なら各Actorに要求を出す
+    virtual void TickRules() {}
+
     // SceneManagerに登録されているSceneのtag文字列を返す
     // 遷移しないときは空文字列を返す
     // 存在しないtag文字列を返すと，Logを出して，処理が続行される
