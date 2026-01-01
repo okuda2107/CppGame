@@ -49,7 +49,6 @@ class UIScreen {
     virtual void Update(float deltaTime) {};
     virtual void Draw(class Shader* shader) = 0;
     virtual void ProcessInput(const class InputState& state) {};
-    virtual void HandleKeyPress(int key) {};
 
     void SetFont(class Font* font) { mFont = font; }
 
