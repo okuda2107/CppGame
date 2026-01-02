@@ -52,6 +52,11 @@ void GameCore::AfterUpdate(float deltatime) {
         if (ui->GetState() == UIScreen::EActive) ui->Update(deltatime);
     }
 
+    // SceneManagerの更新
+    mSceneManager->Update();
+}
+
+void GameCore::DeleteObject() {
     // close状態のUIを削除
     auto iter = mUISystem->GetUIStack().begin();
     while (iter != mUISystem->GetUIStack().end()) {
@@ -62,9 +67,6 @@ void GameCore::AfterUpdate(float deltatime) {
             ++iter;
         }
     }
-
-    // SceneManagerの更新
-    mSceneManager->Update();
 }
 
 const RenderData& GameCore::GenerateRenderData() {

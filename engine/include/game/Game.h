@@ -46,6 +46,8 @@ class Game
         mCore->BeforeUpdate(deltatime);
         mActorsSystem->UpdateObjects(deltatime);
         mCore->AfterUpdate(deltatime);
+        mActorsSystem->DeleteActors();
+        mCore->DeleteObject();
         return mCore->mState;
     }
     const struct RenderData& GenerateRenderData() override {

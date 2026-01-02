@@ -23,5 +23,8 @@ class GameCore {
     // Actorのupdateの後に動かす
     void AfterUpdate(float deltatime);
 
+    // 各種objectの削除処理
+    void DeleteObject();
+
     const struct RenderData& GenerateRenderData();
 };
