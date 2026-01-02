@@ -42,33 +42,6 @@ bool GameCore::Initialize() {
     return true;
 }
 
-void GameCore::BeforeUpdate(float deltatime) {
-    mAudioSystem->Update(deltatime);
-}
-
-void GameCore::AfterUpdate(float deltatime) {
-    // UIの更新
-    for (auto ui : mUISystem->GetUIStack()) {
-        if (ui->GetState() == UIScreen::EActive) ui->Update(deltatime);
-    }
-
-    // SceneManagerの更新
-    mSceneManager->Update();
-}
-
-void GameCore::DeleteObject() {
-    // close状態のUIを削除
-    auto iter = mUISystem->GetUIStack().begin();
-    while (iter != mUISystem->GetUIStack().end()) {
-        if ((*iter)->GetState() == UIScreen::EClosing) {
-            delete *iter;
-            iter = mUISystem->GetUIStack().erase(iter);
-        } else {
-            ++iter;
-        }
-    }
-}
-
 const RenderData& GameCore::GenerateRenderData() {
     if (!mUISystem->GetUIStack().empty())
         mRenderDB->SetUI(&mUISystem->GetUIStack());

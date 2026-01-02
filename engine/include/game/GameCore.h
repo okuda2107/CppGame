@@ -17,14 +17,5 @@ class GameCore {
 
     bool Initialize();
 
-    // Actorのupdateの前に動かす
-    void BeforeUpdate(float deltatime);
-
-    // Actorのupdateの後に動かす
-    void AfterUpdate(float deltatime);
-
-    // 各種objectの削除処理
-    void DeleteObject();
-
     const struct RenderData& GenerateRenderData();
 };

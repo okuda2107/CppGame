@@ -43,11 +43,12 @@ class Game
     }
     const struct GameState& Update(
         float deltatime, const struct GameMetricsBase& metrics) override {
-        mCore->BeforeUpdate(deltatime);
+        mCore->mAudioSystem->Update(deltatime);
         mActorsSystem->UpdateObjects(deltatime);
-        mCore->AfterUpdate(deltatime);
+        mCore->mUISystem->Update(deltatime);
+        mCore->mSceneManager->Update();
         mActorsSystem->DeleteActors();
-        mCore->DeleteObject();
+        mCore->mUISystem->DeleteUI();
         return mCore->mState;
     }
     const struct RenderData& GenerateRenderData() override {
