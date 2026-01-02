@@ -1,10 +1,19 @@
 #pragma once
 #include "game/UI/UIScreen.h"
 
+struct BonfireUIDeps {
+    class RenderDB& renderDB;
+};
+
 // UIScreenとChillut's FireのUI実装とを嚙合わせる前のAdapterクラス
 class BonfireUI : public UIScreen {
-   public:
-    BonfireUI(class UISystem* system) : UIScreen(system) { mFont = SetFont() }
+   protected:
+    class Texture* mTitle;
+    Vector2 mTitlePos;
 
-    void SetTitle(std::string& text) {}
+   public:
+    BonfireUI(class UISystem* system, BonfireUIDeps& bud);
+
+    void SetTitle(const std::string& text, const Vector3& color = Color::White,
+                  int pointSize = 40);
 };
