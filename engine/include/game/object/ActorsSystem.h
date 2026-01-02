@@ -32,9 +32,16 @@ class ActorsSystem : public ObjectsSystemBase<class InputState> {
     void ProcessInput(const InputState& state);
     void UpdateObjects(float deltatime);
 
-    // Actorが死んでいたらnullptrを返す．
+    // Actorが死んでいたり，IDに合致する該当する具体クラスが無ければnullptrを返す．
     // 返り値のActorは必ず所有しない．
-    class Actor* GetActor(ActorID id);
+    template <typename T>
+    T* GetActor(ActorID id) {
+        auto iter = mLendingMap.find(id);
+        if (iter == mLendingMap.end()) return nullptr;
+
+        // cast
+        return dynamic_cast<T>(iter->second);
+    };
 
     ActorID AddActor(class Actor* actor);
     void RemoveActor(ActorID id);

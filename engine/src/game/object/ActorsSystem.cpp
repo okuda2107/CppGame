@@ -35,14 +35,6 @@ void ActorsSystem::UnloadObjects() {
     while (!mActors.empty()) delete mActors.back();
 }
 
-Actor* ActorsSystem::GetActor(ActorID id) {
-    auto iter = mLendingMap.find(id);
-    if (iter == mLendingMap.end())
-        return nullptr;
-    else
-        iter->second;
-}
-
 ActorID ActorsSystem::AddActor(Actor* actor) {
     if (mUpdatingActors) {
         mPendingActors.push_back(actor);
