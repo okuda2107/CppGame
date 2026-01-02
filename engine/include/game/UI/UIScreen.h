@@ -3,6 +3,7 @@
 #include <unordered_map>
 
 #include "core/Math.h"
+#include "game/UI/UISystem.h"
 
 struct TextKey {
     std::string text;
@@ -29,6 +30,7 @@ class UIScreen {
 
    protected:
     class UISystem* mSystem;
+    UIID mID;
 
     UIState mState;
 
@@ -57,4 +59,5 @@ class UIScreen {
     //状態をClosingにする
     void Close() { mState = EClosing; }
     UIState GetState() const { return mState; }
+    UIID GetID() const { return mID; }
 };
