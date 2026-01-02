@@ -7,17 +7,16 @@
 // #include "core/LevelLoader.h"
 
 Actor::Actor(ActorsSystem* system, const std::string& tag)
-    : mTag(tag),
-      mSystem(system),
+    : mSystem(system),
       mScale(1.0f),
       mRotation(Quaternion::Identity),
       mState(State::EActive),
       mRecomputeWorldTransform(true) {
-    mSystem->AddActor(mTag, this);
+    mID = mSystem->AddActor(this);
 }
 
 Actor::~Actor() {
-    mSystem->RemoveActor(mTag, this);
+    mSystem->RemoveActor(mID);
     while (!mComponents.empty()) delete mComponents.back();
 }
 

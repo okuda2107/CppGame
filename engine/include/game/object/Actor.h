@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+#include "ActorsSystem.h"
 #include "Component.h"
 #include "base/ObjectBase.h"
 #include "core/Math.h"
@@ -15,7 +16,7 @@ class Actor : public ObjectBase {
     };
 
    private:
-    std::string mTag;
+    ActorID mID;
 
     class ActorsSystem* mSystem;
     Vector3 mPosition;
