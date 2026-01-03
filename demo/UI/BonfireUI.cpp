@@ -3,9 +3,11 @@
 #include "game/UI/Font.h"
 #include "game/UI/UISystem.h"
 #include "renderer/RenderDB.h"
+#include "renderer/Shader.h"
 #include "renderer/Texture.h"
 
-BonfireUI::BonfireUI(UISystem* system, BonfireUIDeps& bud) : UIScreen(system) {
+BonfireUI::BonfireUI(UISystem* system, BonfireUIDeps& bud)
+    : UIScreen(system), mStateManager(bud.stateManager) {
     SetFont(bud.renderDB.GetFont("Assets/SlacksideOne-Regular.ttf"));
 }
 
@@ -18,4 +20,10 @@ void BonfireUI::SetTitle(const std::string& text, const Vector3& color,
         mTitle = nullptr;
     }
     mTitle = mFont->RenderText(text, color, pointSize);
+}
+
+void BonfireUI::Draw(Shader* shader) {
+    if (mTitle) {
+        DrawTexture(shader, mTitle, mTitlePos);
+    }
 }

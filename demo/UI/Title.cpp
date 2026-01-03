@@ -1,14 +1,10 @@
 #include "Title.h"
 
-#include "Bonfire.h"
-#include "BonfireGameManager.h"
-#include "BonfirePlayer.h"
-#include "FPSActor.h"
-#include "Game.h"
 #include "SDL.h"
 #include "input/InputState.h"
+#include "scene/TitleScene.h"
 
-Title::Title(UISystem* system) : UIScreen(system), mParent(nullptr) {
+Title::Title(UISystem* system, BonfireUIDeps& deps) : BonfireUI(system, deps) {
     SetTitle("Chillut's Fire", Color::White, 72);
 }
 
@@ -19,9 +15,4 @@ void Title::ProcessInput(const InputState& state) {
     if (iter == state.EventMap.end()) return;
 
     Close();
-    if (!mParent) {
-        SDL_Log("parent pointer is nullptr");
-        return;
-    }
-    mParent->SetTitleFinished();
 }

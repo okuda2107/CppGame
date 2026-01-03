@@ -42,15 +42,14 @@ target_sources(engine
 )
 
 target_link_libraries(engine
-    PRIVATE
+    PUBLIC
+        SDL2::SDL2
         SDL2::SDL2main
+        SDL2_image::SDL2_image
         SDL2_mixer::SDL2_mixer
+        SDL2_ttf::SDL2_ttf
         SDL2_net::SDL2_net
         GLEW::glew
-        PUBLIC
-        SDL2::SDL2
-        SDL2_image::SDL2_image
-        SDL2_ttf::SDL2_ttf
 )
 
 # OpenAL

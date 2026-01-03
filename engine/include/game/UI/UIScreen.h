@@ -45,8 +45,6 @@ class UIScreen {
     UIScreen(class UISystem* system);
     virtual ~UIScreen();
 
-    virtual void Load() = 0;
-
     // 派生クラスで処理を決められる
     virtual void Update(float deltaTime) {};
     virtual void Draw(class Shader* shader) = 0;
