@@ -46,11 +46,11 @@ target_link_libraries(engine
         SDL2::SDL2main
         SDL2_mixer::SDL2_mixer
         SDL2_net::SDL2_net
-        SDL2_ttf::SDL2_ttf
         GLEW::glew
-    PUBLIC
+        PUBLIC
         SDL2::SDL2
         SDL2_image::SDL2_image
+        SDL2_ttf::SDL2_ttf
 )
 
 # OpenAL

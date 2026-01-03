@@ -59,5 +59,7 @@ Texture* UIScreen::GetFontTexture(const TextKey& key) {
     } else {
         Texture* tex = new Texture();
         tex = mFont->RenderText(key.text, key.color, key.size);
+        mFontTexture.emplace(key, tex);
+        return tex;
     }
 }

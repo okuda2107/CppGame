@@ -6,7 +6,7 @@
 #include "game/object/Component.h"
 // #include "core/LevelLoader.h"
 
-Actor::Actor(ActorsSystem* system, const std::string& tag)
+Actor::Actor(ActorsSystem* system)
     : mSystem(system),
       mScale(1.0f),
       mRotation(Quaternion::Identity),

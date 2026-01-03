@@ -36,7 +36,7 @@ class Actor : public ObjectBase {
     virtual void UpdateActor(float deltatime) {};
 
    public:
-    Actor(class ActorsSystem* game, const std::string& tag);
+    Actor(class ActorsSystem* game);
     virtual ~Actor();
 
     void ProcessInput(const struct InputState& state);
