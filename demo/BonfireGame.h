@@ -7,8 +7,6 @@ class BonfireGame : public Game<InputState> {
     Vector2 mFieldMin;
     Vector2 mFieldMax;
 
-    void InputHandle(const InputState& state);
-
    public:
     BonfireGame(class ActorsSystem* system);
 };

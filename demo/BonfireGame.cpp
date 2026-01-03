@@ -11,10 +11,3 @@ BonfireGame::BonfireGame(class ActorsSystem* system) : Game(system) {
     mFieldMin = Vector2(-1500, -500);
     mFieldMax = Vector2(500, 1500);
 }
-
-void BonfireGame::InputHandle(const InputState& state) {
-    auto iter = state.EventMap.find(SDL_QUIT);
-    if (iter != state.EventMap.end()) {
-        mCore->mState.mState = RuntimeState::EQuit;
-    }
-}
