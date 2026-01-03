@@ -4,9 +4,9 @@
 
 using Metrics = MetricsBundle<GameMetricsBase, InputSystemMetrics>;
 
-class RuntimeSystem : public RuntimeSystemBase<GameState, Metrics> {
+class RuntimeSystem : public RuntimeSystemBase<GameFrameResult, Metrics> {
     Uint32 mTicksCount;
-    RuntimeState mState;
+    bool mIsGameLoop;
 
     void Shutdown();
 
@@ -21,5 +21,5 @@ class RuntimeSystem : public RuntimeSystemBase<GameState, Metrics> {
     void BeginFrame() override;
     void EndFrame() override;
 
-    void ProcessGameData(const GameState& state);
+    void ProcessGameData(const GameFrameResult& state);
 };

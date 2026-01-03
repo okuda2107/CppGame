@@ -1,9 +1,10 @@
 #pragma once
+#include <cstdint>
 #include <string>
 #include <type_traits>
 #include <unordered_map>
+#include <vector>
 
-#include "Actor.h"
 #include "base/ObjectsSystemBase.h"
 
 // Actorを貸し出すときに発行するモノ
@@ -45,6 +46,4 @@ class ActorsSystem : public ObjectsSystemBase<class InputState> {
 
     ActorID AddActor(class Actor* actor);
     void RemoveActor(ActorID id);
-
-    void DeleteActors();
 };

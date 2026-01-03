@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "game/object/Actor.h"
+#include "game/object/ActorsSystem.h"
 #include "input/InputState.h"
 
 ActorsSystem::ActorsSystem() : mUpdatingActors(false), mID(0) {}
@@ -29,6 +30,17 @@ void ActorsSystem::UpdateObjects(float deltatime) {
         mActors.emplace_back(pending);
     }
     mPendingActors.clear();
+
+    std::vector<class Actor*> deadActors;
+
+    for (auto actor : mActors) {
+        if (actor->GetState() == Actor::State::EDead) {
+            deadActors.emplace_back(actor);
+        }
+    }
+    for (auto actor : deadActors) {
+        delete actor;
+    }
 }
 
 void ActorsSystem::UnloadObjects() {
@@ -71,17 +83,4 @@ void ActorsSystem::RemoveActor(ActorID id) {
 
     // 貸出票からも削除
     mLendingMap.erase(id);
-}
-
-void ActorsSystem::DeleteActors() {
-    std::vector<class Actor*> deadActors;
-
-    for (auto actor : mActors) {
-        if (actor->GetState() == Actor::State::EDead) {
-            deadActors.emplace_back(actor);
-        }
-    }
-    for (auto actor : deadActors) {
-        delete actor;
-    }
 }

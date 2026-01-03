@@ -1,15 +1,18 @@
 #pragma once
 #include "GameCore.h"
 #include "base/GameBase.h"
+#include "game/StateManger.h"
 #include "game/UI/UIScreen.h"
 #include "game/UI/UISystem.h"
+#include "game/audio/AudioSystem.h"
 #include "game/object/base/ObjectsSystemBase.h"
+#include "game/scene/SceneManager.h"
 #include "renderer/RenderData.h"
 #include "runtime/RuntimeData.h"
 
 template <typename InputState>
-class Game
-    : public GameBase<InputState, RenderData, GameState, GameMetricsBase> {
+class Game : public GameBase<InputState, RenderData, GameFrameResult,
+                             GameMetricsBase> {
    protected:
     class GameCore* mCore;
 
@@ -34,22 +37,23 @@ class Game
     void ProcessInput(const InputState& state) override {
         InputHandle(state);
 
+        // 終了方法は定義しておく
+        mCore->ProcessInput(state);
+
         // 入力に対して，ゲームオブジェクト，UIを反応させる
-        if (mCore->mState.mState == RuntimeState::EGameplay) {
+        if (mCore->mStateManager->mState == GameState::EGameplay) {
             mActorsSystem->ProcessInput(state);
         } else if (!mCore->mUISystem->GetUIStack().empty()) {
             mCore->mUISystem->GetUIStack().back()->ProcessInput(state);
         }
     }
-    const struct GameState& Update(
+    const struct GameFrameResult& Update(
         float deltatime, const struct GameMetricsBase& metrics) override {
         mCore->mAudioSystem->Update(deltatime);
         mActorsSystem->UpdateObjects(deltatime);
         mCore->mUISystem->Update(deltatime);
         mCore->mSceneManager->Update();
-        mActorsSystem->DeleteActors();
-        mCore->mUISystem->DeleteUI();
-        return mCore->mState;
+        return mCore->mFrameResult;
     }
     const struct RenderData& GenerateRenderData() override {
         return mCore->GenerateRenderData();

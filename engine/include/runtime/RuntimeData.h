@@ -1,14 +1,9 @@
 #pragma once
 #include "base/MetricsBase.h"
 
-enum class RuntimeState {
-    EGameplay,
-    EPaused,
-    EQuit,
-};
-
-struct GameState : GameDataBase {
-    RuntimeState mState;
+struct GameFrameResult : GameDataBase {
+    bool mIsGameLoop;  // trueの場合，ゲームループを続行
+    bool mRelativeMouseMode;
 };
 
 struct InputSystemMetrics : InputSystemMetricsBase {

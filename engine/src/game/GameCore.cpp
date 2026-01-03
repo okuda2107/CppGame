@@ -1,10 +1,12 @@
 #include "game/GameCore.h"
 
 #include "SDL.h"
+#include "game/StateManger.h"
 #include "game/UI/UIScreen.h"
 #include "game/UI/UISystem.h"
 #include "game/audio/AudioSystem.h"
 #include "game/scene/SceneManager.h"
+#include "input/InputState.h"
 #include "renderer/RenderDB.h"
 #include "renderer/RenderData.h"
 
@@ -12,12 +14,14 @@ GameCore::GameCore() {
     mRenderDB = new RenderDB();
     mAudioSystem = new AudioSystem();
     mUISystem = new UISystem();
+    mStateManager = new StateManager();
 }
 
 GameCore::~GameCore() {
     delete mUISystem;
     delete mAudioSystem;
     delete mRenderDB;
+    delete mStateManager;
 }
 
 bool GameCore::Initialize() {
@@ -40,6 +44,17 @@ bool GameCore::Initialize() {
     }
 
     return true;
+}
+
+void GameCore::ProcessInput(const InputState& state) {
+    auto iter = state.EventMap.find(SDL_QUIT);
+    if (iter != state.EventMap.end()) {
+        mFrameResult.mIsGameLoop = false;
+    }
+
+    if (state.Keyboard.GetKeyState(SDL_SCANCODE_ESCAPE) == EReleased) {
+        mFrameResult.mIsGameLoop = false;
+    }
 }
 
 const RenderData& GameCore::GenerateRenderData() {

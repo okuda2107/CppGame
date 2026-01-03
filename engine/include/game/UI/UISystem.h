@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdint>
+#include <unordered_map>
 #include <vector>
 
 typedef uint32_t UIID;
@@ -12,7 +14,7 @@ class UISystem {
 
    public:
     std::vector<class UIScreen*>& GetUIStack() { return mUIStack; }
-    UIID PushUI(class UIScreen* screen) { mUIStack.emplace_back(screen); }
+    UIID PushUI(class UIScreen* screen);
 
     void Update(float deltatime);
 
@@ -24,6 +26,4 @@ class UISystem {
         // cast
         return dynamic_cast<T>(iter->second);
     }
-
-    void DeleteUI();
 };

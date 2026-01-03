@@ -8,14 +8,18 @@ class GameCore {
     // class PhysicsSystem* mPhysicsSystem;
     class UISystem* mUISystem;
 
+    class StateManager* mStateManager;
+
     class SceneManager* mSceneManager;
 
-    GameState mState;
+    GameFrameResult mFrameResult;
 
     GameCore();
     ~GameCore();
 
     bool Initialize();
+
+    void ProcessInput(const class InputState& state);
 
     const struct RenderData& GenerateRenderData();
 };

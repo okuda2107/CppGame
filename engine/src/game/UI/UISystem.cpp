@@ -21,9 +21,6 @@ void UISystem::Update(float deltatime) {
     for (auto ui : mUIStack) {
         if (ui->GetState() == UIScreen::EActive) ui->Update(deltatime);
     }
-}
-
-void UISystem::DeleteUI() {
     auto iter = mUIStack.begin();
     while (iter != mUIStack.end()) {
         if ((*iter)->GetState() == UIScreen::EClosing) {

@@ -2,6 +2,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "runtime/RuntimeData.h"
+
 struct SceneCreateDeps {
     /*
         Sceneの生成ではactorの存在が前提となっているため，
@@ -13,6 +15,7 @@ struct SceneCreateDeps {
     class AudioSystem& audioSystem;
     // class PhysicsSystem& physicsSystem;
     class UISystem& uiSystem;
+    class StateManager& stateManager;
     std::unordered_map<std::string, struct SceneContext>& sceneManagerData;
 };
 
@@ -25,6 +28,7 @@ class Scene {
     class AudioSystem& mAudioSystem;
     // class PhysicsSystem& mPhysicsSystem;
     class UISystem& mUISystem;
+    class StateManager& mStateManager;
     std::unordered_map<std::string, struct SceneContext>& mSceneManagerData;
 
     /*
@@ -40,12 +44,13 @@ class Scene {
           mRenderDB(scd.renderDB),
           mAudioSystem(scd.audioSystem),
           mUISystem(scd.uiSystem),
+          mStateManager(scd.stateManager),
           mSceneManagerData(scd.sceneManagerData) {}
 
     virtual ~Scene() = default;
 
     // Gameの状態を監視し，必要なら各Actorに要求を出す
-    virtual void TickRules() {}
+    virtual const struct GameState& TickRules() = 0;
 
     // SceneManagerに登録されているSceneのtag文字列を返す
     // 遷移しないときは空文字列を返す
