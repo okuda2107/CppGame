@@ -1,5 +1,10 @@
 #pragma once
 #include "Actor.h"
+#include "game/audio/SoundHandler.h"
+
+struct BonfireDeps {
+    class RenderDB& renderDB;
+};
 
 class Bonfire : public Actor {
     float mTime;
@@ -15,12 +20,12 @@ class Bonfire : public Actor {
     // 簡単のため，BonfirePlayerの位置をこちらで把握
     class BonfirePlayer* mPlayer;
 
-    class SoundHandler* mEvent;
+    SoundHandler mEvent;
 
     const float cMaxLimit;
 
    public:
-    Bonfire(class Game* game);
+    Bonfire(class ActorsSystem* system, BonfireDeps& deps);
 
     void UpdateActor(float deltatime) override;
 
