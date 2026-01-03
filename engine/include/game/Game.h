@@ -1,7 +1,8 @@
 #pragma once
 #include "GameCore.h"
 #include "base/GameBase.h"
-#include "game/StateManger.h"
+#include "game/RuntimeRequestManager.h"
+#include "game/StateManager.h"
 #include "game/UI/UIScreen.h"
 #include "game/UI/UISystem.h"
 #include "game/audio/AudioSystem.h"
@@ -53,6 +54,8 @@ class Game : public GameBase<InputState, RenderData, GameFrameResult,
         mActorsSystem->UpdateObjects(deltatime);
         mCore->mUISystem->Update(deltatime);
         mCore->mSceneManager->Update();
+        mCore->mFrameResult.mRelativeMouseMode =
+            mCore->mReqManager->mInputSystemMetricsRequest.mRelativeMouseMode;
         return mCore->mFrameResult;
     }
     const struct RenderData& GenerateRenderData() override {
