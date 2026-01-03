@@ -16,6 +16,7 @@ struct SceneCreateDeps {
     // class PhysicsSystem& physicsSystem;
     class UISystem& uiSystem;
     class StateManager& stateManager;
+    class RuntimeRequestManager& runtimeReqManager;
     std::unordered_map<std::string, struct SceneContext>& sceneManagerData;
 };
 
@@ -29,6 +30,7 @@ class Scene {
     // class PhysicsSystem& mPhysicsSystem;
     class UISystem& mUISystem;
     class StateManager& mStateManager;
+    class RuntimeRequestManager& mRuntimeReqManager;
     std::unordered_map<std::string, struct SceneContext>& mSceneManagerData;
 
     /*
@@ -45,6 +47,7 @@ class Scene {
           mAudioSystem(scd.audioSystem),
           mUISystem(scd.uiSystem),
           mStateManager(scd.stateManager),
+          mRuntimeReqManager(scd.runtimeReqManager),
           mSceneManagerData(scd.sceneManagerData) {}
 
     virtual ~Scene() = default;

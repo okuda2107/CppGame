@@ -1,7 +1,8 @@
 #include "game/GameCore.h"
 
 #include "SDL.h"
-#include "game/StateManger.h"
+#include "game/RuntimeRequestManager.h"
+#include "game/StateManager.h"
 #include "game/UI/UIScreen.h"
 #include "game/UI/UISystem.h"
 #include "game/audio/AudioSystem.h"
@@ -15,6 +16,8 @@ GameCore::GameCore() {
     mAudioSystem = new AudioSystem();
     mUISystem = new UISystem();
     mStateManager = new StateManager();
+    mReqManager = new RuntimeRequestManager();
+    mReqManager->mInputSystemMetricsRequest.mRelativeMouseMode = true;
 }
 
 GameCore::~GameCore() {
@@ -22,6 +25,7 @@ GameCore::~GameCore() {
     delete mAudioSystem;
     delete mRenderDB;
     delete mStateManager;
+    delete mReqManager;
 }
 
 bool GameCore::Initialize() {

@@ -13,6 +13,7 @@ class GameCore {
     class SceneManager* mSceneManager;
 
     GameFrameResult mFrameResult;
+    class RuntimeRequestManager* mReqManager;
 
     GameCore();
     ~GameCore();
