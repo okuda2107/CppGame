@@ -27,26 +27,35 @@ struct ActorCreateDeps {
 };
 
 class ActorFactory {
-    class ActorsSystem& mActorsSystem;
-    class RenderDB& mRenderDB;
-    class AudioSystem& mAudioSystem;
-    // class PhysicsSystem& mPhysicsSystem;
-    class UISystem& mUISystem;
-    class StateManager& mStateManager;
-    class RuntimeRequestManager& mRuntimeReqManager;
+    ActorCreateDeps mSystems;
 
     template <typename T>
     T& GetSystem();
 
+    // TDeps -> TypeLists を解決するための補助関数
+    template <typename T, typename... Ts>
+    T ResolveDeps(TypeLists<Ts...> _) {
+        return T{GetSystem<Ts>()...};
+    }
+
    public:
-    template <typename TActor, typename TDeps>
+    ActorFactory(ActorCreateDeps acd) : mSystems(acd) {}
+
+    // TListsの型指定の順番は，TDepsのメンバ変数の順番に依存する
+    /*
+        TActor: Actorの具体クラス
+        TDeps: Actorの具体クラスが引数に取る依存システムをまとめた構造体
+        TLists:
+    */
+    template <typename TActor, typename TDeps, typename TLists>
     ActorID CreateActor() {
         static_assert(std::is_base_of<Actor, TActor>::value,
                       "TActor must derive from Actor");
-        static_assert(IsTypeLists<TDeps>::value,
-                      "TDeps must be a TypeLists<...>");
+        static_assert(IsTypeLists<TListss>::value,
+                      "TListss must be a TypeLists<...>");
 
         // 依存関係depsの解決
+        TDeps deps = ResolveDeps(TLists{});
 
         // Actor生成
         TActor* actor = new TActor(mActorsSystem, deps);
@@ -55,10 +64,10 @@ class ActorFactory {
 
 template <>
 inline class ActorsSystem& ActorFactory::GetSystem<ActorsSystem>() {
-    return mActorsSystem;
+    return mSystems.actorsSystem;
 }
 
 template <>
 inline class RenderDB& ActorFactory::GetSystem<RenderDB>() {
-    return mRenderDB;
+    return mSystems.renderDB;
 }
