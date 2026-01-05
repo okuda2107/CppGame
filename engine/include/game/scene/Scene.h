@@ -4,19 +4,7 @@
 
 #include "runtime/RuntimeData.h"
 
-struct SceneCreateDeps {
-    /*
-        Sceneの生成ではactorの存在が前提となっているため，
-        ObjectsSystemBaseではなく，
-        ActorsSystemの方を依存関係に含める
-    */
-    class ActorsSystem& actorsSystem;
-    class RenderDB& renderDB;
-    class AudioSystem& audioSystem;
-    // class PhysicsSystem& physicsSystem;
-    class UISystem& uiSystem;
-    class StateManager& stateManager;
-    class RuntimeRequestManager& runtimeReqManager;
+struct SceneDeps {
     std::unordered_map<std::string, struct SceneContext>& sceneManagerData;
 };
 
@@ -24,6 +12,8 @@ class Scene {
     friend class SceneManager;
 
    protected:
+    class ActorFactory* mActorFactory;
+
     class ActorsSystem& mActorsSystem;
     class RenderDB& mRenderDB;
     class AudioSystem& mAudioSystem;
