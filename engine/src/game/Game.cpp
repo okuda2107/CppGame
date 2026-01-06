@@ -1,4 +1,4 @@
-#include "game/GameCore.h"
+#include "game/Game.h"
 
 #include "SDL.h"
 #include "game/RuntimeRequestManager.h"
@@ -6,29 +6,39 @@
 #include "game/UI/UIScreen.h"
 #include "game/UI/UISystem.h"
 #include "game/audio/AudioSystem.h"
+#include "game/object/ActorsSystem.h"
+#include "game/scene/ActorFactory.h"
 #include "game/scene/SceneManager.h"
 #include "input/InputState.h"
 #include "renderer/RenderDB.h"
 #include "renderer/RenderData.h"
 
-GameCore::GameCore() {
+Game::Game() {
+    mActorsSystem = new ActorsSystem();
     mRenderDB = new RenderDB();
     mAudioSystem = new AudioSystem();
     mUISystem = new UISystem();
     mStateManager = new StateManager();
     mReqManager = new RuntimeRequestManager();
     mReqManager->mInputSystemMetricsRequest.mRelativeMouseMode = true;
+
+    ActorCreateDeps acd = ActorCreateDeps{
+        *mActorsSystem, *mRenderDB,     *mAudioSystem,
+        *mUISystem,     *mStateManager, *mReqManager,
+    };
+    mActorFactory = new ActorFactory(acd);
 }
 
-GameCore::~GameCore() {
+Game::~Game() {
     delete mUISystem;
     delete mAudioSystem;
     delete mRenderDB;
+    delete mActorsSystem;
     delete mStateManager;
     delete mReqManager;
 }
 
-bool GameCore::Initialize() {
+bool Game::Initialize() {
     try {  // 初期化に失敗したら初期状態にロールバックを行う
         if (!mRenderDB->Initialize()) {
             throw std::runtime_error("Failed to Initialize RenderDB");
@@ -50,7 +60,7 @@ bool GameCore::Initialize() {
     return true;
 }
 
-void GameCore::ProcessInput(const InputState& state) {
+void Game::ProcessInput(const InputState& state) {
     auto iter = state.EventMap.find(SDL_QUIT);
     if (iter != state.EventMap.end()) {
         mFrameResult.mIsGameLoop = false;
@@ -59,9 +69,26 @@ void GameCore::ProcessInput(const InputState& state) {
     if (state.Keyboard.GetKeyState(SDL_SCANCODE_ESCAPE) == EReleased) {
         mFrameResult.mIsGameLoop = false;
     }
+
+    // 入力に対して，ゲームオブジェクト，UIを反応させる
+    if (mStateManager->mState == GameState::EGameplay) {
+        mActorsSystem->ProcessInput(state);
+    } else if (!mUISystem->GetUIStack().empty()) {
+        mUISystem->GetUIStack().back()->ProcessInput(state);
+    }
 }
 
-const RenderData& GameCore::GenerateRenderData() {
+const GameFrameResult& Game::Update(float deltatime,
+                                    const struct GameMetricsBase& metrics) {
+    mAudioSystem->Update(deltatime);
+    mActorsSystem->UpdateObjects(deltatime);
+    mUISystem->Update(deltatime);
+    mFrameResult.mRelativeMouseMode =
+        mReqManager->mInputSystemMetricsRequest.mRelativeMouseMode;
+    return mFrameResult;
+}
+
+const RenderData& Game::GenerateRenderData() {
     if (!mUISystem->GetUIStack().empty())
         mRenderDB->SetUI(&mUISystem->GetUIStack());
     else
