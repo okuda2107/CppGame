@@ -23,6 +23,8 @@ struct HashText {
     size_t operator()(const TextKey& k) const noexcept;
 };
 
+struct UIDeps {};
+
 class UIScreen {
    public:
     // ClosingだとUIに対して操作できない
@@ -42,7 +44,7 @@ class UIScreen {
                      const Vector2& offset = Vector2::Zero, float scale = 1.0f);
 
    public:
-    UIScreen(class UISystem* system);
+    UIScreen(class UISystem* system, UIDeps deps);
     virtual ~UIScreen();
 
     // 派生クラスで処理を決められる

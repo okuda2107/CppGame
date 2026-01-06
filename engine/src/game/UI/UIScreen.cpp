@@ -18,7 +18,7 @@ size_t HashText::operator()(const TextKey& k) const noexcept {
     return hash;
 }
 
-UIScreen::UIScreen(UISystem* system)
+UIScreen::UIScreen(UISystem* system, UIDeps deps)
     : mSystem(system), mState(EActive), mFont(nullptr) {
     // Add to UI Stack
     mSystem->PushUI(this);

@@ -1,6 +1,9 @@
 #pragma once
 #include <type_traits>
 
+#include "game/UI/UIScreen.h"
+#include "game/object/Actor.h"
+
 template <typename... T>
 struct TypeLists {};
 
@@ -44,13 +47,17 @@ class ActorFactory {
     // TListsの型指定の順番は，TDepsのメンバ変数の順番に依存する
     /*
         TActor: Actorの具体クラス
-        TDeps: Actorの具体クラスが引数に取る依存システムをまとめた構造体
-        TLists:
+        TDeps: ActorDepsの具体クラス．Actorの具体クラスが引数に取る依存システムをまとめた構造体
+        TLists: TDepsに注入したいシステムの型のリスト
     */
+    // todo: 上手くテンプレートメタプログラミングを行えば，TActorのみの指定で良くなるらしい
+    // Actorクラスの内部にTDepsやTListsの型指定を行う．このときstatic_assertで型が定義されているかをチェックする必要がある．
     template <typename TActor, typename TDeps, typename TLists>
-    ActorID CreateActor() {
+    ActorID ActorFactory::CreateActor() {
         static_assert(std::is_base_of<Actor, TActor>::value,
                       "TActor must derive from Actor");
+        static_assert(std::is_base_of<ActorDeps, TDeps>::value,
+                      "TDeps must derive from ActorDeps");
         static_assert(IsTypeLists<TListss>::value,
                       "TListss must be a TypeLists<...>");
 
@@ -58,8 +65,24 @@ class ActorFactory {
         TDeps deps = ResolveDeps(TLists{});
 
         // Actor生成
-        TActor* actor = new TActor(mActorsSystem, deps);
-    };
+        TActor* actor = new TActor(mSystems.actorsSystem, deps);
+    }
+
+    template <typename TUI, typename TDeps, typename TLists>
+    UIID ActorFactory::CreateUI() {
+        static_assert(std::is_base_of<UIScreen, TUI>::value,
+                      "TActor must derive from UIScreen");
+        static_assert(std::is_base_of<UIDeps, TDeps>::value,
+                      "TDeps must derive from UIDeps");
+        static_assert(IsTypeLists<TListss>::value,
+                      "TListss must be a TypeLists<...>");
+
+        // 依存関係depsの解決
+        TDeps deps = ResolveDeps(TLists{});
+
+        // Actor生成
+        TActor* actor = new TUI(mSystems.uiSystem, deps);
+    }
 };
 
 template <>

@@ -9,9 +9,6 @@
 
 struct ActorDeps {};
 
-template <typename... T>
-struct DepsList {};
-
 class Actor : public ObjectBase {
    public:
     enum class State {
@@ -41,7 +38,7 @@ class Actor : public ObjectBase {
     virtual void UpdateActor(float deltatime) {};
 
    public:
-    Actor(class ActorsSystem* system, ActorDeps& deps);
+    Actor(class ActorsSystem* system, ActorDeps deps);
     virtual ~Actor();
 
     void ProcessInput(const struct InputState& state);
