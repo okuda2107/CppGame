@@ -53,7 +53,7 @@ class ActorFactory {
     // todo: 上手くテンプレートメタプログラミングを行えば，TActorのみの指定で良くなるらしい
     // Actorクラスの内部にTDepsやTListsの型指定を行う．このときstatic_assertで型が定義されているかをチェックする必要がある．
     template <typename TActor, typename TDeps, typename TLists>
-    ActorID ActorFactory::CreateActor() {
+    ActorID CreateActor() {
         static_assert(std::is_base_of<Actor, TActor>::value,
                       "TActor must derive from Actor");
         static_assert(std::is_base_of<ActorDeps, TDeps>::value,
@@ -66,10 +66,12 @@ class ActorFactory {
 
         // Actor生成
         TActor* actor = new TActor(mSystems.actorsSystem, deps);
+
+        return actor->GetID();
     }
 
     template <typename TUI, typename TDeps, typename TLists>
-    UIID ActorFactory::CreateUI() {
+    UIID CreateUI() {
         static_assert(std::is_base_of<UIScreen, TUI>::value,
                       "TActor must derive from UIScreen");
         static_assert(std::is_base_of<UIDeps, TDeps>::value,
@@ -80,8 +82,10 @@ class ActorFactory {
         // 依存関係depsの解決
         TDeps deps = ResolveDeps(TLists{});
 
-        // Actor生成
-        TActor* actor = new TUI(mSystems.uiSystem, deps);
+        // UI生成
+        TUI* ui = new TUI(mSystems.uiSystem, deps);
+
+        return ui->GetID();
     }
 };
 
@@ -93,4 +97,25 @@ inline class ActorsSystem& ActorFactory::GetSystem<ActorsSystem>() {
 template <>
 inline class RenderDB& ActorFactory::GetSystem<RenderDB>() {
     return mSystems.renderDB;
+}
+
+template <>
+inline class AudioSystem& ActorFactory::GetSystem<AudioSystem>() {
+    return mSystems.audioSystem;
+}
+
+template <>
+inline class UISystem& ActorFactory::GetSystem<UISystem>() {
+    return mSystems.uiSystem;
+}
+
+template <>
+inline class StateManager& ActorFactory::GetSystem<StateManager>() {
+    return mSystems.stateManager;
+}
+
+template <>
+inline class RuntimeRequestManager&
+ActorFactory::GetSystem<RuntimeRequestManager>() {
+    return mSystems.runtimeReqManager;
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "game/UI/UIScreen.h"
 
-struct BonfireUIDeps {
+struct BonfireUIDeps : UIDeps {
     class RenderDB& renderDB;
     class StateManager& stateManager;
 };

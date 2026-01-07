@@ -6,13 +6,13 @@
 #include "game/object/MoveComponent.h"
 #include "input/InputState.h"
 
-struct FPSActorDeps {
+struct FPSActorDeps : ActorDeps {
     struct AudioCompDeps& acd;
     struct CameraCompDeps& ccd;
 };
 
 FPSActor::FPSActor(class ActorsSystem* system, FPSActorDeps& fad)
-    : Actor(system), mForwardSpeed(0.0f), mStrafeSpeed(0.0f) {
+    : Actor(system, fad), mForwardSpeed(0.0f), mStrafeSpeed(0.0f) {
     mMoveComp = new MoveComponent(this);
     mAudioComp = new AudioComponent(this, fad.acd);
     mLastFootstep = 0.0f;

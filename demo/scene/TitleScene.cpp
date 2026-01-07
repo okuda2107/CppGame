@@ -3,20 +3,16 @@
 #include "UI/BonfireUI.h"
 #include "UI/Title.h"
 #include "actor/Bonfire.h"
+#include "game/scene/ActorFactory.h"
 
 void TitleScene::LoadActors() {
     // タイトル
-    {
-        auto deps = BonfireUIDeps{mRenderDB, mStateManager};
-        auto title = new Title(&mUISystem, deps);
-        mTitleID = title->GetID();
-    }
+    mTitleID = mActorFactory->CreateUI<Title, BonfireUIDeps,
+                                       TypeLists<RenderDB, StateManager>>();
 
     // Bonfire
-    {
-        auto deps = BonfireDeps{mRenderDB};
-        auto bonfire = new Bonfire(&mActorsSystem, deps);
-    }
 
     // player
 }
+
+std::string TitleScene::PollNextScene() {}

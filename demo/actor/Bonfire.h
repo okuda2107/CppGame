@@ -1,6 +1,6 @@
 #pragma once
-#include "Actor.h"
 #include "game/audio/SoundHandler.h"
+#include "game/object/Actor.h"
 
 struct BonfireDeps {
     class RenderDB& renderDB;

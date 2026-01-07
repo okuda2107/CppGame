@@ -23,7 +23,7 @@ class Scene {
     virtual ~Scene() = default;
 
     // Gameの状態を監視し，必要なら各Actorに要求を出す
-    virtual const struct GameState& TickRules() = 0;
+    virtual void TickRules() = 0;
 
     // SceneManagerに登録されているSceneのtag文字列を返す
     // 遷移しないときは空文字列を返す

@@ -12,6 +12,4 @@ struct InputState : InputStateBase {
 
     KeyboardState Keyboard;
     MouseState Mouse;
-
-    InputState();
 };

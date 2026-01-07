@@ -5,8 +5,7 @@ class TitleScene : public Scene {
     UIID mTitleID;
 
    public:
-    TitleScene(struct SceneCreateDeps& scd)
-        : Scene(scd), mIsTitleFinished(false) {}
+    TitleScene(struct ActorCreateDeps& acd) : mIsTitleFinished(false) {}
 
     bool mIsTitleFinished;
 

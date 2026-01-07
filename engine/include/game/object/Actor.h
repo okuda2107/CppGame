@@ -56,6 +56,8 @@ class Actor : public ObjectBase {
     }
     Vector3 GetUp() const { return Vector3::UnitZ; }
 
+    ActorID GetID() const { return mID; }
+
     void SetState(State state) {
         mState = state;
         mRecomputeWorldTransform = true;

@@ -14,11 +14,8 @@ int main(int argc, char** argv) {
     RuntimeSystem* runtimeSystem = nullptr;
 
     try {
-        // ActorsSystem
-        actorsSystem = new ActorsSystem();
-
         // game
-        game = new BonfireGame(actorsSystem);
+        game = new BonfireGame();
         if (!game->Initialize())
             throw std::runtime_error("Failed to initialize game");
 
@@ -36,6 +33,8 @@ int main(int argc, char** argv) {
         runtimeSystem = new RuntimeSystem();
         if (!runtimeSystem->Initialize())
             throw std::runtime_error("Failed to initialize runtime system");
+
+        // Load Scene
 
         Engine engine(game, inputSystem, renderer, runtimeSystem);
 

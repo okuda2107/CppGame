@@ -3,10 +3,10 @@
 #include "game/Game.h"
 #include "input/InputState.h"
 
-class BonfireGame : public Game<InputState> {
+class BonfireGame : public Game {
     Vector2 mFieldMin;
     Vector2 mFieldMax;
 
    public:
-    BonfireGame(class ActorsSystem* system);
+    BonfireGame();
 };
