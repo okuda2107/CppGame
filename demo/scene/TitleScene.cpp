@@ -1,8 +1,8 @@
 #include "TitleScene.h"
 
-#include "UI/BonfireUI.h"
-#include "UI/Title.h"
-#include "actor/Bonfire.h"
+#include "../UI/BonfireUI.h"
+#include "../UI/Title.h"
+// #include "actor/Bonfire.h"
 #include "game/scene/ActorFactory.h"
 
 void TitleScene::LoadActors() {
@@ -15,4 +15,8 @@ void TitleScene::LoadActors() {
     // player
 }
 
-std::string TitleScene::PollNextScene() {}
+void TitleScene::UnloadActors() {}
+
+void TitleScene::TickRules() {}
+
+std::string TitleScene::PollNextScene() { return ""; }
