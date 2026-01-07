@@ -38,7 +38,7 @@ class ActorFactory {
     // TDeps -> TypeLists を解決するための補助関数
     template <typename T, typename... Ts>
     T ResolveDeps(TypeLists<Ts...> _) {
-        return T{GetSystem<Ts>()...};
+        return T(GetSystem<Ts>()...);
     }
 
    public:
@@ -62,10 +62,10 @@ class ActorFactory {
                       "TListss must be a TypeLists<...>");
 
         // 依存関係depsの解決
-        TDeps deps = ResolveDeps(TLists{});
+        TDeps deps = ResolveDeps<TDeps>(TLists{});
 
         // Actor生成
-        TActor* actor = new TActor(mSystems.actorsSystem, deps);
+        TActor* actor = new TActor(&mSystems.actorsSystem, deps);
 
         return actor->GetID();
     }
@@ -80,10 +80,10 @@ class ActorFactory {
                       "TListss must be a TypeLists<...>");
 
         // 依存関係depsの解決
-        TDeps deps = ResolveDeps(TLists{});
+        TDeps deps = ResolveDeps<TDeps>(TLists{});
 
         // UI生成
-        TUI* ui = new TUI(mSystems.uiSystem, deps);
+        TUI* ui = new TUI(&mSystems.uiSystem, deps);
 
         return ui->GetID();
     }

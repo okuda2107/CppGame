@@ -44,7 +44,7 @@ class Game : public GameBase<InputState, RenderData, GameFrameResult,
                       "TScene must derive from Scene");
         TScene* scene = new TScene();
         scene->SetActorFactory(mActorFactory);
-        scene->SetDataRef(mSceneManager->mData);
+        scene->SetDataRef(&mSceneManager->mData);
         return mSceneManager->SetScene(tag, scene);
     }
 

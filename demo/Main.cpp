@@ -4,6 +4,8 @@
 #include "input/InputSystem.h"
 #include "renderer/Renderer.h"
 #include "runtime/RuntimeSystem.h"
+#include "scene/BonfireSceneTag.h"
+#include "scene/TitleScene.h"
 
 // ゲーム実装者がシステムの内容を定義
 int main(int argc, char** argv) {
@@ -35,6 +37,7 @@ int main(int argc, char** argv) {
             throw std::runtime_error("Failed to initialize runtime system");
 
         // Load Scene
+        game->LoadScene<TitleScene>(SceneName::title.data());
 
         Engine engine(game, inputSystem, renderer, runtimeSystem);
 
