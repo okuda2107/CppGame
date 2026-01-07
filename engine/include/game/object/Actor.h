@@ -9,6 +9,11 @@
 
 struct ActorDeps {};
 
+/* Note:
+    Actorの具体クラスのコンストラクタの引数は必ず
+    ConcreteActor(class ActorsSystem* system, ConcreteActorDeps deps);
+    としないと，ActorFactoryのCreateActorでの生成に失敗する．
+*/
 class Actor : public ObjectBase {
    public:
     enum class State {

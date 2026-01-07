@@ -24,6 +24,6 @@ class UISystem {
         if (iter == mLendingMap.end()) return nullptr;
 
         // cast
-        return dynamic_cast<T>(iter->second);
+        return dynamic_cast<T*>(iter->second);
     }
 };

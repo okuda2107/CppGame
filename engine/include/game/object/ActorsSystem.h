@@ -41,7 +41,7 @@ class ActorsSystem : public ObjectsSystemBase<class InputState> {
         if (iter == mLendingMap.end()) return nullptr;
 
         // cast
-        return dynamic_cast<T>(iter->second);
+        return dynamic_cast<T*>(iter->second);
     };
 
     ActorID AddActor(class Actor* actor);

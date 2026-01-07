@@ -4,6 +4,9 @@
 struct BonfireUIDeps : UIDeps {
     class RenderDB& renderDB;
     class StateManager& stateManager;
+
+    BonfireUIDeps(class RenderDB& renderDB, class StateManager& stateManager)
+        : UIDeps(), renderDB(renderDB), stateManager(stateManager) {}
 };
 
 // UIScreenとChillut's FireのUI実装とを嚙合わせる前のAdapterクラス

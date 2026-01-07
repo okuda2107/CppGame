@@ -25,6 +25,11 @@ struct HashText {
 
 struct UIDeps {};
 
+/* Note:
+    UIScreenの具体クラスのコンストラクタの引数は必ず
+    ConcreteUI(class UISystem* system, ConcreteUIDeps deps);
+    としないと，ActorFactoryのCreateUIでの生成に失敗する．
+*/
 class UIScreen {
    public:
     // ClosingだとUIに対して操作できない

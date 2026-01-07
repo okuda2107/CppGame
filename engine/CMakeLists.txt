@@ -2,6 +2,7 @@ add_library(engine STATIC)
 
 file(GLOB_RECURSE CXX_FILES CONFIGURE_DEPENDS
     "src/**/*.cpp"
+    "src/*.cpp"
 )
 
 file(GLOB_RECURSE PRIVATE_HEADERS CONFIGURE_DEPENDS
@@ -42,9 +43,10 @@ target_sources(engine
 )
 
 target_link_libraries(engine
+    PRIVATE
+        SDL2::SDL2main
     PUBLIC
         SDL2::SDL2
-        SDL2::SDL2main
         SDL2_image::SDL2_image
         SDL2_mixer::SDL2_mixer
         SDL2_ttf::SDL2_ttf

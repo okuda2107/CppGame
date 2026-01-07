@@ -21,6 +21,7 @@ Game::Game() {
     mStateManager = new StateManager();
     mReqManager = new RuntimeRequestManager();
     mReqManager->mInputSystemMetricsRequest.mRelativeMouseMode = true;
+    mSceneManager = new SceneManager();
 
     ActorCreateDeps acd = ActorCreateDeps{
         *mActorsSystem, *mRenderDB,     *mAudioSystem,
@@ -30,6 +31,8 @@ Game::Game() {
 }
 
 Game::~Game() {
+    delete mActorFactory;
+    delete mSceneManager;
     delete mUISystem;
     delete mAudioSystem;
     delete mRenderDB;

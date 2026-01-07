@@ -44,14 +44,13 @@ class ActorFactory {
    public:
     ActorFactory(ActorCreateDeps acd) : mSystems(acd) {}
 
-    // TListsの型指定の順番は，TDepsのメンバ変数の順番に依存する
-    /*
-        TActor: Actorの具体クラス
-        TDeps: ActorDepsの具体クラス．Actorの具体クラスが引数に取る依存システムをまとめた構造体
-        TLists: TDepsに注入したいシステムの型のリスト
-    */
     // todo: 上手くテンプレートメタプログラミングを行えば，TActorのみの指定で良くなるらしい
     // Actorクラスの内部にTDepsやTListsの型指定を行う．このときstatic_assertで型が定義されているかをチェックする必要がある．
+    /*
+        TActor: Actorの具体クラス
+        TDeps: Actorの具体クラスが引数に取る依存システムの参照をまとめた構造体．必ずコンストラクタを定義する必要がある．
+        TLists: TDepsに注入したいシステムの型のリスト．TDepsが取る引数の順番に指定する必要がある．
+    */
     template <typename TActor, typename TDeps, typename TLists>
     ActorID CreateActor() {
         static_assert(std::is_base_of<Actor, TActor>::value,
