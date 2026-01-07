@@ -16,6 +16,11 @@ int main(int argc, char** argv) {
     RuntimeSystem* runtimeSystem = nullptr;
 
     try {
+        // runtime system
+        runtimeSystem = new RuntimeSystem();
+        if (!runtimeSystem->Initialize())
+            throw std::runtime_error("Failed to initialize runtime system");
+
         // game
         game = new BonfireGame();
         if (!game->Initialize())
@@ -31,13 +36,10 @@ int main(int argc, char** argv) {
         if (!inputSystem->Initialize())
             throw std::runtime_error("Failed to initialize input system");
 
-        // runtime system
-        runtimeSystem = new RuntimeSystem();
-        if (!runtimeSystem->Initialize())
-            throw std::runtime_error("Failed to initialize runtime system");
-
         // Load Scene
         game->LoadScene<TitleScene>(SceneName::title.data());
+
+        game->SetEntryScene(SceneName::title.data());
 
         Engine engine(game, inputSystem, renderer, runtimeSystem);
 

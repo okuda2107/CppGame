@@ -23,7 +23,6 @@ enum RenderConfigID {
     NUM_CONFIG_ID,
 };
 
-// RenderDBが実体として持ち，dataの操作を行うため，lifetimeもRenderDBが責務を持つ
 struct RenderData : RenderDataBase {
     Matrix4 mView;
 
@@ -40,4 +39,6 @@ struct RenderData : RenderDataBase {
     // Lighting data
     Vector3 mAmbientLight;
     DirectionalLight mDirLight;
+
+    RenderData() : mSkydome(nullptr), mUI(nullptr) {};
 };
