@@ -2,6 +2,11 @@
 #include <type_traits>
 
 #include "base/GameBase.h"
+#include "game/UI/UIScreen.h"
+#include "game/object/Actor.h"
+#include "game/scene/ActorFactory.h"
+#include "input/InputState.h"
+#include "renderer/RenderData.h"
 #include "runtime/RuntimeData.h"
 #include "scene/Scene.h"
 #include "scene/SceneManager.h"
@@ -41,5 +46,20 @@ class Game : public GameBase<InputState, RenderData, GameFrameResult,
         scene->SetActorFactory(mActorFactory);
         scene->SetDataRef(mSceneManager->mData);
         return mSceneManager->SetScene(tag, scene);
+    }
+
+    bool SetEntryScene(const std::string& tag) {
+        return mSceneManager->SetEntryScene(tag);
+    }
+
+    // grobal objectなどのロード
+    template <typename TActor, typename TDeps, typename TLists>
+    ActorID CreateActor() {
+        return mActorFactory->CreateActor<TActor, TDeps, TLists>();
+    }
+
+    template <typename TUI, typename TDeps, typename TLists>
+    UIID CreateUI() {
+        return mActorFactory->CreateUI<TUI, TDeps, TLists>();
     }
 };
