@@ -17,7 +17,7 @@ bool RuntimeSystem::Initialize() {
     return true;
 }
 
-void RuntimeSystem::Shutdown() { SDL_Quit(); }
+void RuntimeSystem::Shutdown() { SDL_QuitSubSystem(SDL_INIT_TIMER); }
 
 bool RuntimeSystem::IsRunning() const { return mIsGameLoop; }
 

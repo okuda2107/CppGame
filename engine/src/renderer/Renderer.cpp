@@ -128,6 +128,7 @@ void Renderer::Shutdown() {
     delete mSpriteShader;
     SDL_GL_DeleteContext(mContext);
     SDL_DestroyWindow(mWindow);
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
 void Renderer::Draw(const RenderData& data) {

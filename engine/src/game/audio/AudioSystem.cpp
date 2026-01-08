@@ -64,6 +64,7 @@ void AudioSystem::Shutdown() {
     alcCloseDevice(mDevice);
     Mix_CloseAudio();
     Mix_Quit();
+    SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }
 
 void AudioSystem::LoadBank(const std::string& name) {
