@@ -1,23 +1,23 @@
 #include "Bonfire.h"
 
-#include "AudioComponent.h"
 #include "BonfirePlayer.h"
-#include "Game.h"
 #include "Mesh.h"
 #include "Renderer.h"
+#include "game/audio/AudioComponent.h"
 #include "game/object/ActorsSystem.h"
 #include "renderer/AnimMeshComponent.h"
 #include "renderer/RenderDB.h"
 
 Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
-    : Actor(system),
+    : Actor(system, deps),
       mTime(0.0f),
       mLimit(0.0f),
       cMaxLimit(30.0f),
       mIsRunning(false),
       mFinished(false),
       mAddWood(false),
-      mPlayer(nullptr) {
+      mPlayerID(NULL),
+      mActorsSystem(*system) {
     SetPosition(Vector3(100, 50, -50));
     SetScale(100.0);
     AnimMeshComponent* mc = new AnimMeshComponent(this, &deps.renderDB,
@@ -48,13 +48,17 @@ void Bonfire::UpdateActor(float deltatime) {
     mEvent.SetVolume(mLimit / cMaxLimit);
 
     // Playerが近くにいる かつ flagが送られたら，時間延長
-    float dx = mPlayer->GetPosition().x - GetPosition().x;
-    float dy = mPlayer->GetPosition().y - GetPosition().y;
-    float d = Vector2(dx, dy).LengthSquared();
-    float near = 5000.0f;
-    if (d < near && mAddWood) {
-        mAddWood = false;
-        mLimit += 20;
-        if (mLimit > cMaxLimit + 30) mLimit = cMaxLimit + 30;
+    class BonfirePlayer* player =
+        mActorsSystem.GetActor<BonfirePlayer>(mPlayerID);
+    if (player) {
+        float dx = player->GetPosition().x - GetPosition().x;
+        float dy = player->GetPosition().y - GetPosition().y;
+        float d = Vector2(dx, dy).LengthSquared();
+        float near = 5000.0f;
+        if (d < near && mAddWood) {
+            mAddWood = false;
+            mLimit += 20;
+            if (mLimit > cMaxLimit + 30) mLimit = cMaxLimit + 30;
+        }
     }
 }

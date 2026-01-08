@@ -7,6 +7,7 @@
 Title::Title(UISystem* system, BonfireUIDeps deps) : BonfireUI(system, deps) {
     mStateManager.mState = GameState::EPause;
     SetTitle("Chillut's Fire", Color::White, 72);
+    mTitlePos = Vector2(0.0f, 300.0f);
 }
 
 Title::~Title() { mStateManager.mState = GameState::EGameplay; }

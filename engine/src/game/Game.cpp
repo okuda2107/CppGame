@@ -7,7 +7,7 @@
 #include "game/UI/UISystem.h"
 #include "game/audio/AudioSystem.h"
 #include "game/object/ActorsSystem.h"
-#include "game/scene/ActorFactory.h"
+#include "game/scene/ActorQuery.h"
 #include "game/scene/SceneManager.h"
 #include "input/InputState.h"
 #include "renderer/RenderDB.h"
@@ -23,15 +23,15 @@ Game::Game() {
     mReqManager->mInputSystemMetricsRequest.mRelativeMouseMode = true;
     mSceneManager = new SceneManager();
 
-    ActorCreateDeps acd = ActorCreateDeps{
+    ActorQueryDeps acd = ActorQueryDeps{
         *mActorsSystem, *mRenderDB,     *mAudioSystem,
         *mUISystem,     *mStateManager, *mReqManager,
     };
-    mActorFactory = new ActorFactory(acd);
+    mActorQuery = new ActorQuery(acd);
 }
 
 Game::~Game() {
-    delete mActorFactory;
+    delete mActorQuery;
     delete mSceneManager;
     delete mUISystem;
     delete mAudioSystem;

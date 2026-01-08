@@ -8,7 +8,7 @@ class Scene {
     friend class SceneManager;
 
    protected:
-    class ActorFactory* mActorFactory;
+    class ActorQuery* mActorQuery;
 
     std::unordered_map<std::string, struct SceneContext>* mSceneManagerData;
 
@@ -30,9 +30,7 @@ class Scene {
     // 存在しないtag文字列を返すと，Logを出して，処理が続行される
     virtual std::string PollNextScene() = 0;
 
-    void SetActorFactory(class ActorFactory* factory) {
-        mActorFactory = factory;
-    }
+    void SetActorQuery(class ActorQuery* query) { mActorQuery = query; }
     void SetDataRef(
         std::unordered_map<std::string, struct SceneContext>* data) {
         mSceneManagerData = data;

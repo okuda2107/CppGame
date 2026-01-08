@@ -4,7 +4,7 @@
 #include "base/GameBase.h"
 #include "game/UI/UIScreen.h"
 #include "game/object/Actor.h"
-#include "game/scene/ActorFactory.h"
+#include "game/scene/ActorQuery.h"
 #include "input/InputState.h"
 #include "renderer/RenderData.h"
 #include "runtime/RuntimeData.h"
@@ -22,7 +22,7 @@ class Game : public GameBase<InputState, RenderData, GameFrameResult,
     class StateManager* mStateManager;
 
     class SceneManager* mSceneManager;
-    class ActorFactory* mActorFactory;
+    class ActorQuery* mActorQuery;
 
     GameFrameResult mFrameResult;
     class RuntimeRequestManager* mReqManager;
@@ -43,7 +43,7 @@ class Game : public GameBase<InputState, RenderData, GameFrameResult,
         static_assert(std::is_base_of<Scene, TScene>::value,
                       "TScene must derive from Scene");
         TScene* scene = new TScene();
-        scene->SetActorFactory(mActorFactory);
+        scene->SetActorQuery(mActorQuery);
         scene->SetDataRef(&mSceneManager->mData);
         return mSceneManager->SetScene(tag, scene);
     }
@@ -55,11 +55,11 @@ class Game : public GameBase<InputState, RenderData, GameFrameResult,
     // grobal objectなどのロード
     template <typename TActor, typename TDeps, typename TLists>
     ActorID CreateActor() {
-        return mActorFactory->CreateActor<TActor, TDeps, TLists>();
+        return mActorQuery->CreateActor<TActor, TDeps, TLists>();
     }
 
     template <typename TUI, typename TDeps, typename TLists>
     UIID CreateUI() {
-        return mActorFactory->CreateUI<TUI, TDeps, TLists>();
+        return mActorQuery->CreateUI<TUI, TDeps, TLists>();
     }
 };

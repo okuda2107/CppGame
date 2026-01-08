@@ -2,8 +2,10 @@
 #include "game/audio/SoundHandler.h"
 #include "game/object/Actor.h"
 
-struct BonfireDeps {
+struct BonfireDeps : ActorDeps {
     class RenderDB& renderDB;
+
+    BonfireDeps(class RenderDB& db) : ActorDeps(), renderDB(db) {}
 };
 
 class Bonfire : public Actor {
@@ -18,11 +20,13 @@ class Bonfire : public Actor {
     bool mAddWood;
 
     // 簡単のため，BonfirePlayerの位置をこちらで把握
-    class BonfirePlayer* mPlayer;
+    ActorID mPlayerID;
 
     SoundHandler mEvent;
 
     const float cMaxLimit;
+
+    class ActorsSystem& mActorsSystem;
 
    public:
     Bonfire(class ActorsSystem* system, BonfireDeps& deps);
@@ -31,7 +35,7 @@ class Bonfire : public Actor {
 
     void SetRunning() { mIsRunning = true; }
     void AddWood() { mAddWood = true; }
-    void SetPlayer(class BonfirePlayer* player) { mPlayer = player; }
+    void SetPlayer(ActorID id) { mPlayerID = id; }
 
     float GetTime() { return mTime; }
     bool GetFinished() { return mFinished; }

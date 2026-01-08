@@ -14,7 +14,7 @@ struct IsTypeLists : std::false_type {};
 template <typename... Ts>
 struct IsTypeLists<TypeLists<Ts...>> : std::true_type {};
 
-struct ActorCreateDeps {
+struct ActorQueryDeps {
     /*
         Sceneの生成ではactorの存在が前提となっているため，
         ObjectsSystemBaseではなく，
@@ -29,8 +29,8 @@ struct ActorCreateDeps {
     class RuntimeRequestManager& runtimeReqManager;
 };
 
-class ActorFactory {
-    ActorCreateDeps mSystems;
+class ActorQuery {
+    ActorQueryDeps mSystems;
 
     template <typename T>
     T& GetSystem();
@@ -42,7 +42,7 @@ class ActorFactory {
     }
 
    public:
-    ActorFactory(ActorCreateDeps acd) : mSystems(acd) {}
+    ActorQuery(ActorQueryDeps aqd) : mSystems(aqd) {}
 
     // todo: 上手くテンプレートメタプログラミングを行えば，TActorのみの指定で良くなるらしい
     // Actorクラスの内部にTDepsやTListsの型指定を行う．このときstatic_assertで型が定義されているかをチェックする必要がある．
@@ -86,35 +86,45 @@ class ActorFactory {
 
         return ui->GetID();
     }
+
+    template <typename TActor>
+    TActor* GetActor(ActorID id) {
+        return mSystems.actorsSystem.GetActor<TActor>(id);
+    }
+
+    template <typename TUI>
+    TUI* GetUI(UIID id) {
+        return mSystems.uiSystem.GetUI<TUI>(id);
+    }
 };
 
 template <>
-inline class ActorsSystem& ActorFactory::GetSystem<ActorsSystem>() {
+inline class ActorsSystem& ActorQuery::GetSystem<ActorsSystem>() {
     return mSystems.actorsSystem;
 }
 
 template <>
-inline class RenderDB& ActorFactory::GetSystem<RenderDB>() {
+inline class RenderDB& ActorQuery::GetSystem<RenderDB>() {
     return mSystems.renderDB;
 }
 
 template <>
-inline class AudioSystem& ActorFactory::GetSystem<AudioSystem>() {
+inline class AudioSystem& ActorQuery::GetSystem<AudioSystem>() {
     return mSystems.audioSystem;
 }
 
 template <>
-inline class UISystem& ActorFactory::GetSystem<UISystem>() {
+inline class UISystem& ActorQuery::GetSystem<UISystem>() {
     return mSystems.uiSystem;
 }
 
 template <>
-inline class StateManager& ActorFactory::GetSystem<StateManager>() {
+inline class StateManager& ActorQuery::GetSystem<StateManager>() {
     return mSystems.stateManager;
 }
 
 template <>
 inline class RuntimeRequestManager&
-ActorFactory::GetSystem<RuntimeRequestManager>() {
+ActorQuery::GetSystem<RuntimeRequestManager>() {
     return mSystems.runtimeReqManager;
 }
