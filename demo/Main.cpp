@@ -10,7 +10,6 @@
 
 // ゲーム実装者がシステムの内容を定義
 int main(int argc, char** argv) {
-    SDL_Log("debug");
     ActorsSystem* actorsSystem = nullptr;
     BonfireGame* game = nullptr;
     Renderer* renderer = nullptr;
