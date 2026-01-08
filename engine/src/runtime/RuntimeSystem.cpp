@@ -7,8 +7,8 @@ RuntimeSystem::RuntimeSystem() : mTicksCount(0), mIsGameLoop(true) {}
 RuntimeSystem::~RuntimeSystem() { Shutdown(); }
 
 bool RuntimeSystem::Initialize() {
-    if (int sdlResult = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
-        SDL_Log("Failed to Initialize SDL:%s", SDL_GetError());
+    if (int sdlResult = SDL_InitSubSystem(SDL_INIT_TIMER)) {
+        SDL_Log("Failed to Initialize SDL timer:%s", SDL_GetError());
         return false;
     }
 

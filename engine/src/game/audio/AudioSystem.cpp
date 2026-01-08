@@ -16,6 +16,11 @@ AudioSystem::~AudioSystem() {
 }
 
 bool AudioSystem::Initialize() {
+    if (int sdlResult = SDL_InitSubSystem(SDL_INIT_AUDIO)) {
+        SDL_Log("Failed to Initialize SDL audio:%s", SDL_GetError());
+        return false;
+    }
+
     if (!Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG)) {
         SDL_Log("Failed to Initialize SDL_Mixer");
         return false;

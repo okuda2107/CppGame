@@ -66,6 +66,11 @@ bool Renderer::Initialize(float screenWidth, float screenHeight,
     mScreenWidth = screenWidth;
     mScreenHeight = screenHeight;
 
+    if (int sdlResult = SDL_InitSubSystem(SDL_INIT_VIDEO)) {
+        SDL_Log("Failed to Initialize SDL video:%s", SDL_GetError());
+        return false;
+    }
+
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
                         SDL_GL_CONTEXT_PROFILE_CORE);
 
