@@ -1,5 +1,6 @@
 #include "BonfireGame.h"
 #include "Engine.h"
+#include "SDL.h"
 #include "game/object/ActorsSystem.h"
 #include "input/InputSystem.h"
 #include "renderer/Renderer.h"
@@ -54,6 +55,8 @@ int main(int argc, char** argv) {
     delete renderer;
     delete game;
     delete actorsSystem;
+
+    SDL_Quit();
 
     return 0;
 }
