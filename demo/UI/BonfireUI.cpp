@@ -7,7 +7,7 @@
 #include "renderer/Texture.h"
 
 BonfireUI::BonfireUI(UISystem* system, BonfireUIDeps& bud)
-    : UIScreen(system, bud), mStateManager(bud.stateManager) {
+    : UIScreen(system, bud), mStateManager(bud.stateManager), mTitle(nullptr) {
     SetFont(bud.renderDB.GetFont("Assets/SlacksideOne-Regular.ttf"));
 }
 
