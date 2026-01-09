@@ -1,17 +1,17 @@
 #include "BonfirePlayer.h"
 
 #include "Bonfire.h"
-#include "Game.h"
 #include "UI/AddWoodUI.h"
 #include "UI/AlreadyHaveWoodUI.h"
 #include "UI/HaveWoodUI.h"
 #include "Utility/Coroutine.h"
 #include "Wood.h"
 #include "WoodGenerator.h"
-#include "input/KeyboardAndMouse/InputSystem.h"
+#include "core/Math.h"
+#include "input/InputSystem.h"
 
-BonfirePlayer::BonfirePlayer(class Game* game)
-    : FPSActor(game),
+BonfirePlayer::BonfirePlayer(class ActorsSystem* system, BonfirePlayerDeps deps)
+    : FPSActor(system, deps),
       mIsAnimLookUp(false),
       mIsAnimLookDown(false),
       mLookUpEndTime(-1.0f),
@@ -19,7 +19,9 @@ BonfirePlayer::BonfirePlayer(class Game* game)
       mHasWood(false),
       mWoodUI(nullptr),
       mBonfireUI(nullptr),
-      mGenerator(nullptr) {
+      mGenerator(nullptr),
+      mBonfireID(0),
+      mActorsSystem(deps.actorsSystem) {
     mCoroutines = new Coroutine();
     mGenerator = new WoodGenerator(GetGame());
     cc = new ContextComponent<Bonfire>(this);
@@ -57,13 +59,13 @@ void BonfirePlayer::ActorInput(const InputState& state) {
     }
 
     // Bonfireが近くにある時，Eキーを押すと木をくべられる
-    auto bonfire = cc->GetActor();
+    auto bonfire = mActorsSystem.GetActor<Bonfire>(mBonfireID);
     if (bonfire != nullptr && mHasWood) {
         float dx = bonfire->GetPosition().x - GetPosition().x;
         float dy = bonfire->GetPosition().y - GetPosition().y;
         float d = Vector2(dx, dy).LengthSquared();
         float near = 5000.0f;
-        if (d < near && state.Keyboard->GetKeyState(SDL_SCANCODE_E)) {
+        if (d < near && state.Keyboard.GetKeyState(SDL_SCANCODE_E)) {
             mHasWood = false;
             bonfire->AddWood();
         }
@@ -95,10 +97,8 @@ void BonfirePlayer::UpdateActor(float deltatime) {
 
     // 位置の制限
     Vector3 pos = GetPosition();
-    auto fieldMin = GetGame()->GetFieldMin();
-    auto fieldMax = GetGame()->GetFieldMax();
-    pos.x = Math::Clamp(pos.x, fieldMin->x, fieldMax->x);
-    pos.y = Math::Clamp(pos.y, fieldMin->x, fieldMax->y);
+    pos.x = Math::Clamp(pos.x, mFieldMin.x, mFieldMax.x);
+    pos.y = Math::Clamp(pos.y, mFieldMin.x, mFieldMax.y);
     SetPosition(pos);
 
     // 木が近くにある時，UIを出す制御

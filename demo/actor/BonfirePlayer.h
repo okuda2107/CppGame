@@ -1,9 +1,16 @@
 #pragma once
-#include "Bonfire.h"
-#include "FPSActor.h"
-#include "Utility/ContextComponent.h"
+#include "game/camera/FPSActor.h"
+
+struct BonfirePlayerDeps : FPSActorDeps {
+    class ActorsSystem& actorsSystem;
+
+    BonfirePlayerDeps(class ActorsSystem& actorsSystem,
+                      class RenderDB& renderDB, class AudioSystem& audioSystem)
+        : FPSActorDeps(renderDB, audioSystem), actorsSystem(actorsSystem) {}
+};
 
 // フィールドによる位置の制限とアニメーション機能を付けたクラス
+// 初期化処理として，フィールドの範囲をセットする必要がある．
 class BonfirePlayer : public FPSActor {
     bool mIsAnimLookUp;
     bool mIsAnimLookDown;
@@ -23,7 +30,7 @@ class BonfirePlayer : public FPSActor {
     // 木を持っているか
     bool mHasWood;
 
-    class ContextComponent<Bonfire>* cc;
+    ActorID mBonfireID;
 
     // コルーチンハンドラ
     class Coroutine* mCoroutines;
@@ -33,8 +40,14 @@ class BonfirePlayer : public FPSActor {
     void PitchUp(float lerp);
     void PitchDown(float lerp);
 
+    Vector2& mFieldMin;
+    Vector2& mFieldMax;
+
+    // todo: 他Actorと依存してしまっているので，これが必要．衝突検知などを他のところで行えたらこれは必要なくなるかもしれない
+    class ActorsSystem& mActorsSystem;
+
    public:
-    BonfirePlayer(class Game* game);
+    BonfirePlayer(class ActorsSystem* system, BonfirePlayerDeps deps);
     ~BonfirePlayer();
 
     void ActorInput(const InputState& state) override;
@@ -47,5 +60,11 @@ class BonfirePlayer : public FPSActor {
     void SetAnimLookDown() { mIsAnimLookDown = true; }
     bool GetAnimLookUp() { return mIsAnimLookUp; }
 
-    void SetContext(class Bonfire* actor) { cc->SetActor(actor); }
+    void SetBonfireID(ActorID id) { mBonfireID = id; }
+
+    // Playerが動ける範囲を指定
+    void SetFieldRange(Vector2& fieldMin, Vector2& fieldMax) {
+        mFieldMin = fieldMin;
+        mFieldMax = fieldMax;
+    }
 };
