@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Actor.h>
+#include "game/object/Actor.h"
 
 class WoodGenerator : public Actor {
     float mTime;
@@ -8,8 +8,10 @@ class WoodGenerator : public Actor {
     bool mIsRunning;
     std::vector<class Wood*> mWoods;
 
+    class ActorsSystem& mActorsSystem;
+
    public:
-    WoodGenerator(class Game* game);
+    WoodGenerator(class ActorsSystem* system);
     ~WoodGenerator();
 
     void UpdateActor(float deltatime) override;

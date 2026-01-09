@@ -7,8 +7,12 @@
 #include "Random.h"
 #include "Wood.h"
 
-WoodGenerator::WoodGenerator(class Game* game)
-    : Actor(game), mTime(0.0f), mClock(0.0f), mIsRunning(false) {}
+WoodGenerator::WoodGenerator(class ActorsSystem* system)
+    : Actor(system, ActorDeps{}),
+      mTime(0.0f),
+      mClock(0.0f),
+      mIsRunning(false),
+      mActorsSystem(*system) {}
 
 // デストラクタが働くタイミングはActorの配列ループじゃなくてdeadActorの配列ループ中に必ずなっているから，delete woodしても良い
 WoodGenerator::~WoodGenerator() {

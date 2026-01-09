@@ -19,17 +19,14 @@ BonfirePlayer::BonfirePlayer(class ActorsSystem* system, BonfirePlayerDeps deps)
       mHasWood(false),
       mWoodUI(nullptr),
       mBonfireUI(nullptr),
-      mGenerator(nullptr),
       mBonfireID(0),
+      mGeneratorID(0),
       mActorsSystem(deps.actorsSystem) {
     mCoroutines = new Coroutine();
-    mGenerator = new WoodGenerator(GetGame());
-    cc = new ContextComponent<Bonfire>(this);
 }
 
 BonfirePlayer::~BonfirePlayer() {
     delete mCoroutines;
-    mGenerator->SetState(Actor::State::EDead);
     if (mWoodUI && mWoodUI->GetState() != UIScreen::EClosing) mWoodUI->Close();
     if (mBonfireUI && mBonfireUI->GetState() != UIScreen::EClosing)
         mBonfireUI->Close();

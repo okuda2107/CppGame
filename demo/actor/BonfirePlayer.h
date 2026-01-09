@@ -19,7 +19,7 @@ class BonfirePlayer : public FPSActor {
     float mLookDownEndTime;
 
     // 木生成器
-    class WoodGenerator* mGenerator;
+    ActorID mGeneratorID;
 
     //UI
     // 木に関するUIを保持
