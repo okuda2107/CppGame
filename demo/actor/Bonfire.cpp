@@ -1,11 +1,10 @@
 #include "Bonfire.h"
 
 #include "BonfirePlayer.h"
-#include "Mesh.h"
-#include "Renderer.h"
 #include "game/audio/AudioComponent.h"
 #include "game/object/ActorsSystem.h"
 #include "renderer/AnimMeshComponent.h"
+#include "renderer/Mesh.h"
 #include "renderer/RenderDB.h"
 
 Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
@@ -24,7 +23,7 @@ Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
                                                   RenderConfigID::Translucent);
     mc->SetMesh(deps.renderDB.GetMesh("Assets/Bonfire.gpmesh"));
 
-    AudioComponent* ac = new AudioComponent(this);
+    AudioComponent* ac = new AudioComponent(this, deps.audioSystem);
     ac->RegisterEvent("takibi");
     mEvent = ac->GetEvent("takibi");
     mEvent.Restart();

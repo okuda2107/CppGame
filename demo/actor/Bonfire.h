@@ -4,8 +4,10 @@
 
 struct BonfireDeps : ActorDeps {
     class RenderDB& renderDB;
+    class AudioSystem& audioSystem;
 
-    BonfireDeps(class RenderDB& db) : ActorDeps(), renderDB(db) {}
+    BonfireDeps(class RenderDB& db, class AudioSystem& audio)
+        : ActorDeps(), renderDB(db), audioSystem(audio) {}
 };
 
 class Bonfire : public Actor {

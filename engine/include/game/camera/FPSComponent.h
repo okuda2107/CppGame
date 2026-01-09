@@ -12,8 +12,7 @@ class FPSComponent : public CameraComponent {
     float mPitchSpeed;
 
    public:
-    FPSComponent(class Actor* owner, struct CameraCompDeps& fcd,
-                 int drawOrder = 200);
+    FPSComponent(class Actor* owner, CameraCompDeps fcd, int drawOrder = 200);
     ~FPSComponent();
 
     void Update(float deltatime) override;

@@ -4,7 +4,7 @@
 #include "game/audio/AudioSystem.h"
 #include "game/object/Actor.h"
 
-FPSComponent::FPSComponent(class Actor* owner, struct CameraCompDeps& ccd,
+FPSComponent::FPSComponent(class Actor* owner, struct CameraCompDeps ccd,
                            int updateOrder)
     : CameraComponent(owner, ccd, updateOrder),
       mPitch(0.0f),
