@@ -1,8 +1,8 @@
 #pragma once
+#include "BonfireSceneBase.h"
 #include "game/UI/UIScreen.h"
-#include "game/scene/Scene.h"
 
-class TitleScene : public Scene {
+class TitleScene : public BonfireSceneBase {
     UIID mTitleID;
 
    public:

@@ -1,6 +1,6 @@
-#include "BonfireGame.h"
 #include "Engine.h"
 #include "SDL.h"
+#include "game/Game.h"
 #include "game/object/ActorsSystem.h"
 #include "input/InputSystem.h"
 #include "renderer/Renderer.h"
@@ -11,7 +11,7 @@
 // ゲーム実装者がシステムの内容を定義
 int main(int argc, char** argv) {
     ActorsSystem* actorsSystem = nullptr;
-    BonfireGame* game = nullptr;
+    Game* game = nullptr;
     Renderer* renderer = nullptr;
     InputSystem* inputSystem = nullptr;
     RuntimeSystem* runtimeSystem = nullptr;
@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
             throw std::runtime_error("Failed to initialize runtime system");
 
         // game
-        game = new BonfireGame();
+        game = new Game();
         if (!game->Initialize())
             throw std::runtime_error("Failed to initialize game");
 

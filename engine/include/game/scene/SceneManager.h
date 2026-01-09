@@ -5,6 +5,8 @@
 struct SceneContext {
     int number;
     std::string str;
+    // Sceneを超えて同じActorを使いたいときに格納する
+    ActorID actorID;
 };
 
 class SceneManager {
