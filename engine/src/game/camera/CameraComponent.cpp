@@ -6,11 +6,6 @@
 #include "game/object/Actor.h"
 #include "renderer/RenderDB.h"
 
-struct CameraCompDeps {
-    class RenderDB* renderDB;
-    class AudioComponent* audioComponent;
-};
-
 CameraComponent::CameraComponent(class Actor* owner, CameraCompDeps& ccd,
                                  int updateOrder)
     : Component(owner, updateOrder),
@@ -21,6 +16,6 @@ CameraComponent::~CameraComponent() {}
 
 // viewをrendererとaudio systemに渡す．
 void CameraComponent::SetViewMatrix(const class Matrix4& view) {
-    mRenderDB->SetViewMatrix(view);
-    mAudioComponent->GetSystem()->SetListener(view);
+    mRenderDB.SetViewMatrix(view);
+    mAudioComponent.GetSystem()->SetListener(view);
 }

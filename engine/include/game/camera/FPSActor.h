@@ -3,7 +3,13 @@
 #include "game/camera/FPSComponent.h"
 #include "game/object/Actor.h"
 
-struct FPSActorDeps;
+struct FPSActorDeps : ActorDeps {
+    class RenderDB& renderDB;
+    class AudioSystem& audioSystem;
+
+    FPSActorDeps(class RenderDB& renderDB, class AudioSystem& audioSystem)
+        : ActorDeps(), renderDB(renderDB), audioSystem(audioSystem) {}
+};
 
 //  キーマウでの操作ができるFPS視点のActor
 class FPSActor : public Actor {
@@ -26,7 +32,7 @@ class FPSActor : public Actor {
     const static SDL_Scancode mLeftKey = SDL_SCANCODE_A;
 
    public:
-    FPSActor(class ActorsSystem* system, struct FPSActorDeps& fad);
+    FPSActor(class ActorsSystem* system, struct FPSActorDeps fad);
 
     void ActorInput(const InputState& state) override;
     void UpdateActor(float deltaTime) override;

@@ -6,21 +6,17 @@
 #include "game/object/MoveComponent.h"
 #include "input/InputState.h"
 
-struct FPSActorDeps : ActorDeps {
-    struct AudioCompDeps& acd;
-    struct CameraCompDeps& ccd;
-};
-
-FPSActor::FPSActor(class ActorsSystem* system, FPSActorDeps& fad)
+FPSActor::FPSActor(class ActorsSystem* system, FPSActorDeps fad)
     : Actor(system, fad), mForwardSpeed(0.0f), mStrafeSpeed(0.0f) {
     mMoveComp = new MoveComponent(this);
-    mAudioComp = new AudioComponent(this, fad.acd);
+    mAudioComp = new AudioComponent(this, AudioCompDeps(fad.audioSystem));
     mLastFootstep = 0.0f;
     // mAudioComp->RegisterEvent("footstep");
     // mFootstep = mAudioComp->GetEvent("footstep");
     // mFootstep->SetPaused(true);
     mFootstep = nullptr;
-    mFPSComp = new FPSComponent(this, fad.ccd);
+    mFPSComp =
+        new FPSComponent(this, CameraCompDeps(fad.renderDB, *mAudioComp));
 }
 
 void FPSActor::ActorInput(const InputState& state) {
