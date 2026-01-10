@@ -5,9 +5,11 @@
 struct BonfireDeps : ActorDeps {
     class RenderDB& renderDB;
     class AudioSystem& audioSystem;
+    class PhysWorld& physWorld;
 
-    BonfireDeps(class RenderDB& db, class AudioSystem& audio)
-        : ActorDeps(), renderDB(db), audioSystem(audio) {}
+    BonfireDeps(class RenderDB& db, class AudioSystem& audio,
+                class PhysWorld& phys)
+        : ActorDeps(), renderDB(db), audioSystem(audio), physWorld(phys) {}
 };
 
 class Bonfire : public Actor {
@@ -41,4 +43,6 @@ class Bonfire : public Actor {
 
     float GetTime() { return mTime; }
     bool GetFinished() { return mFinished; }
+
+    static constexpr std::string_view SBonfirePhysTag = "bonfire";
 };

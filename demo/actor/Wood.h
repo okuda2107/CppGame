@@ -11,4 +11,6 @@ class Wood : public Actor {
     ~Wood();
 
     void UpdateActor(float deltatime) override;
+
+    static constexpr std::string_view SWoodPhysTag = "wood";
 };

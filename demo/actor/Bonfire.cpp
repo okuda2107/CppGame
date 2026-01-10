@@ -3,6 +3,7 @@
 #include "BonfirePlayer.h"
 #include "game/audio/AudioComponent.h"
 #include "game/object/ActorsSystem.h"
+#include "game/physics/SphereComponent.h"
 #include "renderer/AnimMeshComponent.h"
 #include "renderer/Mesh.h"
 #include "renderer/RenderDB.h"
@@ -15,7 +16,7 @@ Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
       mIsRunning(false),
       mFinished(false),
       mAddWood(false),
-      mPlayerID(NULL),
+      mPlayerID(0),
       mActorsSystem(*system) {
     SetPosition(Vector3(100, 50, -50));
     SetScale(100.0);
@@ -29,6 +30,14 @@ Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
     mEvent.Restart();
 
     mLimit = cMaxLimit;
+
+    SphereComponent* sphereComp = new SphereComponent(
+        this, SBonfirePhysTag.data(), CollisionCompDeps(deps.physWorld));
+    // todo: Sphereの半径を調整
+    Sphere sphere{};
+    sphere.mCenter = GetPosition();
+    sphere.mRadius = 2500.0f;
+    sphereComp->mSphere = sphere;
 }
 
 // todo: 時間で消える処理を書く

@@ -8,6 +8,8 @@
 #include "Wood.h"
 #include "WoodGenerator.h"
 #include "core/Math.h"
+#include "game/physics/PhysWorld.h"
+#include "game/physics/SphereComponent.h"
 #include "input/InputSystem.h"
 
 BonfirePlayer::BonfirePlayer(class ActorsSystem* system, BonfirePlayerDeps deps)
@@ -17,19 +19,31 @@ BonfirePlayer::BonfirePlayer(class ActorsSystem* system, BonfirePlayerDeps deps)
       mLookUpEndTime(-1.0f),
       mLookDownEndTime(-1.0f),
       mHasWood(false),
-      mWoodUI(nullptr),
-      mBonfireUI(nullptr),
-      mBonfireID(0),
-      mGeneratorID(0),
-      mActorsSystem(deps.actorsSystem) {
+      mWoodUIID(-1),
+      mBonfireUIID(-1),
+      mFieldMin(nullptr),
+      mFieldMax(nullptr),
+      mActorsSystem(*system),
+      mPhysWorld(deps.physWorld),
+      mSphereComp(nullptr),
+      mUISystem(deps.uiSystem) {
     mCoroutines = new Coroutine();
+    mSphereComp =
+        new SphereComponent(this, "player", CollisionCompDeps(mPhysWorld));
+    // todo: Sphereの半径を調整
+    Sphere sphere{};
+    sphere.mCenter = GetPosition();
+    sphere.mRadius = 2500.0f;
+    mSphereComp->mSphere = sphere;
 }
 
 BonfirePlayer::~BonfirePlayer() {
     delete mCoroutines;
-    if (mWoodUI && mWoodUI->GetState() != UIScreen::EClosing) mWoodUI->Close();
-    if (mBonfireUI && mBonfireUI->GetState() != UIScreen::EClosing)
-        mBonfireUI->Close();
+
+    // auto woodUI = mUISystem.GetUI<HaveWoodUI>()
+    // if (mWoodUI && mWoodUI->GetState() != UIScreen::EClosing) mWoodUI->Close();
+    // if (mBonfireUI && mBonfireUI->GetState() != UIScreen::EClosing)
+    //     mBonfireUI->Close();
 }
 
 void BonfirePlayer::ActorInput(const InputState& state) {
@@ -39,37 +53,38 @@ void BonfirePlayer::ActorInput(const InputState& state) {
 
     // 木が近くにあるとき，Eキーを押すと拾う
     // 既に持っている場合は拾えない
-    for (auto& wood : mGenerator->GetWoods()) {
-        float dx = wood->GetPosition().x - GetPosition().x;
-        float dy = wood->GetPosition().y - GetPosition().y;
-        float d = Vector2(dx, dy).LengthSquared();
-        float near = 5000.0f;
-        if (d < near && state.Keyboard->GetKeyState(SDL_SCANCODE_E)) {
-            if (!mHasWood) {
-                mHasWood = true;
-                wood->SetState(Actor::State::EDead);
-                break;
-            } else {
-                new AlreadyHaveWoodUI(GetGame());
+    auto woods =
+        mPhysWorld.GetArray<SphereComponent>(Wood::SWoodPhysTag.data());
+    if (woods) {
+        for (auto wood : *woods) {
+            if (Intersect(mSphereComp->mSphere, wood->mSphere) &&
+                state.Keyboard.GetKeyState(SDL_SCANCODE_E)) {
+                if (!mHasWood) {
+                    mHasWood = true;
+                    wood->GetOwner()->SetState(Actor::State::EDead);
+                    break;
+                } else {
+                    // new AlreadyHaveWoodUI(GetGame());
+                }
             }
         }
     }
 
     // Bonfireが近くにある時，Eキーを押すと木をくべられる
-    auto bonfire = mActorsSystem.GetActor<Bonfire>(mBonfireID);
-    if (bonfire != nullptr && mHasWood) {
-        float dx = bonfire->GetPosition().x - GetPosition().x;
-        float dy = bonfire->GetPosition().y - GetPosition().y;
-        float d = Vector2(dx, dy).LengthSquared();
-        float near = 5000.0f;
-        if (d < near && state.Keyboard.GetKeyState(SDL_SCANCODE_E)) {
-            mHasWood = false;
-            bonfire->AddWood();
+    auto bonfires =
+        mPhysWorld.GetArray<SphereComponent>(Bonfire::SBonfirePhysTag.data());
+    if (bonfires) {
+        for (auto bonfire : *bonfires) {
+            if (Intersect(mSphereComp->mSphere, bonfire->mSphere) && mHasWood &&
+                state.Keyboard.GetKeyState(SDL_SCANCODE_E)) {
+                mHasWood = false;
+                auto bonfireInstance =
+                    mActorsSystem.GetActor<Bonfire>(mBonfireID);
+                if (bonfireInstance) bonfireInstance->AddWood();
+            }
         }
     }
 }
-
-void BonfirePlayer::Initialize() { mGenerator->SetRunning(); }
 
 void BonfirePlayer::UpdateActor(float deltatime) {
     mCoroutines->Update(deltatime);
@@ -93,40 +108,48 @@ void BonfirePlayer::UpdateActor(float deltatime) {
     FPSActor::UpdateActor(deltatime);
 
     // 位置の制限
-    Vector3 pos = GetPosition();
-    pos.x = Math::Clamp(pos.x, mFieldMin.x, mFieldMax.x);
-    pos.y = Math::Clamp(pos.y, mFieldMin.x, mFieldMax.y);
-    SetPosition(pos);
+    if (mFieldMin && mFieldMax) {
+        Vector3 pos = GetPosition();
+        pos.x = Math::Clamp(pos.x, mFieldMin->x, mFieldMax->x);
+        pos.y = Math::Clamp(pos.y, mFieldMin->x, mFieldMax->y);
+        SetPosition(pos);
+    }
 
     // 木が近くにある時，UIを出す制御
-    bool isNear = false;
-    for (auto& wood : mGenerator->GetWoods()) {
-        float dx = wood->GetPosition().x - GetPosition().x;
-        float dy = wood->GetPosition().y - GetPosition().y;
-        float d = Vector2(dx, dy).LengthSquared();
-        float near = 5000.0f;
-        isNear = d < near;
-        if (isNear) break;
-    }
-    if (!mWoodUI && isNear) {
-        mWoodUI = new HaveWoodUI(GetGame());
-    } else if (mWoodUI && !isNear) {
-        mWoodUI->Close();
-        mWoodUI = nullptr;
+    auto woods =
+        mPhysWorld.GetArray<SphereComponent>(Wood::SWoodPhysTag.data());
+    if (woods) {
+        bool flag = false;
+        for (auto wood : *woods) {
+            if (Intersect(mSphereComp->mSphere, wood->mSphere)) {
+                flag = true;
+                break;
+            }
+        }
+        if (mWoodUIID == -1 && flag) {
+            // mWoodUI = new HaveWoodUI(GetGame());
+        } else if (mWoodUIID != -1 && !flag) {
+            // mWoodUI->Close();
+            mWoodUIID = -1;
+        }
     }
 
     // Bonfireが近くにある時，UIを出す制御
-    auto bonfire = cc->GetActor();
-    if (bonfire) {
-        float dx = bonfire->GetPosition().x - GetPosition().x;
-        float dy = bonfire->GetPosition().y - GetPosition().y;
-        float d = Vector2(dx, dy).LengthSquared();
-        float near = 5000.0f;
-        if (!mBonfireUI && d < near && mHasWood) {
-            mBonfireUI = new AddWoodUI(GetGame());
-        } else if (mBonfireUI && (d >= near || !mHasWood)) {
-            mBonfireUI->Close();
-            mBonfireUI = nullptr;
+    auto bonfires =
+        mPhysWorld.GetArray<SphereComponent>(Bonfire::SBonfirePhysTag.data());
+    if (bonfires) {
+        bool flag = false;
+        for (auto bonfire : *bonfires) {
+            if (Intersect(mSphereComp->mSphere, bonfire->mSphere)) {
+                flag = true;
+                break;
+            }
+            if (flag && mBonfireUIID == -1 && mHasWood) {
+                // mBonfireUI = new AddWoodUI(GetGame());
+            } else if (mBonfireUIID != -1 && (!flag || !mHasWood)) {
+                // mBonfireUI->Close();
+                mBonfireUIID = -1;
+            }
         }
     }
 }

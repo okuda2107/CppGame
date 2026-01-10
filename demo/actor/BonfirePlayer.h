@@ -1,12 +1,16 @@
 #pragma once
+#include "game/UI/UIScreen.h"
 #include "game/camera/FPSActor.h"
 
 struct BonfirePlayerDeps : FPSActorDeps {
-    class ActorsSystem& actorsSystem;
+    class PhysWorld& physWorld;
+    class UISystem& uiSystem;
 
-    BonfirePlayerDeps(class ActorsSystem& actorsSystem,
-                      class RenderDB& renderDB, class AudioSystem& audioSystem)
-        : FPSActorDeps(renderDB, audioSystem), actorsSystem(actorsSystem) {}
+    BonfirePlayerDeps(class RenderDB& renderDB, class AudioSystem& audioSystem,
+                      class PhysWorld& physWorld, class UISystem& uiSystem)
+        : FPSActorDeps(renderDB, audioSystem),
+          physWorld(physWorld),
+          uiSystem(uiSystem) {}
 };
 
 // フィールドによる位置の制限とアニメーション機能を付けたクラス
@@ -23,9 +27,9 @@ class BonfirePlayer : public FPSActor {
 
     //UI
     // 木に関するUIを保持
-    class UIScreen* mWoodUI;
+    UIID mWoodUIID;
     // たき火に関するUIを保持
-    class UIScreen* mBonfireUI;
+    UIID mBonfireUIID;
 
     // 木を持っているか
     bool mHasWood;
@@ -40,11 +44,15 @@ class BonfirePlayer : public FPSActor {
     void PitchUp(float lerp);
     void PitchDown(float lerp);
 
-    Vector2& mFieldMin;
-    Vector2& mFieldMax;
+    Vector2* mFieldMin;
+    Vector2* mFieldMax;
 
-    // todo: 他Actorと依存してしまっているので，これが必要．衝突検知などを他のところで行えたらこれは必要なくなるかもしれない
     class ActorsSystem& mActorsSystem;
+    class PhysWorld& mPhysWorld;
+
+    class SphereComponent* mSphereComp;
+
+    class UISystem& mUISystem;
 
    public:
     BonfirePlayer(class ActorsSystem* system, BonfirePlayerDeps deps);
@@ -52,9 +60,6 @@ class BonfirePlayer : public FPSActor {
 
     void ActorInput(const InputState& state) override;
     void UpdateActor(float deltatime) override;
-
-    // title押されてからの初期化処理
-    void Initialize();
 
     void SetAnimLookUp() { mIsAnimLookUp = true; }
     void SetAnimLookDown() { mIsAnimLookDown = true; }
@@ -64,7 +69,7 @@ class BonfirePlayer : public FPSActor {
 
     // Playerが動ける範囲を指定
     void SetFieldRange(Vector2& fieldMin, Vector2& fieldMax) {
-        mFieldMin = fieldMin;
-        mFieldMax = fieldMax;
+        mFieldMin = &fieldMin;
+        mFieldMax = &fieldMax;
     }
 };
