@@ -10,6 +10,8 @@
 // Collision群同士を比較して接触しているモノ同士で処理
 class PhysWorld {
     std::unordered_map<std::string, std::vector<class BoxComponent*>> mBoxes;
+    std::unordered_map<std::string, std::vector<class SphereComponent*>>
+        mSpheres;
 
     template <typename TShape>
     std::unordered_map<std::string, std::vector<TShape*>>& GetMapArrays();
@@ -43,6 +45,9 @@ class PhysWorld {
     void AddBox(const std::string& tag, class BoxComponent* box);
     void RemoveBox(const std::string& tag, class BoxComponent* box);
 
+    void AddSphere(const std::string& tag, class SphereComponent* sphere);
+    void RemoveSphere(const std::string& tag, class SphereComponent* sphere);
+
     // tagに一致する配列が無い場合nullptrを返す．
     template <typename T>
     const std::vector<T*>* GetArray(std::string tag) {
@@ -61,4 +66,10 @@ template <>
 inline std::unordered_map<std::string, std::vector<class BoxComponent*>>&
 PhysWorld::GetMapArrays() {
     return mBoxes;
+}
+
+template <>
+inline std::unordered_map<std::string, std::vector<class SphereComponent*>>&
+PhysWorld::GetMapArrays() {
+    return mSpheres;
 }

@@ -1,20 +1,22 @@
 #pragma once
-#include "Component.h"
 #include "Collision.h"
+#include "CollisionComponent.h"
+#include "game/object/Component.h"
 
-class BoxComponent : public Component {
-    public:
-	BoxComponent(class Actor* owner, int updateOrder = 100);
-	~BoxComponent();
+class BoxComponent : public CollisionComponent {
+    AABB mObjectBox;
+    AABB mWorldBox;
+    bool mShouldRotate;
 
-	void OnUpdateWorldTransform() override;
+   public:
+    BoxComponent(class Actor* owner, const std::string& tag,
+                 CollisionCompDeps deps, int updateOrder = 100);
+    ~BoxComponent();
 
-	void SetObjectBox(const AABB& model) { mObjectBox = model; }
-	const AABB& GetWorldBox() const { return mWorldBox; }
+    void OnUpdateWorldTransform() override;
 
-	void SetShouldRotate(bool value) { mShouldRotate = value; }
-    private:
-	AABB mObjectBox;
-	AABB mWorldBox;
-	bool mShouldRotate;
+    void SetObjectBox(const AABB& model) { mObjectBox = model; }
+    const AABB& GetWorldBox() const { return mWorldBox; }
+
+    void SetShouldRotate(bool value) { mShouldRotate = value; }
 };

@@ -2,7 +2,6 @@
 
 #include <algorithm>
 
-#include "BoxComponent.h"
 #include "SDL.h"
 
 // bool PhysWorld::SegmentCast(const LineSegment& l, CollisionInfo& outColl) {
@@ -84,5 +83,21 @@ void PhysWorld::RemoveBox(const std::string& tag, BoxComponent* box) {
         // Swap to end of vector and pop off (avoid erase copies)
         std::iter_swap(iter, boxes.end() - 1);
         boxes.pop_back();
+    }
+}
+
+void PhysWorld::AddSphere(const std::string& tag, SphereComponent* sphere) {
+    mSpheres[tag].push_back(sphere);
+}
+
+void PhysWorld::RemoveSphere(const std::string& tag, SphereComponent* sphere) {
+    auto mapIter = mSpheres.find(tag);
+    if (mapIter == mSpheres.end()) return;
+    auto& spheres = mapIter->second;
+    auto iter = std::find(spheres.begin(), spheres.end(), sphere);
+    if (iter != spheres.end()) {
+        // Swap to end of vector and pop off (avoid erase copies)
+        std::iter_swap(iter, spheres.end() - 1);
+        spheres.pop_back();
     }
 }
