@@ -22,7 +22,8 @@ class Bonfire : public Actor {
     // 簡単のため，BonfirePlayerの位置をこちらで把握
     ActorID mPlayerID;
 
-    SoundHandler mEvent;
+    class AudioComponent* mAudioComp;
+    std::string mEventTag;
 
     const float cMaxLimit;
 

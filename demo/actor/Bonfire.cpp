@@ -14,6 +14,8 @@ Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
       cMaxLimit(30.0f),
       mIsRunning(false),
       mFinished(false),
+      mAudioComp(nullptr),
+      mEventTag("takibi"),
       mPlayerID(0),
       mActorsSystem(*system) {
     SetPosition(Vector3(100, 50, -50));
@@ -22,10 +24,10 @@ Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
                                                   RenderConfigID::Translucent);
     mc->SetMesh(deps.renderDB.GetMesh("Assets/Bonfire.gpmesh"));
 
-    AudioComponent* ac = new AudioComponent(this, deps.audioSystem);
-    ac->RegisterEvent("takibi");
-    mEvent = ac->GetEvent("takibi");
-    mEvent.Restart();
+    mAudioComp = new AudioComponent(this, deps.audioSystem);
+    mAudioComp->RegisterEvent(mEventTag);
+    auto event = mAudioComp->GetEvent(mEventTag);
+    event.Restart();
 
     mLimit = cMaxLimit;
 
@@ -50,5 +52,6 @@ void Bonfire::UpdateActor(float deltatime) {
 
     SetScale(mLimit / cMaxLimit * 100.0f);
     // 音声処理
-    mEvent.SetVolume(mLimit / cMaxLimit);
+    auto event = mAudioComp->GetEvent(mEventTag);
+    event.SetVolume(mLimit / cMaxLimit);
 }

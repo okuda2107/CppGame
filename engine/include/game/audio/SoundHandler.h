@@ -11,8 +11,6 @@ class SoundHandler {
     class AudioSystem* mSystem;
     unsigned int mID;
     SoundHandler(class AudioSystem* system, unsigned int id);
-    // default
-    SoundHandler() = default;
     ~SoundHandler();
 
     bool IsValid();
