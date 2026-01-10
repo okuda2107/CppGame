@@ -5,12 +5,15 @@
 struct BonfirePlayerDeps : FPSActorDeps {
     class PhysWorld& physWorld;
     class UISystem& uiSystem;
+    class StateManager& stateManager;
 
     BonfirePlayerDeps(class RenderDB& renderDB, class AudioSystem& audioSystem,
-                      class PhysWorld& physWorld, class UISystem& uiSystem)
+                      class PhysWorld& physWorld, class UISystem& uiSystem,
+                      class StateManager& state)
         : FPSActorDeps(renderDB, audioSystem),
           physWorld(physWorld),
-          uiSystem(uiSystem) {}
+          uiSystem(uiSystem),
+          stateManager(state) {}
 };
 
 // フィールドによる位置の制限とアニメーション機能を付けたクラス
@@ -53,6 +56,8 @@ class BonfirePlayer : public FPSActor {
     class SphereComponent* mSphereComp;
 
     class UISystem& mUISystem;
+    class RenderDB& mRenderDB;
+    class StateManager& mStateManager;
 
    public:
     BonfirePlayer(class ActorsSystem* system, BonfirePlayerDeps deps);

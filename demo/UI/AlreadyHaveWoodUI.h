@@ -1,14 +1,15 @@
 #pragma once
 
-#include "UIScreen.h"
-#include "Utility/Coroutine.h"
+#include "../Utility/Coroutine.h"
+#include "BonfireUI.h"
 
-class AlreadyHaveWoodUI : public UIScreen {
+class AlreadyHaveWoodUI : public BonfireUI {
     Coroutine* mCoroutine;
     float endTime;
 
    public:
-    AlreadyHaveWoodUI(class Game* game) : UIScreen(game) {
+    AlreadyHaveWoodUI(class UISystem* system, BonfireUIDeps deps)
+        : BonfireUI(system, deps) {
         mCoroutine = new Coroutine();
         endTime = mCoroutine->AddCoroutine(1.0f, [](float t) {});
         SetTitle("already have it ...");

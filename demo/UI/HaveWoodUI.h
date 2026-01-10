@@ -1,10 +1,12 @@
 #pragma once
 
-#include "UIScreen.h"
+#include "BonfireUI.h"
+#include "renderer/Shader.h"
 
-class HaveWoodUI : public UIScreen {
+class HaveWoodUI : public BonfireUI {
    public:
-    HaveWoodUI(class Game* game) : UIScreen(game) {
+    HaveWoodUI(class UISystem* system, BonfireUIDeps deps)
+        : BonfireUI(system, deps) {
         SetTitle("pick up wood by press e ...");
     }
 

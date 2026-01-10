@@ -1,10 +1,10 @@
 #include "BonfirePlayer.h"
 
+#include "../UI/AddWoodUI.h"
+#include "../UI/AlreadyHaveWoodUI.h"
+#include "../UI/HaveWoodUI.h"
+#include "../Utility/Coroutine.h"
 #include "Bonfire.h"
-#include "UI/AddWoodUI.h"
-#include "UI/AlreadyHaveWoodUI.h"
-#include "UI/HaveWoodUI.h"
-#include "Utility/Coroutine.h"
 #include "Wood.h"
 #include "WoodGenerator.h"
 #include "core/Math.h"
@@ -26,7 +26,9 @@ BonfirePlayer::BonfirePlayer(class ActorsSystem* system, BonfirePlayerDeps deps)
       mActorsSystem(*system),
       mPhysWorld(deps.physWorld),
       mSphereComp(nullptr),
-      mUISystem(deps.uiSystem) {
+      mUISystem(deps.uiSystem),
+      mRenderDB(deps.renderDB),
+      mStateManager(deps.stateManager) {
     mCoroutines = new Coroutine();
     mSphereComp =
         new SphereComponent(this, "player", CollisionCompDeps(mPhysWorld));
@@ -40,10 +42,10 @@ BonfirePlayer::BonfirePlayer(class ActorsSystem* system, BonfirePlayerDeps deps)
 BonfirePlayer::~BonfirePlayer() {
     delete mCoroutines;
 
-    // auto woodUI = mUISystem.GetUI<HaveWoodUI>()
-    // if (mWoodUI && mWoodUI->GetState() != UIScreen::EClosing) mWoodUI->Close();
-    // if (mBonfireUI && mBonfireUI->GetState() != UIScreen::EClosing)
-    //     mBonfireUI->Close();
+    auto woodUI = mUISystem.GetUI<HaveWoodUI>(mWoodUIID);
+    if (woodUI) woodUI->Close();
+    auto bonfireUI = mUISystem.GetUI<AddWoodUI>(mBonfireUIID);
+    if (bonfireUI) bonfireUI->Close();
 }
 
 void BonfirePlayer::ActorInput(const InputState& state) {
@@ -64,7 +66,8 @@ void BonfirePlayer::ActorInput(const InputState& state) {
                     wood->GetOwner()->SetState(Actor::State::EDead);
                     break;
                 } else {
-                    // new AlreadyHaveWoodUI(GetGame());
+                    new AlreadyHaveWoodUI(
+                        &mUISystem, BonfireUIDeps(mRenderDB, mStateManager));
                 }
             }
         }
@@ -127,9 +130,12 @@ void BonfirePlayer::UpdateActor(float deltatime) {
             }
         }
         if (mWoodUIID == -1 && flag) {
-            // mWoodUI = new HaveWoodUI(GetGame());
+            auto woodUI = new HaveWoodUI(
+                &mUISystem, BonfireUIDeps(mRenderDB, mStateManager));
+            mWoodUIID = woodUI->GetID();
         } else if (mWoodUIID != -1 && !flag) {
-            // mWoodUI->Close();
+            auto woodUI = mUISystem.GetUI<HaveWoodUI>(mWoodUIID);
+            if (woodUI) woodUI->Close();
             mWoodUIID = -1;
         }
     }
@@ -145,9 +151,12 @@ void BonfirePlayer::UpdateActor(float deltatime) {
                 break;
             }
             if (flag && mBonfireUIID == -1 && mHasWood) {
-                // mBonfireUI = new AddWoodUI(GetGame());
+                auto bonfireUI = new AddWoodUI(
+                    &mUISystem, BonfireUIDeps(mRenderDB, mStateManager));
+                mBonfireUIID = bonfireUI->GetID();
             } else if (mBonfireUIID != -1 && (!flag || !mHasWood)) {
-                // mBonfireUI->Close();
+                auto bonfireUI = mUISystem.GetUI<AddWoodUI>(mBonfireUIID);
+                if (bonfireUI) bonfireUI->Close();
                 mBonfireUIID = -1;
             }
         }
