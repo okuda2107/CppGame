@@ -23,7 +23,7 @@ struct ActorQueryDeps {
     class ActorsSystem& actorsSystem;
     class RenderDB& renderDB;
     class AudioSystem& audioSystem;
-    // class PhysicsSystem& physicsSystem;
+    class PhysWorld& physWorld;
     class UISystem& uiSystem;
     class StateManager& stateManager;
     class RuntimeRequestManager& runtimeReqManager;
@@ -111,6 +111,11 @@ inline class RenderDB& ActorQuery::GetSystem<RenderDB>() {
 template <>
 inline class AudioSystem& ActorQuery::GetSystem<AudioSystem>() {
     return mSystems.audioSystem;
+}
+
+template <>
+inline class PhysWorld& ActorQuery::GetSystem<PhysWorld>() {
+    return mSystems.physWorld;
 }
 
 template <>

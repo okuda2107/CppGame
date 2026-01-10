@@ -16,7 +16,7 @@ class Game : public GameBase<InputState, RenderData, GameFrameResult,
     class ActorsSystem* mActorsSystem;
     class RenderDB* mRenderDB;
     class AudioSystem* mAudioSystem;
-    // class PhysicsSystem* mPhysicsSystem;
+    class PhysWorld* mPhysWorld;
     class UISystem* mUISystem;
 
     class StateManager* mStateManager;

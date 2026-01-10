@@ -7,6 +7,7 @@
 #include "game/UI/UISystem.h"
 #include "game/audio/AudioSystem.h"
 #include "game/object/ActorsSystem.h"
+#include "game/physics/PhysWorld.h"
 #include "game/scene/ActorQuery.h"
 #include "game/scene/SceneManager.h"
 #include "input/InputState.h"
@@ -17,6 +18,7 @@ Game::Game() {
     mActorsSystem = new ActorsSystem();
     mRenderDB = new RenderDB();
     mAudioSystem = new AudioSystem();
+    mPhysWorld = new PhysWorld();
     mUISystem = new UISystem();
     mStateManager = new StateManager();
     mReqManager = new RuntimeRequestManager();
@@ -24,7 +26,7 @@ Game::Game() {
     mSceneManager = new SceneManager();
 
     ActorQueryDeps acd = ActorQueryDeps{
-        *mActorsSystem, *mRenderDB,     *mAudioSystem,
+        *mActorsSystem, *mRenderDB,     *mAudioSystem, *mPhysWorld,
         *mUISystem,     *mStateManager, *mReqManager,
     };
     mActorQuery = new ActorQuery(acd);
@@ -34,6 +36,7 @@ Game::~Game() {
     delete mActorQuery;
     delete mSceneManager;
     delete mUISystem;
+    delete mPhysWorld;
     delete mAudioSystem;
     delete mRenderDB;
     delete mActorsSystem;

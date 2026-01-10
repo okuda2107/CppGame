@@ -1,11 +1,9 @@
-#include "PhysWorld.h"
+#include "game/physics/PhysWorld.h"
 
 #include <algorithm>
 
 #include "BoxComponent.h"
 #include "SDL.h"
-
-PhysWorld::PhysWorld(Game* game) : mGame(game) {}
 
 // bool PhysWorld::SegmentCast(const LineSegment& l, CollisionInfo& outColl) {
 //     bool collided = false;
@@ -47,6 +45,7 @@ PhysWorld::PhysWorld(Game* game) : mGame(game) {}
 //     }
 // }
 
+// 接触しているActor同士で何か与えた関数の処理をさせる関数
 // void PhysWorld::TestSweepAndPrune(std::function<void(Actor*, Actor*)> f) {
 //     // Sort by min.x
 //     std::sort(mBoxes.begin(), mBoxes.end(),
@@ -72,13 +71,18 @@ PhysWorld::PhysWorld(Game* game) : mGame(game) {}
 //     }
 // }
 
-void PhysWorld::AddBox(BoxComponent* box) { mBoxes.emplace_back(box); }
+void PhysWorld::AddBox(const std::string& tag, BoxComponent* box) {
+    mBoxes[tag].push_back(box);
+}
 
-void PhysWorld::RemoveBox(BoxComponent* box) {
-    auto iter = std::find(mBoxes.begin(), mBoxes.end(), box);
-    if (iter != mBoxes.end()) {
+void PhysWorld::RemoveBox(const std::string& tag, BoxComponent* box) {
+    auto mapIter = mBoxes.find(tag);
+    if (mapIter == mBoxes.end()) return;
+    auto& boxes = mapIter->second;
+    auto iter = std::find(boxes.begin(), boxes.end(), box);
+    if (iter != boxes.end()) {
         // Swap to end of vector and pop off (avoid erase copies)
-        std::iter_swap(iter, mBoxes.end() - 1);
-        mBoxes.pop_back();
+        std::iter_swap(iter, boxes.end() - 1);
+        boxes.pop_back();
     }
 }
