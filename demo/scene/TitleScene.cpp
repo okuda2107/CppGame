@@ -1,10 +1,10 @@
 #include "TitleScene.h"
 
+#include "../UI/BonfireUI.h"
+#include "../UI/Title.h"
+#include "../actor/Bonfire.h"
+#include "../actor/BonfirePlayer.h"
 #include "BonfireSceneTag.h"
-#include "UI/BonfireUI.h"
-#include "UI/Title.h"
-#include "actor/Bonfire.h"
-#include "actor/BonfirePlayer.h"
 #include "game/scene/ActorQuery.h"
 #include "game/scene/SceneManager.h"
 
@@ -15,13 +15,13 @@ void TitleScene::LoadActors() {
 
     // Bonfire
     auto bonfireID =
-        mActorQuery->CreateActor<Bonfire, BonfireDeps, TypeLists<RenderDB>>();
+        mActorQuery->CreateActor<Bonfire, BonfireDeps,
+                                 TypeLists<RenderDB, AudioSystem, PhysWorld>>();
 
     // player
-    auto playerID =
-        mActorQuery
-            ->CreateActor<BonfirePlayer, BonfirePlayerDeps,
-                          TypeLists<ActorsSystem, RenderDB, AudioSystem>>();
+    auto playerID = mActorQuery->CreateActor<
+        BonfirePlayer, BonfirePlayerDeps,
+        TypeLists<RenderDB, AudioSystem, PhysWorld, UISystem, StateManager>>();
 
     auto player = mActorQuery->GetActor<BonfirePlayer>(playerID);
     auto bonfire = mActorQuery->GetActor<Bonfire>(bonfireID);
@@ -52,4 +52,5 @@ std::string TitleScene::PollNextScene() {
     } else if (!title) {
         return SceneName::game.data();
     }
+    return "";
 }

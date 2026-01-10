@@ -69,6 +69,7 @@ class BonfirePlayer : public FPSActor {
     void SetAnimLookUp() { mIsAnimLookUp = true; }
     void SetAnimLookDown() { mIsAnimLookDown = true; }
     bool GetAnimLookUp() { return mIsAnimLookUp; }
+    bool GetAnimLookDown() { return mIsAnimLookDown; }
 
     void SetBonfireID(ActorID id) { mBonfireID = id; }
 

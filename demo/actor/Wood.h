@@ -1,14 +1,21 @@
 #pragma once
 
-#include "Actor.h"
+#include "game/object/Actor.h"
+
+struct WoodDeps {
+    class RenderDB& renderDB;
+    class PhysWorld& physWorld;
+
+    WoodDeps(class RenderDB& render, class PhysWorld& phys)
+        : renderDB(render), physWorld(phys) {}
+};
 
 class Wood : public Actor {
     float mTime;
-    class WoodGenerator* mParent;
 
    public:
-    Wood(class Game* game, class WoodGenerator* parent);
-    ~Wood();
+    Wood(class ActorsSystem* system, WoodDeps deps);
+    ~Wood() = default;
 
     void UpdateActor(float deltatime) override;
 

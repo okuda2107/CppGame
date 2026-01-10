@@ -12,6 +12,6 @@ class AddWoodUI : public BonfireUI {
 
     void Draw(Shader* shader) override {
         mTitlePos = Vector2(200.0f, 300.0f);
-        UIScreen::Draw(shader);
+        BonfireUI::Draw(shader);
     }
 };

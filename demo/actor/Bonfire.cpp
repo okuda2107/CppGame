@@ -10,12 +10,10 @@
 
 Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
     : Actor(system, deps),
-      mTime(0.0f),
       mLimit(0.0f),
       cMaxLimit(30.0f),
       mIsRunning(false),
       mFinished(false),
-      mAddWood(false),
       mPlayerID(0),
       mActorsSystem(*system) {
     SetPosition(Vector3(100, 50, -50));
@@ -44,7 +42,6 @@ Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
 void Bonfire::UpdateActor(float deltatime) {
     if (!mIsRunning) return;
     // 時間更新
-    mTime += deltatime;
     mLimit -= deltatime;
     if (mLimit <= 0) {
         mFinished = true;
@@ -54,19 +51,4 @@ void Bonfire::UpdateActor(float deltatime) {
     SetScale(mLimit / cMaxLimit * 100.0f);
     // 音声処理
     mEvent.SetVolume(mLimit / cMaxLimit);
-
-    // Playerが近くにいる かつ flagが送られたら，時間延長
-    class BonfirePlayer* player =
-        mActorsSystem.GetActor<BonfirePlayer>(mPlayerID);
-    if (player) {
-        float dx = player->GetPosition().x - GetPosition().x;
-        float dy = player->GetPosition().y - GetPosition().y;
-        float d = Vector2(dx, dy).LengthSquared();
-        float near = 5000.0f;
-        if (d < near && mAddWood) {
-            mAddWood = false;
-            mLimit += 20;
-            if (mLimit > cMaxLimit + 30) mLimit = cMaxLimit + 30;
-        }
-    }
 }

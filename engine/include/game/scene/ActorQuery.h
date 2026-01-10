@@ -55,8 +55,6 @@ class ActorQuery {
     ActorID CreateActor() {
         static_assert(std::is_base_of<Actor, TActor>::value,
                       "TActor must derive from Actor");
-        static_assert(std::is_base_of<ActorDeps, TDeps>::value,
-                      "TDeps must derive from ActorDeps");
         static_assert(IsTypeLists<TLists>::value,
                       "TListss must be a TypeLists<...>");
 
@@ -73,8 +71,6 @@ class ActorQuery {
     UIID CreateUI() {
         static_assert(std::is_base_of<UIScreen, TUI>::value,
                       "TActor must derive from UIScreen");
-        static_assert(std::is_base_of<UIDeps, TDeps>::value,
-                      "TDeps must derive from UIDeps");
         static_assert(IsTypeLists<TLists>::value,
                       "TListss must be a TypeLists<...>");
 

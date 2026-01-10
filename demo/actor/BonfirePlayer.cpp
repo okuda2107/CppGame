@@ -6,7 +6,6 @@
 #include "../Utility/Coroutine.h"
 #include "Bonfire.h"
 #include "Wood.h"
-#include "WoodGenerator.h"
 #include "core/Math.h"
 #include "game/physics/PhysWorld.h"
 #include "game/physics/SphereComponent.h"

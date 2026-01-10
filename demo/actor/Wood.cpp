@@ -1,23 +1,26 @@
 #include "Wood.h"
 
-#include "Game.h"
-#include "MeshComponent.h"
-#include "WoodGenerator.h"
+#include "game/object/ActorsSystem.h"
+#include "game/physics/SphereComponent.h"
+#include "renderer/Mesh.h"
+#include "renderer/MeshComponent.h"
+#include "renderer/RenderDB.h"
+#include "renderer/RenderData.h"
 
-Wood::Wood(class Game* game, class WoodGenerator* parent)
-    : Actor(game), mTime(0.0f), mParent(parent) {
-    RenderConfig config = RenderConfig();
-    config.mBlend = true;
-    config.mDepthMask = false;
-    config.mSortByCamera = true;
-    MeshComponent* mc = new MeshComponent(this, config);
-    mc->SetMesh(GetGame()->GetRenderer()->GetMesh("Assets/Square.gpmesh"));
+Wood::Wood(class ActorsSystem* system, WoodDeps deps)
+    : Actor(system, ActorDeps{}), mTime(0.0f) {
+    MeshComponent* mc =
+        new MeshComponent(this, &deps.renderDB, RenderConfigID::Translucent);
+    mc->SetMesh(deps.renderDB.GetMesh("Assets/Square.gpmesh"));
     mc->AddTextureIndex(0);
-    parent->AddWood(this);
     SetScale(30.0f);
+    auto sphereComp = new SphereComponent(this, SWoodPhysTag.data(),
+                                          CollisionCompDeps(deps.physWorld));
+    Sphere sphere{};
+    sphere.mCenter = GetPosition();
+    sphere.mRadius = 2500.0f;
+    sphereComp->mSphere = sphere;
 }
-
-Wood::~Wood() { mParent->RemoveWood(this); }
 
 void Wood::UpdateActor(float deltatime) {
     mTime += deltatime;

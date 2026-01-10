@@ -12,6 +12,6 @@ class HaveWoodUI : public BonfireUI {
 
     void Draw(Shader* shader) {
         mTitlePos = Vector2(100.0f, 300.0f);
-        UIScreen::Draw(shader);
+        BonfireUI::Draw(shader);
     }
 };
