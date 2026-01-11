@@ -34,7 +34,7 @@ BonfirePlayer::BonfirePlayer(class ActorsSystem* system, BonfirePlayerDeps deps)
     // todo: Sphereの半径を調整
     Sphere sphere{};
     sphere.mCenter = GetPosition();
-    sphere.mRadius = 2500.0f;
+    sphere.mRadius = 0.0f;
     mSphereComp->mSphere = sphere;
 }
 

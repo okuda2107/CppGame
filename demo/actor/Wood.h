@@ -13,11 +13,16 @@ struct WoodDeps {
 class Wood : public Actor {
     float mTime;
 
+    class SphereComponent* mSphereComp;
+
    public:
     Wood(class ActorsSystem* system, WoodDeps deps);
     ~Wood() = default;
 
     void UpdateActor(float deltatime) override;
+
+    // 座標を初期化するときに外部で初期化するため，コリジョンのみ即座に反映させるためのオーバーロード
+    void SetPosition(Vector3 pos);
 
     static constexpr std::string_view SWoodPhysTag = "wood";
 };

@@ -38,7 +38,7 @@ Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
     // todo: Sphereの半径を調整
     Sphere sphere{};
     sphere.mCenter = GetPosition();
-    sphere.mRadius = 2500.0f;
+    sphere.mRadius = 0.0f;
     sphereComp->mSphere = sphere;
 }
 
