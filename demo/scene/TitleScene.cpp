@@ -27,6 +27,9 @@ void TitleScene::LoadActors() {
     auto bonfire = mActorQuery->GetActor<Bonfire>(bonfireID);
     if (bonfire && player) {
         player->SetFieldRange(mFieldMin, mFieldMax);
+        player->SetPitchAngular(-Math::Pi / 4);
+        player->SetForwardSpeed(60.0f);
+        player->SetStrafeSpeed(60.0f);
         player->SetBonfireID(bonfireID);
         bonfire->SetPlayer(playerID);
     }

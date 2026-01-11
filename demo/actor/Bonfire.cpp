@@ -23,6 +23,7 @@ Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
     AnimMeshComponent* mc = new AnimMeshComponent(this, &deps.renderDB,
                                                   RenderConfigID::Translucent);
     mc->SetMesh(deps.renderDB.GetMesh("Assets/Bonfire.gpmesh"));
+    mc->SetShader(deps.renderDB.GetShader("Shaders/Anim"));
 
     mAudioComp = new AudioComponent(this, deps.audioSystem);
     if (!mAudioComp->RegisterEvent(mEventTag))

@@ -2,7 +2,9 @@
 
 #include "runtime/RuntimeData.h"
 
-RuntimeSystem::RuntimeSystem() : mTicksCount(0), mIsGameLoop(true) {}
+RuntimeSystem::RuntimeSystem() : mTicksCount(0), mIsGameLoop(true) {
+    mDeltatime = 0.0f;
+}
 
 RuntimeSystem::~RuntimeSystem() { Shutdown(); }
 
@@ -23,9 +25,9 @@ bool RuntimeSystem::IsRunning() const { return mIsGameLoop; }
 
 void RuntimeSystem::BeginFrame() {
     while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
-    float deltatime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
-    if (deltatime > 0.05f) {
-        deltatime = 0.05f;
+    mDeltatime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
+    if (mDeltatime > 0.05f) {
+        mDeltatime = 0.05f;
     }
     mTicksCount = SDL_GetTicks();
 }

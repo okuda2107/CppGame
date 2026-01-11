@@ -58,5 +58,7 @@ int main(int argc, char** argv) {
 
     SDL_Quit();
 
+    SDL_Log("finish");
+
     return 0;
 }
