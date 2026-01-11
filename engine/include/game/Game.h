@@ -52,17 +52,11 @@ class Game : public GameBase<InputState, RenderData, GameFrameResult,
         return mSceneManager->SetEntryScene(tag);
     }
 
-    // grobal objectなどのロード
-    template <typename TActor, typename TDeps, typename TLists>
-    ActorID CreateActor() {
-        return mActorQuery->CreateActor<TActor, TDeps, TLists>();
-    }
+    class ActorQuery* GetActorQuery() { return mActorQuery; }
 
-    template <typename TUI, typename TDeps, typename TLists>
-    UIID CreateUI() {
-        return mActorQuery->CreateUI<TUI, TDeps, TLists>();
-    }
+    // RenderDBに環境光のデータを流し込む
+    void SetAmbientLight(Vector3 ambientLight);
 
-    // AudioSystemにデータを流し込む
+    // AudioSystemにbankデータを流し込む
     void LoadAudioBank(const std::string& name);
 };

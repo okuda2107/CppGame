@@ -107,6 +107,10 @@ const RenderData& Game::GenerateRenderData() {
     return mRenderDB->GetData();
 }
 
+void Game::SetAmbientLight(Vector3 ambientLight) {
+    mRenderDB->SetAmbientLight(ambientLight);
+}
+
 void Game::LoadAudioBank(const std::string& name) {
     mAudioSystem->LoadBank(name);
 }

@@ -113,7 +113,7 @@ void BonfirePlayer::UpdateActor(float deltatime) {
     if (mFieldMin && mFieldMax) {
         Vector3 pos = GetPosition();
         pos.x = Math::Clamp(pos.x, mFieldMin->x, mFieldMax->x);
-        pos.y = Math::Clamp(pos.y, mFieldMin->x, mFieldMax->y);
+        pos.y = Math::Clamp(pos.y, mFieldMin->y, mFieldMax->y);
         SetPosition(pos);
     }
 

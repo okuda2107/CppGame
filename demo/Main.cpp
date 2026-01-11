@@ -1,5 +1,7 @@
 #include "Engine.h"
 #include "SDL.h"
+#include "actor/BackDome.h"
+#include "actor/Floor.h"
 #include "game/Game.h"
 #include "game/object/ActorsSystem.h"
 #include "input/InputSystem.h"
@@ -37,17 +39,26 @@ int main(int argc, char** argv) {
         if (!inputSystem->Initialize())
             throw std::runtime_error("Failed to initialize input system");
 
-        // Load Scene
+        // Load Object
+        // Load Audio
         game->LoadAudioBank("Assets/Master.bank");
 
         // grobal object
-        // for (int i = 0; i < 2; i++) {
-        //     for (int j = 0; j < 2; j++) {
-        //         game->CreateActor<Floor>();
-        //         f->SetPosition(Vector3(-1000 * i, 1000 * j, -70));
-        //     }
-        // }
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                ActorID id =
+                    game->GetActorQuery()
+                        ->CreateActor<Floor, FloorDeps, TypeLists<RenderDB>>();
+                Floor* f = game->GetActorQuery()->GetActor<Floor>(id);
+                f->SetPosition(Vector3(-1000 * i, 1000 * j, -70));
+            }
+        }
+        game->GetActorQuery()
+            ->CreateActor<BackDome, BackDomeDeps, TypeLists<RenderDB>>();
 
+        game->SetAmbientLight(Vector3(0.1, 0.1, 0.2));
+
+        // Load Scene
         game->SetScene<TitleScene>(SceneName::title.data());
         game->SetScene<GameScene>(SceneName::game.data());
 
