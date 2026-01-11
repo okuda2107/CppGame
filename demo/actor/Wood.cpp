@@ -19,7 +19,7 @@ Wood::Wood(class ActorsSystem* system, WoodDeps deps)
                                       CollisionCompDeps(deps.physWorld));
     Sphere sphere{};
     sphere.mCenter = GetPosition();
-    sphere.mRadius = 0.0f;
+    sphere.mRadius = 50.0f;
     mSphereComp->mSphere = sphere;
 }
 

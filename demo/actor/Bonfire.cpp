@@ -11,7 +11,7 @@
 Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
     : Actor(system, deps),
       mLimit(0.0f),
-      cMaxLimit(5.0f),
+      cMaxLimit(1000.0f),
       mIsRunning(false),
       mFinished(false),
       mAudioComp(nullptr),
@@ -38,7 +38,7 @@ Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
     // todo: Sphereの半径を調整
     Sphere sphere{};
     sphere.mCenter = GetPosition();
-    sphere.mRadius = 0.0f;
+    sphere.mRadius = 50.0f;
     sphereComp->mSphere = sphere;
 }
 

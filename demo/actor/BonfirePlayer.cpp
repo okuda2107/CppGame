@@ -34,7 +34,7 @@ BonfirePlayer::BonfirePlayer(class ActorsSystem* system, BonfirePlayerDeps deps)
     // todo: Sphereの半径を調整
     Sphere sphere{};
     sphere.mCenter = GetPosition();
-    sphere.mRadius = 0.0f;
+    sphere.mRadius = 50.0f;
     mSphereComp->mSphere = sphere;
 }
 
@@ -128,7 +128,8 @@ void BonfirePlayer::UpdateActor(float deltatime) {
                 break;
             }
         }
-        if (mWoodUIID == -1 && flag) {
+        // mWoodUIIDは実質前フレームまでの衝突情報となっている
+        if (mWoodUIID == -1 && flag && !mHasWood) {
             auto woodUI = new HaveWoodUI(
                 &mUISystem, BonfireUIDeps(mRenderDB, mStateManager));
             mWoodUIID = woodUI->GetID();
@@ -149,15 +150,15 @@ void BonfirePlayer::UpdateActor(float deltatime) {
                 flag = true;
                 break;
             }
-            if (flag && mBonfireUIID == -1 && mHasWood) {
-                auto bonfireUI = new AddWoodUI(
-                    &mUISystem, BonfireUIDeps(mRenderDB, mStateManager));
-                mBonfireUIID = bonfireUI->GetID();
-            } else if (mBonfireUIID != -1 && (!flag || !mHasWood)) {
-                auto bonfireUI = mUISystem.GetUI<AddWoodUI>(mBonfireUIID);
-                if (bonfireUI) bonfireUI->Close();
-                mBonfireUIID = -1;
-            }
+        }
+        if (flag && mBonfireUIID == -1 && mHasWood) {
+            auto bonfireUI = new AddWoodUI(
+                &mUISystem, BonfireUIDeps(mRenderDB, mStateManager));
+            mBonfireUIID = bonfireUI->GetID();
+        } else if (mBonfireUIID != -1 && (!flag || !mHasWood)) {
+            auto bonfireUI = mUISystem.GetUI<AddWoodUI>(mBonfireUIID);
+            if (bonfireUI) bonfireUI->Close();
+            mBonfireUIID = -1;
         }
     }
 }
