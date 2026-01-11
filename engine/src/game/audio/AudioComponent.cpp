@@ -56,10 +56,10 @@ SoundHandler AudioComponent::GetEvent(const std::string& name) {
 }
 
 // AudioSystemに要請して，イベントを再生する準備をする．
-void AudioComponent::RegisterEvent(const std::string& name) {
+bool AudioComponent::RegisterEvent(const std::string& name) {
     // ここでSoundHandlerがnewされる．
     SoundHandler e = mSystem->PlayEvent(name);
-    if (!e.IsValid()) return;
+    if (!e.IsValid()) return false;
     // Is this 2D or 3D?
     if (e.Is3D()) {
         mEvents3D.emplace(name, e);
@@ -68,6 +68,8 @@ void AudioComponent::RegisterEvent(const std::string& name) {
     } else {
         mEvents2D.emplace(name, e);
     }
+
+    return true;
 }
 
 void AudioComponent::StopAllEvents() {

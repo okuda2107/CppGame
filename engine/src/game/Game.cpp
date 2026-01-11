@@ -101,3 +101,7 @@ const RenderData& Game::GenerateRenderData() {
         mRenderDB->SetUI(nullptr);
     return mRenderDB->GetData();
 }
+
+void Game::LoadAudioBank(const std::string& name) {
+    mAudioSystem->LoadBank(name);
+}

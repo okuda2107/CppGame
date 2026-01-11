@@ -25,7 +25,7 @@ class AudioComponent : public AudioComponentBase<class AudioSystem> {
 
     SoundHandler GetEvent(const std::string& name);
 
-    void RegisterEvent(const std::string& name);
+    bool RegisterEvent(const std::string& name);
     void StopAllEvents();
 
     TypeID GetType() const { return TypeID::TAudioComponent; }

@@ -25,7 +25,8 @@ Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
     mc->SetMesh(deps.renderDB.GetMesh("Assets/Bonfire.gpmesh"));
 
     mAudioComp = new AudioComponent(this, deps.audioSystem);
-    mAudioComp->RegisterEvent(mEventTag);
+    if (!mAudioComp->RegisterEvent(mEventTag))
+        SDL_Log("Failed to register event");
     auto event = mAudioComp->GetEvent(mEventTag);
     event.Restart();
 

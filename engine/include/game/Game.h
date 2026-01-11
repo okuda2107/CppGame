@@ -62,4 +62,7 @@ class Game : public GameBase<InputState, RenderData, GameFrameResult,
     UIID CreateUI() {
         return mActorQuery->CreateUI<TUI, TDeps, TLists>();
     }
+
+    // AudioSystemにデータを流し込む
+    void LoadAudioBank(const std::string& name);
 };
