@@ -33,13 +33,14 @@ Game::Game() {
 }
 
 Game::~Game() {
-    delete mActorQuery;
+    // ゲームオブジェクト管理類はsystem群に大きく依存しているので，先にdeleteする必要がある．
+    delete mActorsSystem;
     delete mSceneManager;
     delete mUISystem;
+    delete mActorQuery;
     delete mPhysWorld;
     delete mAudioSystem;
     delete mRenderDB;
-    delete mActorsSystem;
     delete mStateManager;
     delete mReqManager;
 }

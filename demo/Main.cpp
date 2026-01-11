@@ -10,7 +10,6 @@
 
 // ゲーム実装者がシステムの内容を定義
 int main(int argc, char** argv) {
-    ActorsSystem* actorsSystem = nullptr;
     Game* game = nullptr;
     Renderer* renderer = nullptr;
     InputSystem* inputSystem = nullptr;
@@ -38,6 +37,8 @@ int main(int argc, char** argv) {
             throw std::runtime_error("Failed to initialize input system");
 
         // Load Scene
+        game->LoadAudioBank("Assets/Master.bank");
+
         game->LoadScene<TitleScene>(SceneName::title.data());
 
         game->SetEntryScene(SceneName::title.data());
@@ -54,7 +55,6 @@ int main(int argc, char** argv) {
     delete inputSystem;
     delete renderer;
     delete game;
-    delete actorsSystem;
 
     SDL_Quit();
 

@@ -53,7 +53,10 @@ bool AudioSystem::Initialize() {
         return false;
     }
 
-    alGetError();
+    if (ALenum err = alGetError(); err != AL_NO_ERROR) {
+        SDL_Log("Failed to initialize OpenAL; %x", err);
+        return false;
+    }
 
     return true;
 }
