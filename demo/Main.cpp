@@ -8,6 +8,7 @@
 #include "renderer/Renderer.h"
 #include "runtime/RuntimeSystem.h"
 #include "scene/BonfireSceneTag.h"
+#include "scene/GameOverScene.h"
 #include "scene/GameScene.h"
 #include "scene/TitleScene.h"
 
@@ -61,6 +62,7 @@ int main(int argc, char** argv) {
         // Load Scene
         game->SetScene<TitleScene>(SceneName::title.data());
         game->SetScene<GameScene>(SceneName::game.data());
+        game->SetScene<GameOverScene>(SceneName::result.data());
 
         game->SetEntryScene(SceneName::title.data());
 

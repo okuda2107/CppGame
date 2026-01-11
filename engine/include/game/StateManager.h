@@ -2,7 +2,7 @@
 
 enum class GameState {
     EGameplay,
-    EPause,
+    EPaused,
 };
 
 // Gameのループ状態を制御するためのクラス

@@ -5,4 +5,5 @@ BonfireSceneBase::BonfireSceneBase() {
     mFieldMax = Vector2(500, 1500);
     mPlayerIDTag = "playerID";
     mBonfireIDTag = "bonfireID";
+    mResultTag = "result";
 }

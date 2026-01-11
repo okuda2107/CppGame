@@ -11,6 +11,7 @@ class BonfireSceneBase : public Scene {
 
     std::string mPlayerIDTag;
     std::string mBonfireIDTag;
+    std::string mResultTag;
 
    public:
     BonfireSceneBase();

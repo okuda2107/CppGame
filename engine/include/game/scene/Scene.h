@@ -16,7 +16,9 @@ class Scene {
         外部からSceneをロードされ，SceneManagerを通さないことを防ぐため，
         SceneManagerをfriendクラスにして，Load / Unload をprotectedにする．
     */
+    // Sceneの有効化
     virtual void LoadActors() = 0;
+    // Sceneの無効化
     virtual void UnloadActors() = 0;
 
    public:

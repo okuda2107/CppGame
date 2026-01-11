@@ -32,6 +32,11 @@ void GameScene::LoadActors() {
 void GameScene::UnloadActors() {
     auto timer = mActorQuery->GetActor<Timer>(mTimerID);
     if (timer) timer->SetState(Actor::State::EDead);
+    mState = State::EEnterAnim;
+    mIsNextScene = false;
+    mPlayerID = -1;
+    mBonfireID = -1;
+    mPrevTime = 0.0f;
 }
 
 void GameScene::TickRules() {
@@ -82,6 +87,12 @@ void GameScene::TickRules() {
 
         if (!player->GetAnimLookUp()) {
             mIsNextScene = true;
+            auto timer = mActorQuery->GetActor<Timer>(mTimerID);
+            int time = -2;
+            if (timer) time = timer->mTime;
+            SceneContext data{};
+            data.number = time;
+            mSceneManagerData->emplace(mResultTag, data);
         }
     }
 }

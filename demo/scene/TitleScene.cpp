@@ -44,7 +44,7 @@ void TitleScene::LoadActors() {
     mSceneManagerData->emplace(mBonfireIDTag, bonfireIDContext);
 }
 
-void TitleScene::UnloadActors() {}
+void TitleScene::UnloadActors() { mTitleID = -1; }
 
 void TitleScene::TickRules() {}
 

@@ -5,7 +5,7 @@
 #include "input/InputState.h"
 
 Title::Title(UISystem* system, BonfireUIDeps deps) : BonfireUI(system, deps) {
-    mStateManager.mState = GameState::EPause;
+    mStateManager.mState = GameState::EPaused;
     SetTitle("Chillut's Fire", Color::White, 72);
     mTitlePos = Vector2(0.0f, 300.0f);
 }
