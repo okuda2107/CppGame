@@ -3,7 +3,7 @@
 #include "game/UI/UIScreen.h"
 
 class TitleScene : public BonfireSceneBase {
-    UIID mTitleID;
+    UIID mTitleID = -1;
 
    public:
     void LoadActors();

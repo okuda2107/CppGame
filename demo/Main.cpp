@@ -6,6 +6,7 @@
 #include "renderer/Renderer.h"
 #include "runtime/RuntimeSystem.h"
 #include "scene/BonfireSceneTag.h"
+#include "scene/GameScene.h"
 #include "scene/TitleScene.h"
 
 // ゲーム実装者がシステムの内容を定義
@@ -39,7 +40,16 @@ int main(int argc, char** argv) {
         // Load Scene
         game->LoadAudioBank("Assets/Master.bank");
 
-        game->LoadScene<TitleScene>(SceneName::title.data());
+        // grobal object
+        // for (int i = 0; i < 2; i++) {
+        //     for (int j = 0; j < 2; j++) {
+        //         game->CreateActor<Floor>();
+        //         f->SetPosition(Vector3(-1000 * i, 1000 * j, -70));
+        //     }
+        // }
+
+        game->SetScene<TitleScene>(SceneName::title.data());
+        game->SetScene<GameScene>(SceneName::game.data());
 
         game->SetEntryScene(SceneName::title.data());
 

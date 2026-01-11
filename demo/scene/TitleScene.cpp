@@ -49,7 +49,7 @@ void TitleScene::UnloadActors() {}
 void TitleScene::TickRules() {}
 
 std::string TitleScene::PollNextScene() {
-    auto title = mActorQuery->GetActor<Title>(mTitleID);
+    auto title = mActorQuery->GetUI<Title>(mTitleID);
     if (title && title->GetState() == UIScreen::EClosing) {
         return SceneName::game.data();
     } else if (!title) {

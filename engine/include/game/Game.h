@@ -39,7 +39,7 @@ class Game : public GameBase<InputState, RenderData, GameFrameResult,
     const struct RenderData& GenerateRenderData() override;
 
     template <typename TScene>
-    bool LoadScene(const std::string& tag) {
+    bool SetScene(const std::string& tag) {
         static_assert(std::is_base_of<Scene, TScene>::value,
                       "TScene must derive from Scene");
         TScene* scene = new TScene();

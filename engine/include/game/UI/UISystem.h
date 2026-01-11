@@ -10,7 +10,7 @@ class UISystem {
 
     std::unordered_map<UIID, class UIScreen*> mLendingMap;
 
-    UIID mID;
+    UIID mID = 0;
 
    public:
     std::vector<class UIScreen*>& GetUIStack() { return mUIStack; }

@@ -95,6 +95,7 @@ const GameFrameResult& Game::Update(float deltatime,
     mUISystem->Update(deltatime);
     mFrameResult.mRelativeMouseMode =
         mReqManager->mInputSystemMetricsRequest.mRelativeMouseMode;
+    mSceneManager->Update();
     return mFrameResult;
 }
 

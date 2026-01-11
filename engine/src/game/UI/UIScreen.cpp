@@ -21,8 +21,7 @@ size_t HashText::operator()(const TextKey& k) const noexcept {
 UIScreen::UIScreen(UISystem* system, UIDeps deps)
     : mSystem(system), mState(EActive), mFont(nullptr) {
     // Add to UI Stack
-    mSystem->PushUI(this);
-    // mFont = mGame->GetFont("Assets/SlacksideOne-Regular.ttf");
+    mID = mSystem->PushUI(this);
 }
 
 UIScreen::~UIScreen() {

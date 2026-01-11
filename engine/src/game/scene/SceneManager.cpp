@@ -24,12 +24,11 @@ bool SceneManager::SetEntryScene(const std::string& tag) {
 void SceneManager::Update() {
     if (mCurrentSceneTag == "") return;
 
-    auto currIter = mScenes.find(mCurrentSceneTag);
-    if (currIter != mScenes.end()) return;
+    auto currScene = mScenes.at(mCurrentSceneTag);
 
-    currIter->second->TickRules();
+    currScene->TickRules();
 
-    std::string nextSceneTag = currIter->second->PollNextScene();
+    std::string nextSceneTag = currScene->PollNextScene();
 
     if (nextSceneTag == "") return;
 
@@ -39,7 +38,7 @@ void SceneManager::Update() {
         return;
     }
 
-    currIter->second->UnloadActors();
+    currScene->UnloadActors();
 
     nextIter->second->LoadActors();
 
