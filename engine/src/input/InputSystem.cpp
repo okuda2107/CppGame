@@ -40,6 +40,7 @@ void InputSystem::Update() {
 
     // 更新処理
     // イベントの取得 と 入力機器の状態を取得
+    mState.EventMap.clear();
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
