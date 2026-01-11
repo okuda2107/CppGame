@@ -11,7 +11,7 @@
 Bonfire::Bonfire(ActorsSystem* system, BonfireDeps& deps)
     : Actor(system, deps),
       mLimit(0.0f),
-      cMaxLimit(1000.0f),
+      cMaxLimit(30.0f),
       mIsRunning(false),
       mFinished(false),
       mAudioComp(nullptr),
