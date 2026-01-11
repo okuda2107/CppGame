@@ -30,6 +30,9 @@ Game::Game() {
         *mUISystem,     *mStateManager, *mReqManager,
     };
     mActorQuery = new ActorQuery(acd);
+
+    mFrameResult.mIsGameLoop = true;
+    mFrameResult.mRelativeMouseMode = true;
 }
 
 Game::~Game() {
