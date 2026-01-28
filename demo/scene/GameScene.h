@@ -18,6 +18,7 @@ class GameScene : public BonfireSceneBase {
 
     ActorID mPlayerID;
     ActorID mBonfireID;
+    std::vector<ActorID> mWoodIDs;
 
     // 次のSceneに移る
     bool mIsNextScene;

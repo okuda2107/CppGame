@@ -36,6 +36,11 @@ void GameScene::UnloadActors() {
     mIsNextScene = false;
     mPlayerID = -1;
     mBonfireID = -1;
+    for (auto id : mWoodIDs) {
+        Wood* wd = mActorQuery->GetActor<Wood>(id);
+        if (wd) wd->SetState(Actor::State::EDead);
+    }
+    mWoodIDs.clear();
     mPrevTime = 0.0f;
 }
 
@@ -63,10 +68,20 @@ void GameScene::TickRules() {
                 ActorID id =
                     mActorQuery->CreateActor<Wood, WoodDeps,
                                              TypeLists<RenderDB, PhysWorld>>();
+                mWoodIDs.push_back(id);
                 Wood* wd = mActorQuery->GetActor<Wood>(id);
                 wd->SetPosition(Vector3(
                     Random::GetFloatRange(mFieldMin.x, mFieldMax.x),
                     Random::GetFloatRange(mFieldMin.y, mFieldMax.y), -50));
+            }
+
+            // 既に死んでいるWoodは配列から除外
+            for (auto iter = mWoodIDs.begin(); iter != mWoodIDs.end();) {
+                Wood* wd = mActorQuery->GetActor<Wood>(*iter);
+                if (!wd)
+                    mWoodIDs.erase(iter);
+                else
+                    ++iter;
             }
         }
 
